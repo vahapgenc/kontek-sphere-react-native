@@ -22,6 +22,7 @@ export * from './inputs/SegmentedControl';
 // Surfaces
 export * from './surfaces/Card';
 export * from './surfaces/PayHero';
+export * from './surfaces/ProductCard';
 export * from './surfaces/BottomSheet';
 export * from './surfaces/Dialog';
 
@@ -38,6 +39,7 @@ export * from './data-display/SectionLabel';
 // Feedback
 export * from './feedback/Banner';
 export * from './feedback/Snackbar';
+export * from './feedback/OptimisticUndo';
 export * from './feedback/InfoNote';
 export * from './feedback/Skeleton';
 export * from './feedback/Spinner';
@@ -45,6 +47,7 @@ export * from './feedback/Spinner';
 // Navigation
 export * from './navigation/AppBar';
 export * from './navigation/TabBar';
+export * from './navigation/TopMenu';
 
 // Flow primitives
 export * from './flow/FlowShell';

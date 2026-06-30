@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeProvider } from './src/theme';
-import { OverviewScreen } from './src/screens/OverviewScreen';
+import { OverviewScreen } from './src/designsystem/OverviewScreen';
 
 export default function App() {
   return (
