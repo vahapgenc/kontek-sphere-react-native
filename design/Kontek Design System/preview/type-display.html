@@ -1,0 +1,52 @@
+<!-- @dsCard group="Atoms" name="Display type" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { margin:0; padding:24px 26px; background:var(--surface); font-family:var(--font-ui); }
+  .spec { color:var(--ink-3); font-size:11px; letter-spacing:.04em; margin-top:4px; }
+  .stack > * + * { margin-top:14px; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Display type</h1>
+  <div class="dg-intro"><p>De största graderna — hjältetalet för lön och den stora hälsningen. <b>Ett display-element per vy</b>, alltid i .tnum.</p></div>
+  <div class="stack">
+    <div>
+      <div class="ds-display">Payroll, finally calm.</div>
+      <div class="spec">Open Sans · Display · 36/1.04 · −0.02em · Bold</div>
+    </div>
+    <div>
+      <div class="ds-h1">Good morning, Anna</div>
+      <div class="spec">Open Sans · H1 · 28/1.1 · Bold — the screen large-title</div>
+    </div>
+  </div>
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Reserve display size for the hero pay figure and the big greeting.</li>
+          <li>Set figures in <code>.tnum</code> so amounts align.</li>
+          <li>Keep one display element per screen.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use display size for body copy or repeated headings.</li>
+          <li>Title Case the greeting.</li>
+          <li>Stack two hero figures on a single screen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

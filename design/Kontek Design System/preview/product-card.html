@@ -1,0 +1,63 @@
+<!-- @dsCard group="Molecules" name="Product card" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { margin:0; padding:22px; background:var(--canvas); font-family:var(--font-ui); display:flex; flex-wrap:wrap; gap:16px; }
+  .card { flex:1; background:var(--surface); border:1px solid var(--line); border-radius:14px;
+          padding:18px; box-shadow:var(--shadow-sm); }
+  .ico { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+         background:var(--green-soft); }
+  .ico svg { width:20px; height:20px; }
+  .name { font-size:16px; font-weight:600; color:var(--ink); margin-top:14px; }
+  .desc { font-size:13px; color:var(--ink-3); line-height:1.45; margin-top:4px; }
+  .meta { display:flex; align-items:center; gap:6px; margin-top:14px; font-size:12px; font-weight:600; color:var(--green-deep); }
+  .meta svg { width:14px; height:14px; }
+</style>
+</head>
+<body>
+
+  <div style="flex:0 0 100%; width:100%;">
+    <h1 class="dg-h1">Product card</h1>
+    <div class="dg-intro" style="margin-bottom:0;"><p>Innehållskort byggt på det flytande receptet — <b>--sh-1</b>, 20px radie, transparent ram. En tydlig åtgärd per kort.</p></div>
+  </div>
+  <div class="card">
+    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></div>
+    <div class="name">Lön</div>
+    <div class="desc">Kör lön, skatt och utbetalningar — automatiskt.</div>
+    <div class="meta">Öppna <svg viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+  </div>
+  <div class="card">
+    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+    <div class="name">Time</div>
+    <div class="desc">Tid, frånvaro och scheman som flödar rakt in i lönen.</div>
+    <div class="meta">Öppna <svg viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+  </div>
+  <section class="kdd" style="flex:0 0 100%; width:100%;">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Build it on the floating-card recipe &mdash; <code>--sh-1</code>, 20px radius, transparent border.</li>
+          <li>Keep one clear action per card.</li>
+          <li>Use a soft chip or icon tile for the leading glyph.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Give the card a visible border or a hard shadow.</li>
+          <li>Crowd several primary buttons into one card.</li>
+          <li>Mix card radii across a list of cards.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

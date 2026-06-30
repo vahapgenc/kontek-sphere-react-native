@@ -1,0 +1,3204 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kontek Sphere — Försystem-prototyp</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Brand palette — same as Kontek Next, but lighter usage */
+    --ink: #122121;
+    --ink-2: #203B3C;
+    --ink-3: #4E7476;
+    --ink-4: #7A9496;
+    --line: #DDE5E2;
+    --line-2: #EBF0EE;
+    --bg: #F2F5F2;
+    --bg-warm: #EFF1EC;
+
+    --green: #0C4D33;
+    --green-2: #1E6A4A;
+    --green-3: #61BC8F;
+    --green-4: #9DDFB5;
+    --primary: #395F61;  /* primary button — teal-green */
+    --green-soft: #E6F7ED;
+    --success: #61BC8F;
+    --success-text: #0C4D33;
+
+    --rust: #B0431B;
+    --amber: #B97E0A;
+    --amber-soft: #F8EFD6;
+    --red: #9B2222;
+    --blue: #4E7476;
+
+    --brand: #122121;
+  }
+  html, body { background: #0F1112; font-family: "Inter", system-ui, sans-serif; color: var(--ink); }
+  body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 32px 0; }
+  .font-display { font-family: "Inter", sans-serif; letter-spacing: -0.005em; }
+  .num { font-feature-settings: "tnum" 1, "lnum" 1; font-variant-numeric: tabular-nums; }
+
+  /* Phone frame */
+  .phone-frame {
+    width: 390px;
+    height: 844px;
+    background: #0a0c0a;
+    border-radius: 50px;
+    padding: 12px;
+    box-shadow:
+      0 0 0 1px #1f2422,
+      0 30px 80px rgba(0,0,0,0.5),
+      0 8px 30px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    border-radius: 38px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Dynamic island */
+  .phone-island {
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 122px;
+    height: 36px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 100;
+  }
+
+  /* Scroll area */
+  .phone-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 56px; /* below status bar / island */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .phone-content::-webkit-scrollbar { display: none; }
+
+  /* Tab bar at bottom */
+  .phone-tabbar {
+    height: 78px;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-top: 8px;
+    padding-bottom: 22px; /* safe area */
+  }
+
+  .card { background: white; border: 1px solid var(--line); border-radius: 14px; }
+  .eyebrow { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-4); }
+
+  /* Animations */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeIn 0.25s ease-out; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .slide-up { animation: slideUp 0.3s ease-out; }
+
+  /* Selection highlight */
+  .row-tap:active { background: var(--bg-warm); }
+
+  /* Persona switcher (above the phone) */
+  .persona-switcher {
+    position: absolute;
+    top: -56px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.08);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .persona-pill {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .persona-pill.active {
+    background: white;
+    color: var(--ink);
+  }
+
+  /* Info note below the phone */
+  .frame-meta {
+    position: absolute;
+    bottom: -42px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* Status bar mimicking iOS */
+  .ios-status {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px 0;
+    font-family: -apple-system, "SF Pro Text", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+    z-index: 50;
+  }
+
+  button { font-family: inherit; }
+
+  /* Pill */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 9px;
+    border-radius: 99px;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useMemo } = React;
+
+/* ================================================================
+   ICONS
+   ================================================================ */
+const Icon = ({ name, size = 18, strokeWidth = 1.8, className = "", style }) => {
+  const props = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth, strokeLinecap: "round", strokeLinejoin: "round", className, style };
+  switch (name) {
+    case "home": return <svg {...props}><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>;
+    case "clock": return <svg {...props}><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>;
+    case "wallet": return <svg {...props}><path d="M21 8H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1zM6 8V6a2 2 0 0 1 2-2h10"/><circle cx="17" cy="14" r="1"/></svg>;
+    case "user": return <svg {...props}><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>;
+    case "users": return <svg {...props}><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><circle cx="17" cy="9" r="3"/><path d="M16 21a6 6 0 0 1 6-6"/></svg>;
+    case "plus": return <svg {...props}><path d="M12 5v14M5 12h14"/></svg>;
+    case "check2": return <svg {...props}><path d="M5 12l5 5L20 7"/></svg>;
+    case "x": return <svg {...props}><path d="M18 6L6 18M6 6l12 12"/></svg>;
+    case "chevR": return <svg {...props}><path d="M9 6l6 6-6 6"/></svg>;
+    case "chevL": return <svg {...props}><path d="M15 6l-6 6 6 6"/></svg>;
+    case "chevD": return <svg {...props}><path d="M6 9l6 6 6-6"/></svg>;
+    case "chevU": return <svg {...props}><path d="M6 15l6-6 6 6"/></svg>;
+    case "bell": return <svg {...props}><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0"/></svg>;
+    case "calendar": return <svg {...props}><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>;
+    case "umbrella": return <svg {...props}><path d="M12 3v2M3 12a9 9 0 0 1 18 0H3zM12 12v7a2 2 0 0 0 4 0"/></svg>;
+    case "thermometer": return <svg {...props}><path d="M14 4a2 2 0 0 0-4 0v10a4 4 0 1 0 4 0V4z"/><circle cx="12" cy="17" r="1.5"/></svg>;
+    case "stethoscope": return <svg {...props}><path d="M6 3v6a4 4 0 0 0 8 0V3M10 21a4 4 0 0 0 4-4v-2"/><circle cx="18" cy="10" r="2"/></svg>;
+    case "stroller": return <svg {...props}><circle cx="7" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M21 6h-3l-3 9H7L5 6H3M5 6l4 9M14 6a5 5 0 0 0-5-5"/></svg>;
+    case "car": return <svg {...props}><path d="M5 17V8h14v9M3 17h18M7 17v3M17 17v3"/><circle cx="7" cy="17" r="1"/><circle cx="17" cy="17" r="1"/></svg>;
+    case "plane": return <svg {...props}><path d="M22 12c0 1-3 2-6 2l-2 7h-2l-2-6-5-1-1 2H3l1-5-1-5h1l1 2 5-1 2-6h2l2 7c3 0 6 1 6 2z"/></svg>;
+    case "coffee": return <svg {...props}><path d="M3 9h14v6a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4zM17 13h2a2 2 0 0 0 0-4h-2M5 4v2M9 4v2M13 4v2"/></svg>;
+    case "receipt": return <svg {...props}><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2-2 2-2-2-2 2-2-2-3 2zM9 8h6M9 12h6M9 16h3"/></svg>;
+    case "send": return <svg {...props}><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>;
+    case "doc": return <svg {...props}><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M9 14h6M9 17h4"/></svg>;
+    case "more": return <svg {...props}><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>;
+    case "logout": return <svg {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>;
+    case "shield": return <svg {...props}><path d="M12 2L4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>;
+    case "camera": return <svg {...props}><path d="M5 7h2l2-3h6l2 3h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>;
+    case "upload": return <svg {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>;
+    case "download": return <svg {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>;
+    case "search": return <svg {...props}><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>;
+    case "filter": return <svg {...props}><path d="M3 5h18M6 12h12M10 19h4"/></svg>;
+    case "trend": return <svg {...props}><path d="M22 7l-9 9-4-4-7 7"/><path d="M16 7h6v6"/></svg>;
+    case "heart": return <svg {...props}><path d="M12 21s-7-4.5-9.5-9.5C0 7 4 3 7.5 5 9 6 12 8 12 8s3-2 4.5-3c3.5-2 7.5 2 5 6.5C19 16.5 12 21 12 21z"/></svg>;
+    case "alert": return <svg {...props}><path d="M10.3 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg>;
+    case "info": return <svg {...props}><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>;
+    case "globe": return <svg {...props}><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>;
+    case "pause-circle": return <svg {...props}><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></svg>;
+    case "briefcase-out": return <svg {...props}><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M12 11v6M9 14l3 3 3-3"/></svg>;
+    case "hourglass": return <svg {...props}><path d="M6 2h12M6 22h12M6 2c0 4 6 6 6 10s-6 6-6 10M18 2c0 4-6 6-6 10s6 6 6 10"/></svg>;
+    case "moon": return <svg {...props}><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>;
+    case "sun": return <svg {...props}><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>;
+    case "settings": return <svg {...props}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h0a1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>;
+    default: return null;
+  }
+};
+
+const Avatar = ({ initials, size = 36, color = "var(--ink-2)" }) => (
+  <div style={{
+    width: size, height: size, borderRadius: size / 2,
+    background: color, color: "white",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    fontWeight: 600, fontSize: size * 0.36, flexShrink: 0, letterSpacing: "-0.01em",
+  }}>{initials}</div>
+);
+
+const Pill = ({ children, tone = "neutral", dot }) => {
+  const tones = {
+    neutral: { bg: "var(--bg-warm)", color: "var(--ink-3)", dot: "var(--ink-3)" },
+    green: { bg: "var(--green-soft)", color: "var(--success-text)", dot: "var(--success)" },
+    amber: { bg: "var(--amber-soft)", color: "#7A5300", dot: "var(--amber)" },
+    rust: { bg: "rgba(176,67,27,0.10)", color: "var(--rust)", dot: "var(--rust)" },
+    ink: { bg: "var(--ink)", color: "white", dot: "var(--green-3)" },
+  };
+  const t = tones[tone] || tones.neutral;
+  return (
+    <span className="pill" style={{ background: t.bg, color: t.color }}>
+      {dot && <span style={{ width: 6, height: 6, borderRadius: 3, background: t.dot }} />}
+      {children}
+    </span>
+  );
+};
+
+/* ================================================================
+   DATA — Erik Bergström has both roles
+   Initial values; the AppStateProvider holds the live state.
+   ================================================================ */
+
+const INITIAL_ME = {
+  name: "Erik Bergström",
+  initials: "EB",
+  role: "Produktionsledare",
+  dept: "Produktion",
+  empNo: "1001",
+  email: "erik.bergstrom@norrstrom.se",
+  phone: "070-123 45 67",
+  startDate: "2019-08-15",
+  manager: "Anders Hellström",
+  agreement: "IF Metall",
+  // Balances
+  vacationDays: 17,
+  vacationTotal: 25,
+  vacationSaved: 3,
+  sickDays: 2,
+  vabDays: 0,
+  vabTotal: 120,
+  comptimeHours: 12,
+  comptimeMax: 40,
+  // Time today — null means not clocked in; { startedAt, hours } means active
+  clockedIn: { startedAt: "07:48", hours: 6.5 },
+  todayExpected: 8,
+};
+
+const INITIAL_TIME_ENTRIES = [
+  { id: "t-1", date: "2026-05-22", day: "Fre", hours: 6.5, in: "07:48", out: "—", status: "pending", isToday: true, note: "Pågår" },
+  { id: "t-2", date: "2026-05-21", day: "Tor", hours: 8, in: "07:51", out: "16:30", status: "klar", note: "" },
+  { id: "t-3", date: "2026-05-20", day: "Ons", hours: 8, in: "07:45", out: "16:15", status: "klar", note: "" },
+  { id: "t-4", date: "2026-05-19", day: "Tis", hours: 9, in: "07:30", out: "17:00", status: "klar", note: "1h övertid" },
+  { id: "t-5", date: "2026-05-18", day: "Mån", hours: 8, in: "07:48", out: "16:30", status: "klar", note: "" },
+];
+
+const INITIAL_ABSENCES = [
+  { id: "a-1", type: "semester", typeLabel: "Semester", icon: "umbrella", start: "2026-07-01", end: "2026-07-21", days: 15, status: "godkand", approver: "Anders Hellström" },
+  { id: "a-2", type: "vab", typeLabel: "VAB", icon: "stethoscope", start: "2026-04-12", end: "2026-04-12", days: 1, status: "godkand", approver: "Anders Hellström" },
+  { id: "a-3", type: "semester", typeLabel: "Klämdag", icon: "umbrella", start: "2026-05-15", end: "2026-05-15", days: 1, status: "godkand", approver: "Anders Hellström" },
+];
+
+const INITIAL_EXPENSES = [
+  { id: "e-1", date: "2026-05-21", amount: 412, vat: 41, category: "Restaurang", icon: "coffee", merchant: "Restaurang Östergök", purpose: "Lunch med kund — ABB Robotics", status: "godkand", account: "5810 Representation, avdragsgill", hasReceipt: true, type: "expense" },
+  { id: "e-2", date: "2026-05-18", amount: 1840, vat: 110, category: "Resa", icon: "plane", merchant: "SJ", purpose: "Tågresa Norrköping–Stockholm för leverantörsmöte", status: "godkand", account: "5800 Tjänsteresor", hasReceipt: true, type: "expense" },
+  { id: "e-3", date: "2026-05-20", amount: 285, vat: 57, category: "Drivmedel", icon: "car", merchant: "OKQ8 Norrköping", purpose: "Tjänstebil — företagsleverans till underleverantör", status: "vantar", account: "5611 Drivmedel personbil", hasReceipt: true, type: "expense" },
+  { id: "e-4", date: "2026-05-15", amount: 159, vat: 32, category: "Övrigt", icon: "receipt", merchant: "Clas Ohlson", purpose: "Verktyg — skiftnyckel för montering", status: "vantar", account: "5410 Förbrukningsmaterial", hasReceipt: true, type: "expense" },
+];
+
+/* ================================================================
+   EXPENSE LOGIC — VAT rules, accounts, smart guesses
+   ================================================================ */
+
+// Swedish VAT rates per category
+const VAT_RATES = {
+  "Restaurang": 0.12,  // 12% on food/restaurant
+  "Hotell": 0.12,      // 12% on lodging
+  "Resa": 0.06,        // 6% on travel (transport)
+  "Drivmedel": 0.25,   // 25% standard
+  "Övrigt": 0.25,      // 25% standard
+};
+
+// Suggested accounting codes (BAS-kontoplan)
+const ACCOUNT_CODES = {
+  "Restaurang": "5810 Representation, avdragsgill",
+  "Hotell": "5800 Tjänsteresor — logi",
+  "Resa": "5800 Tjänsteresor — transport",
+  "Drivmedel": "5611 Drivmedel personbil",
+  "Övrigt": "5410 Förbrukningsmaterial",
+};
+
+// Merchant → category auto-guess
+const MERCHANT_HINTS = [
+  { match: /\bsj\b|tåg|trafikverket|västtrafik|sl\b/i, category: "Resa", icon: "plane" },
+  { match: /sas|norwegian|finnair|lufthansa|flyg|airport/i, category: "Resa", icon: "plane" },
+  { match: /okq8|circle.?k|preem|st1|shell|ingo|tanka/i, category: "Drivmedel", icon: "car" },
+  { match: /scandic|elite hotel|radisson|nordic choice|clarion|first hotels|hotell/i, category: "Hotell", icon: "home" },
+  { match: /restaurang|krog|café|bistro|pizzeria|sushi|mcdonalds|max\b|burger|espresso house|wayne|kebab/i, category: "Restaurang", icon: "coffee" },
+  { match: /clas ohlson|bauhaus|jula|biltema|järnia|hornbach/i, category: "Övrigt", icon: "receipt" },
+];
+
+// Skatteverket 2026 — schablonbelopp
+const TRAVEL_RATES = {
+  trakInrikesHel: 290,    // Heldagstraktamente inrikes (uppdaterat 2026)
+  trakInrikesHalv: 145,   // Halvdag
+  trakInrikesNatt: 145,   // Nattraktamente
+  milMileage: 25,         // 25 kr/mil skattefri 2026 (efter höjningen)
+};
+
+// Pre-made fake receipt scans Watson "reads" — used to simulate OCR
+const FAKE_SCANS = [
+  { merchant: "OKQ8 Norrköping", amount: 547, category: "Drivmedel", icon: "car", date: "2026-05-22", purpose: "Tjänstebil — kundbesök Linköping", liters: "32,4 L", method: "Bankkort *5829" },
+  { merchant: "Scandic Hotel Stockholm", amount: 1890, category: "Hotell", icon: "home", date: "2026-05-22", purpose: "Övernattning — Stockholmsmöte", method: "Bankkort *5829" },
+  { merchant: "Restaurang Operakällaren", amount: 1240, category: "Restaurang", icon: "coffee", date: "2026-05-22", purpose: "Middagsmöte — strategidiskussion", method: "Bankkort *5829" },
+];
+
+const MY_PAYSLIPS = [
+  { period: "Mars 2026", net: 38420, gross: 51200, paid: "2026-04-25", file: "lonespec-2026-03.pdf" },
+  { period: "Februari 2026", net: 38420, gross: 51200, paid: "2026-03-25", file: "lonespec-2026-02.pdf" },
+  { period: "Januari 2026", net: 37980, gross: 50600, paid: "2026-01-25", file: "lonespec-2026-01.pdf" },
+  { period: "December 2025", net: 41260, gross: 55000, paid: "2025-12-23", file: "lonespec-2025-12.pdf" },
+];
+
+// Manager view — Erik's team
+const INITIAL_TEAM = [
+  { id: 1, name: "Linnéa Sjöberg", initials: "LS", role: "Verkstadsmekaniker", status: "i_arbete", todayHours: 6.5, statusLabel: "I arbete sedan 07:51" },
+  { id: 2, name: "Mohammed Al-Hassan", initials: "MA", role: "CNC-operatör", status: "saknar_tidrapport", todayHours: 0, statusLabel: "Har inte stämplat in" },
+  { id: 3, name: "Daniel Strömberg", initials: "DS", role: "Verkstadsmekaniker", status: "i_arbete", todayHours: 6.5, statusLabel: "I arbete sedan 07:48" },
+  { id: 4, name: "Yusuf Aydın", initials: "YA", role: "Svetsare", status: "franvarande", statusLabel: "Sjuk idag" },
+  { id: 5, name: "Karin Eklund", initials: "KE", role: "Kvalitetstekniker", status: "franvarande", statusLabel: "Sjuk — långtidssjukskriven" },
+  { id: 6, name: "Henrik Vall", initials: "HV", role: "Truckförare", status: "i_arbete", todayHours: 5.5, statusLabel: "I arbete sedan 08:30" },
+];
+
+const INITIAL_APPROVALS = [
+  {
+    id: "p-1", type: "time", icon: "clock",
+    employeeId: 1, employeeName: "Linnéa Sjöberg", initials: "LS",
+    title: "Tidrapport vecka 20",
+    summary: "39,5 timmar · 1,5h övertid tisdag",
+    submitted: "för 2 dagar sedan",
+    priority: "normal",
+  },
+  {
+    id: "p-2", type: "absence", icon: "umbrella",
+    employeeId: 3, employeeName: "Daniel Strömberg", initials: "DS",
+    title: "Semesteransökan",
+    summary: "20 juli – 9 augusti · 15 dagar",
+    submitted: "för 5 timmar sedan",
+    priority: "normal",
+  },
+  {
+    id: "p-3", type: "expense", icon: "wallet",
+    employeeId: 6, employeeName: "Henrik Vall", initials: "HV",
+    title: "Reseräkning",
+    summary: "Konferens i Göteborg · 2 840 kr · 3 utlägg",
+    submitted: "för 1 dag sedan",
+    priority: "normal",
+  },
+  {
+    id: "p-4", type: "absence", icon: "stethoscope",
+    employeeId: 2, employeeName: "Mohammed Al-Hassan", initials: "MA",
+    title: "VAB",
+    summary: "19–20 maj · 2 dagar · Sjukt barn",
+    submitted: "för 8 timmar sedan",
+    priority: "high",
+  },
+  {
+    id: "p-5", type: "time", icon: "clock",
+    employeeId: 6, employeeName: "Henrik Vall", initials: "HV",
+    title: "Tidrapport vecka 20",
+    summary: "42 timmar · 4h övertid (chefsbeordrad)",
+    submitted: "för 1 dag sedan",
+    priority: "normal",
+  },
+];
+
+/* ================================================================
+   APP STATE — shared between all views
+   ================================================================ */
+
+const AppStateContext = React.createContext(null);
+const useAppState = () => React.useContext(AppStateContext);
+
+let nextId = 1000;
+const genId = (prefix) => `${prefix}-${++nextId}-${Date.now().toString(36).slice(-4)}`;
+
+const AppStateProvider = ({ children }) => {
+  const [me, setMe] = useState(INITIAL_ME);
+  const [timeEntries, setTimeEntries] = useState(INITIAL_TIME_ENTRIES);
+  const [absences, setAbsences] = useState(INITIAL_ABSENCES);
+  const [expenses, setExpenses] = useState(INITIAL_EXPENSES);
+  const [team] = useState(INITIAL_TEAM);
+  const [approvals, setApprovals] = useState(INITIAL_APPROVALS);
+  // Items in the approval queue that came from Erik (the employee himself).
+  // These appear in the manager view AND track back so the employee sees status updates.
+  const [myPendingItems, setMyPendingItems] = useState([]); // [{ id, refType: "absence"|"expense", refId, approvalId }]
+
+  // ============================================================
+  // BroadcastChannel — sync to Kontek Next when data is created
+  // Channel "kontek-sync" is shared between Sphere and Next tabs
+  // ============================================================
+  const broadcastRef = React.useRef(null);
+  useEffect(() => {
+    if (typeof BroadcastChannel === "undefined") return;
+    broadcastRef.current = new BroadcastChannel("kontek-sync");
+    return () => {
+      if (broadcastRef.current) broadcastRef.current.close();
+    };
+  }, []);
+  const broadcast = (payload) => {
+    if (broadcastRef.current) {
+      try { broadcastRef.current.postMessage(payload); } catch (e) { /* ignore */ }
+    }
+  };
+
+  // Stamp in/out
+  const clockIn = () => {
+    const now = new Date();
+    const time = now.toTimeString().slice(0, 5);
+    setMe(m => ({ ...m, clockedIn: { startedAt: time, hours: 0 } }));
+  };
+  const clockOut = () => {
+    setMe(m => ({ ...m, clockedIn: null }));
+    // Lock today's entry as done
+    setTimeEntries(entries => entries.map(e =>
+      e.isToday ? { ...e, isToday: false, out: new Date().toTimeString().slice(0, 5), status: "klar", note: "Rapporterad" } : e
+    ));
+  };
+
+  // Add a manual time entry
+  const addTimeEntry = ({ date, hours, inTime, outTime, note }) => {
+    const d = new Date(date);
+    const dayLabels = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"];
+    const newEntry = {
+      id: genId("t"),
+      date, day: dayLabels[d.getDay()],
+      hours: parseFloat(hours) || 0,
+      in: inTime || "—", out: outTime || "—",
+      status: "klar", isToday: false,
+      note: note || "Manuellt tillagd",
+    };
+    setTimeEntries(entries => [newEntry, ...entries]);
+  };
+
+  // Submit an absence application — becomes an approval in manager queue
+  const submitAbsence = ({ type, typeLabel, icon, start, end, days, note }) => {
+    const absenceId = genId("a");
+    const approvalId = genId("p");
+    setAbsences(list => [{
+      id: absenceId, type, typeLabel, icon, start, end, days,
+      status: "vantar", approver: "Anders Hellström", note,
+    }, ...list]);
+    // Also push into the manager's approval queue (Erik attesterar sina egna)
+    setApprovals(list => [{
+      id: approvalId, type: "absence", icon,
+      employeeId: 1001, employeeName: "Erik Bergström", initials: "EB",
+      title: `${typeLabel}`,
+      summary: `${start} – ${end} · ${days} ${days === 1 ? "dag" : "dagar"}${note ? " · " + note : ""}`,
+      submitted: "nyss",
+      priority: "normal",
+      isOwn: true, // marker so manager view can label this clearly
+    }, ...list]);
+    setMyPendingItems(items => [...items, { refType: "absence", refId: absenceId, approvalId }]);
+    // Broadcast to Kontek Next so it can show this absence in the calendar
+    broadcast({
+      kind: "absence.created",
+      origin: "sphere",
+      payload: {
+        id: absenceId,
+        employeeId: 1, // Erik Bergström in Kontek Next's employee list
+        employeeName: "Erik Bergström",
+        type, typeLabel, icon, start, end, days, note,
+        status: "vantar",
+      },
+    });
+    return { absenceId, approvalId };
+  };
+
+  // Submit an expense — becomes an approval in manager queue
+  const submitExpense = ({ amount, category, icon, merchant, purpose, date }) => {
+    const today = date || new Date().toISOString().slice(0, 10);
+    const expenseId = genId("e");
+    const approvalId = genId("p");
+    const amt = parseFloat(amount) || 0;
+    const vatRate = VAT_RATES[category] || 0.25;
+    const vat = Math.round(amt - (amt / (1 + vatRate)));
+    const account = ACCOUNT_CODES[category] || "5410 Förbrukningsmaterial";
+    setExpenses(list => [{
+      id: expenseId, date: today, amount: amt,
+      vat, account,
+      category, icon, merchant: merchant || "Utan namn", purpose: purpose || "",
+      status: "vantar", hasReceipt: true, type: "expense",
+    }, ...list]);
+    setApprovals(list => [{
+      id: approvalId, type: "expense", icon: "wallet",
+      employeeId: 1001, employeeName: "Erik Bergström", initials: "EB",
+      title: "Utlägg",
+      summary: `${merchant || "Utan namn"} · ${amt.toLocaleString("sv-SE")} kr`,
+      submitted: "nyss",
+      priority: "normal",
+      isOwn: true,
+    }, ...list]);
+    setMyPendingItems(items => [...items, { refType: "expense", refId: expenseId, approvalId }]);
+    return { expenseId, approvalId };
+  };
+
+  // Submit a travel claim — composite expense (multiple items + perdiem + mileage)
+  const submitTravelClaim = ({ tripName, destination, startDate, endDate, items, perdiemDays, perdiemHalf, perdiemNights, mileageKm, purpose }) => {
+    const today = new Date().toISOString().slice(0, 10);
+    const expenseId = genId("e");
+    const approvalId = genId("p");
+    const itemsTotal = items.reduce((s, i) => s + (parseFloat(i.amount) || 0), 0);
+    const perdiemTotal =
+      (parseInt(perdiemDays) || 0) * TRAVEL_RATES.trakInrikesHel +
+      (parseInt(perdiemHalf) || 0) * TRAVEL_RATES.trakInrikesHalv +
+      (parseInt(perdiemNights) || 0) * TRAVEL_RATES.trakInrikesNatt;
+    const mileageTotal = Math.round(((parseFloat(mileageKm) || 0) / 10) * TRAVEL_RATES.milMileage);
+    const total = itemsTotal + perdiemTotal + mileageTotal;
+    setExpenses(list => [{
+      id: expenseId, date: today, amount: total,
+      category: "Reseräkning", icon: "plane",
+      merchant: tripName || "Reseräkning",
+      purpose: `${destination || ""}${purpose ? " — " + purpose : ""}`,
+      status: "vantar", hasReceipt: items.length > 0,
+      type: "travel",
+      tripDetails: {
+        destination, startDate, endDate,
+        items, perdiemDays, perdiemHalf, perdiemNights, mileageKm,
+        perdiemTotal, mileageTotal, itemsTotal,
+      },
+      account: "5800 Tjänsteresor",
+    }, ...list]);
+    setApprovals(list => [{
+      id: approvalId, type: "expense", icon: "plane",
+      employeeId: 1001, employeeName: "Erik Bergström", initials: "EB",
+      title: "Reseräkning",
+      summary: `${tripName || destination || "Tjänsteresa"} · ${total.toLocaleString("sv-SE")} kr · ${items.length} utlägg${perdiemTotal > 0 ? " + traktamente" : ""}${mileageTotal > 0 ? " + mil" : ""}`,
+      submitted: "nyss",
+      priority: "normal",
+      isOwn: true,
+    }, ...list]);
+    setMyPendingItems(items => [...items, { refType: "expense", refId: expenseId, approvalId }]);
+    return { expenseId, approvalId };
+  };
+
+  // Manager approves — find linked absence/expense and update its status to "godkand"
+  const approveItem = (approvalId) => {
+    const approval = approvals.find(a => a.id === approvalId);
+    if (!approval) return;
+    setApprovals(list => list.filter(a => a.id !== approvalId));
+    const link = myPendingItems.find(p => p.approvalId === approvalId);
+    if (link) {
+      if (link.refType === "absence") {
+        setAbsences(list => list.map(a => a.id === link.refId ? { ...a, status: "godkand" } : a));
+        // Vacation balance: deduct days if it's a semester
+        const abs = absences.find(a => a.id === link.refId);
+        if (abs && (abs.type === "semester")) {
+          setMe(m => ({ ...m, vacationDays: Math.max(0, m.vacationDays - (abs.days || 0)) }));
+        }
+        if (abs && abs.type === "vab") {
+          setMe(m => ({ ...m, vabDays: m.vabDays + (abs.days || 0) }));
+        }
+        if (abs && abs.type === "sjuk") {
+          setMe(m => ({ ...m, sickDays: m.sickDays + (abs.days || 0) }));
+        }
+        // Broadcast the approval to Kontek Next
+        if (abs) {
+          broadcast({
+            kind: "absence.approved",
+            origin: "sphere",
+            payload: { id: abs.id, employeeId: 1, employeeName: "Erik Bergström" },
+          });
+        }
+      } else if (link.refType === "expense") {
+        setExpenses(list => list.map(e => e.id === link.refId ? { ...e, status: "godkand" } : e));
+      }
+      setMyPendingItems(items => items.filter(p => p.approvalId !== approvalId));
+    }
+    return approval;
+  };
+
+  const declineItem = (approvalId) => {
+    const approval = approvals.find(a => a.id === approvalId);
+    if (!approval) return;
+    setApprovals(list => list.filter(a => a.id !== approvalId));
+    const link = myPendingItems.find(p => p.approvalId === approvalId);
+    if (link) {
+      if (link.refType === "absence") {
+        setAbsences(list => list.map(a => a.id === link.refId ? { ...a, status: "avslagen" } : a));
+      } else if (link.refType === "expense") {
+        setExpenses(list => list.map(e => e.id === link.refId ? { ...e, status: "avslagen" } : e));
+      }
+      setMyPendingItems(items => items.filter(p => p.approvalId !== approvalId));
+    }
+    return approval;
+  };
+
+  // Manager requests info — sends item back to employee with a question, no decision yet
+  const requestInfo = (approvalId, question) => {
+    const approval = approvals.find(a => a.id === approvalId);
+    if (!approval) return;
+    setApprovals(list => list.filter(a => a.id !== approvalId));
+    const link = myPendingItems.find(p => p.approvalId === approvalId);
+    if (link) {
+      if (link.refType === "expense") {
+        setExpenses(list => list.map(e => e.id === link.refId
+          ? { ...e, status: "komplettering", managerQuestion: question }
+          : e));
+      } else if (link.refType === "absence") {
+        setAbsences(list => list.map(a => a.id === link.refId
+          ? { ...a, status: "komplettering", managerQuestion: question }
+          : a));
+      }
+      setMyPendingItems(items => items.filter(p => p.approvalId !== approvalId));
+    }
+    return approval;
+  };
+
+  // Helper to find the underlying object linked to an approval (for the detail view)
+  const findLinkedRecord = (approvalId) => {
+    const link = myPendingItems.find(p => p.approvalId === approvalId);
+    if (!link) return null;
+    if (link.refType === "expense") return { kind: "expense", record: expenses.find(e => e.id === link.refId) };
+    if (link.refType === "absence") return { kind: "absence", record: absences.find(a => a.id === link.refId) };
+    return null;
+  };
+
+  const resetAll = () => {
+    setMe(INITIAL_ME);
+    setTimeEntries(INITIAL_TIME_ENTRIES);
+    setAbsences(INITIAL_ABSENCES);
+    setExpenses(INITIAL_EXPENSES);
+    setApprovals(INITIAL_APPROVALS);
+    setMyPendingItems([]);
+  };
+
+  return (
+    <AppStateContext.Provider value={{
+      me, timeEntries, absences, expenses, team, approvals, myPendingItems,
+      clockIn, clockOut, addTimeEntry, submitAbsence, submitExpense, submitTravelClaim,
+      approveItem, declineItem, requestInfo, findLinkedRecord, resetAll,
+    }}>
+      {children}
+    </AppStateContext.Provider>
+  );
+};
+
+/* ================================================================
+   PHONE FRAME + STATUS BAR
+   ================================================================ */
+
+const StatusBar = () => {
+  const [time, setTime] = useState(() => {
+    const d = new Date(); return d.toTimeString().slice(0, 5);
+  });
+  useEffect(() => {
+    const id = setInterval(() => {
+      const d = new Date(); setTime(d.toTimeString().slice(0, 5));
+    }, 30000);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div className="ios-status">
+      <span className="num">{time}</span>
+      <div className="flex items-center gap-1.5">
+        {/* signal */}
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="6" rx="0.5"/><rect x="10" y="2" width="3" height="9" rx="0.5"/><rect x="15" y="2" width="0" height="9" opacity="0.3"/></svg>
+        {/* wifi */}
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 8.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM4 6.5a4.95 4.95 0 0 1 7 0l-1 1a3.5 3.5 0 0 0-5 0zM1 3.5a9.9 9.9 0 0 1 13 0l-1 1a8.5 8.5 0 0 0-11 0z"/></svg>
+        {/* battery */}
+        <svg width="25" height="11" viewBox="0 0 25 11" fill="none"><rect x="0.5" y="0.5" width="21" height="10" rx="2" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="18" height="7" rx="1" fill="currentColor"/><rect x="22" y="3.5" width="2" height="4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   APP HEADER (in-app, below status bar)
+   ================================================================ */
+const AppHeader = ({ title, leading, trailing, subtitle, large = false }) => (
+  <div style={{ background: "var(--bg)", borderBottom: large ? "none" : "1px solid var(--line)" }}>
+    <div className="px-5 py-3 flex items-center justify-between">
+      <div style={{ width: 24 }}>{leading}</div>
+      {!large && <div className="font-display font-semibold text-[15px]">{title}</div>}
+      <div style={{ width: 24 }} className="flex justify-end">{trailing}</div>
+    </div>
+    {large && (
+      <div className="px-5 pb-3">
+        <h1 className="font-display font-semibold" style={{ fontSize: 26, letterSpacing: "-0.015em" }}>{title}</h1>
+        {subtitle && <p className="text-[13px] mt-0.5" style={{ color: "var(--ink-3)" }}>{subtitle}</p>}
+      </div>
+    )}
+  </div>
+);
+
+/* ================================================================
+   TAB BAR
+   ================================================================ */
+const TabBar = ({ activeTab, setTab, role }) => {
+  const tabs = role === "manager"
+    ? [
+        { id: "home", label: "Hem", icon: "home" },
+        { id: "approvals", label: "Attester", icon: "check2" },
+        { id: "team", label: "Mitt team", icon: "users" },
+        { id: "me", label: "Mig", icon: "user" },
+      ]
+    : [
+        { id: "home", label: "Hem", icon: "home" },
+        { id: "time", label: "Tid", icon: "clock" },
+        { id: "expenses", label: "Utlägg", icon: "wallet" },
+        { id: "me", label: "Mig", icon: "user" },
+      ];
+
+  return (
+    <div className="phone-tabbar">
+      {tabs.map(t => {
+        const active = activeTab === t.id;
+        return (
+          <button key={t.id} onClick={() => setTab(t.id)}
+            className="flex flex-col items-center gap-0.5 transition"
+            style={{ flex: 1, color: active ? "var(--ink)" : "var(--ink-4)" }}>
+            <Icon name={t.icon} size={22} strokeWidth={active ? 2.2 : 1.7} />
+            <span className="text-[10.5px] font-medium" style={{ letterSpacing: "0.01em" }}>{t.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+/* ================================================================
+   EMPLOYEE — HOME
+   ================================================================ */
+
+const EmployeeHome = ({ role, switchRole, setTab }) => {
+  const { me, clockIn, clockOut, approvals } = useAppState();
+  const hour = new Date().getHours();
+  const greeting = hour < 10 ? "God morgon" : hour < 17 ? "Hej" : "God kväll";
+  const isClocked = !!me.clockedIn;
+  const pendingApprovalsCount = approvals.length;
+
+  return (
+    <div>
+      <AppHeader
+        title={`${greeting}, Erik`}
+        subtitle="Fredag, 22 maj"
+        large
+        leading={<Avatar initials={me.initials} size={32} color="var(--ink)" />}
+        trailing={<button className="relative" style={{ color: "var(--ink-2)" }}>
+          <Icon name="bell" size={20} />
+          {pendingApprovalsCount > 0 && (
+            <span className="absolute -top-1 -right-1 num"
+              style={{ width: 14, height: 14, borderRadius: 7, background: "var(--rust)", color: "white", fontSize: 9, fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{pendingApprovalsCount}</span>
+          )}
+        </button>}
+      />
+
+      <div className="px-4 pb-6 space-y-4">
+        {/* Today's tile */}
+        <div className="card overflow-hidden slide-up"
+          style={{ background: "linear-gradient(135deg, #122121 0%, #1d3a35 100%)", color: "white", border: "none" }}>
+          <div className="px-5 py-5">
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <div className="text-[11px] uppercase tracking-wider opacity-60 font-semibold" style={{ letterSpacing: "0.06em" }}>Din arbetsdag</div>
+                <div className="font-display font-semibold text-[20px] mt-1">
+                  {isClocked ? "Pågående" : "Inte instämplad"}
+                </div>
+              </div>
+              <div style={{
+                width: 38, height: 38, borderRadius: 19,
+                background: "rgba(255,255,255,0.10)", display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <Icon name="clock" size={17} />
+              </div>
+            </div>
+            <div className="flex items-end justify-between">
+              <div>
+                {isClocked ? (
+                  <>
+                    <div className="font-display num font-semibold" style={{ fontSize: 36, letterSpacing: "-0.02em" }}>{me.clockedIn.hours}<span className="text-[16px] opacity-60 font-normal"> / {me.todayExpected} h</span></div>
+                    <div className="text-[12px] opacity-70 mt-1">Stämplade in <span className="num">{me.clockedIn.startedAt}</span></div>
+                  </>
+                ) : (
+                  <>
+                    <div className="font-display num font-semibold" style={{ fontSize: 36, letterSpacing: "-0.02em" }}>0<span className="text-[16px] opacity-60 font-normal"> / {me.todayExpected} h</span></div>
+                    <div className="text-[12px] opacity-70 mt-1">Stämpla in när du börjar arbetspasset</div>
+                  </>
+                )}
+              </div>
+              <button onClick={isClocked ? clockOut : clockIn}
+                className="px-4 py-2 rounded-lg text-[12.5px] font-medium"
+                style={{ background: isClocked ? "rgba(255,255,255,0.12)" : "var(--green-3)", color: isClocked ? "white" : "var(--ink)", border: isClocked ? "1px solid rgba(255,255,255,0.15)" : "1px solid var(--green-3)" }}>
+                {isClocked ? "Stämpla ut" : "Stämpla in"}
+              </button>
+            </div>
+            {isClocked && (
+              <div className="mt-3" style={{ height: 4, background: "rgba(255,255,255,0.10)", borderRadius: 2 }}>
+                <div style={{ width: `${(me.clockedIn.hours / me.todayExpected) * 100}%`, height: "100%", background: "var(--green-3)", borderRadius: 2 }} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Quick actions */}
+        <div>
+          <div className="eyebrow mb-2 px-1">Snabbåtgärder</div>
+          <div className="grid grid-cols-2 gap-2.5">
+            <QuickAction icon="umbrella" label="Ansök ledighet" onClick={() => setTab("time")} />
+            <QuickAction icon="wallet" label="Nytt utlägg" onClick={() => setTab("expenses")} />
+            <QuickAction icon="stethoscope" label="VAB / Sjuk" onClick={() => setTab("time")} />
+            <QuickAction icon="receipt" label="Lönespec" onClick={() => setTab("me")} />
+          </div>
+        </div>
+
+        {/* Balances */}
+        <div className="card slide-up">
+          <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+            <div className="eyebrow mb-0.5">Saldon</div>
+            <div className="text-[13.5px] font-semibold">2026</div>
+          </div>
+          <BalanceRow label="Semesterdagar" value={me.vacationDays} total={me.vacationTotal} unit="dgr" icon="umbrella" color="var(--green)" />
+          <BalanceRow label="Sparade semesterdagar" value={me.vacationSaved} total={null} unit="dgr" icon="hourglass" color="var(--ink-3)" />
+          <BalanceRow label="Sjukdagar i år" value={me.sickDays} total={null} unit="dgr" icon="thermometer" color="var(--rust)" />
+          <BalanceRow label="VAB-dagar" value={me.vabDays} total={me.vabTotal} unit="dgr" icon="stethoscope" color="var(--blue)" />
+          <BalanceRow label="Komptid" value={me.comptimeHours} total={me.comptimeMax} unit="h" icon="clock" color="var(--amber)" last />
+        </div>
+
+        {/* Latest payslip teaser */}
+        <div className="card slide-up px-4 py-3.5 flex items-center gap-3 row-tap cursor-pointer" onClick={() => setTab("me")}>
+          <div style={{ width: 38, height: 38, borderRadius: 9, background: "var(--green-soft)", color: "var(--success-text)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Icon name="receipt" size={18} />
+          </div>
+          <div className="flex-1">
+            <div className="text-[12.5px] font-semibold">Senaste lönespec</div>
+            <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>Mars 2026 · <span className="num">38 420 kr</span> netto</div>
+          </div>
+          <Icon name="chevR" size={18} style={{ color: "var(--ink-4)" }} />
+        </div>
+
+        {/* Manager-mode switch */}
+        <div className="card slide-up px-4 py-3.5 flex items-center gap-3 row-tap cursor-pointer" onClick={switchRole}
+          style={{ background: "var(--bg-warm)", border: "1px dashed var(--ink-4)" }}>
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: "var(--ink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Icon name="users" size={17} />
+          </div>
+          <div className="flex-1">
+            <div className="text-[12.5px] font-semibold">Du har även chef-vyn</div>
+            <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>
+              {pendingApprovalsCount > 0
+                ? `${pendingApprovalsCount} ${pendingApprovalsCount === 1 ? "sak" : "saker"} att attestera i ditt team`
+                : "Inga öppna attester just nu"}
+            </div>
+          </div>
+          {pendingApprovalsCount > 0 && <Pill tone="rust" dot>{pendingApprovalsCount}</Pill>}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+const QuickAction = ({ icon, label, onClick }) => (
+  <button onClick={onClick} className="card px-3 py-4 flex flex-col items-start gap-2 transition row-tap text-left">
+    <div style={{ width: 34, height: 34, borderRadius: 8, background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--ink)" }}>
+      <Icon name={icon} size={17} />
+    </div>
+    <div className="text-[12px] font-medium">{label}</div>
+  </button>
+);
+
+const BalanceRow = ({ label, value, total, unit, icon, color, last }) => (
+  <div className="px-4 py-3 flex items-center gap-3" style={{ borderBottom: last ? "none" : "1px solid var(--line-2)" }}>
+    <div style={{ width: 30, height: 30, borderRadius: 7, background: "var(--bg)", color: color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <Icon name={icon} size={14} />
+    </div>
+    <div className="flex-1">
+      <div className="text-[12px] font-medium">{label}</div>
+      {total !== null && (
+        <div className="mt-1" style={{ height: 3, background: "var(--line-2)", borderRadius: 2 }}>
+          <div style={{ width: `${(value / total) * 100}%`, height: "100%", background: color, borderRadius: 2 }} />
+        </div>
+      )}
+    </div>
+    <div className="text-right">
+      <span className="font-display num font-semibold text-[15px]">{value}</span>
+      {total !== null && <span className="text-[11px] num" style={{ color: "var(--ink-4)" }}> / {total}</span>}
+      <span className="text-[10.5px] ml-0.5" style={{ color: "var(--ink-4)" }}> {unit}</span>
+    </div>
+  </div>
+);
+
+/* ================================================================
+   EMPLOYEE — TIME & ABSENCE
+   ================================================================ */
+
+const EmployeeTime = () => {
+  const { me, timeEntries, absences } = useAppState();
+  const [view, setView] = useState("tider"); // tider | franvaro
+  const [showAbsenceModal, setShowAbsenceModal] = useState(false);
+  const [showAddTimeModal, setShowAddTimeModal] = useState(false);
+
+  // Calculate week total dynamically
+  const weekTotal = timeEntries.reduce((sum, t) => sum + (t.hours || 0), 0);
+  const weekTotalDisplay = weekTotal.toString().replace(".", ",");
+
+  return (
+    <div>
+      <AppHeader title="Tid & Frånvaro" subtitle="Vecka 21 · maj 2026" large
+        trailing={<button style={{ color: "var(--ink-2)" }}><Icon name="calendar" size={20} /></button>} />
+
+      <div className="px-4">
+        {/* Segmented control */}
+        <div className="flex p-1 rounded-lg mb-4" style={{ background: "var(--line-2)" }}>
+          <button onClick={() => setView("tider")}
+            className="flex-1 py-1.5 text-[12.5px] font-medium rounded-md transition"
+            style={{ background: view === "tider" ? "white" : "transparent", color: view === "tider" ? "var(--ink)" : "var(--ink-3)", boxShadow: view === "tider" ? "0 1px 3px rgba(0,0,0,0.08)" : "none" }}>
+            Tidrapporter
+          </button>
+          <button onClick={() => setView("franvaro")}
+            className="flex-1 py-1.5 text-[12.5px] font-medium rounded-md transition"
+            style={{ background: view === "franvaro" ? "white" : "transparent", color: view === "franvaro" ? "var(--ink)" : "var(--ink-3)", boxShadow: view === "franvaro" ? "0 1px 3px rgba(0,0,0,0.08)" : "none" }}>
+            Frånvaro
+          </button>
+        </div>
+
+        {view === "tider" && (
+          <div className="space-y-3 pb-6">
+            {/* Summary */}
+            <div className="card px-4 py-3.5 fade-in">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="eyebrow mb-0.5">Veckan så här långt</div>
+                  <div className="font-display num font-semibold text-[22px]">{weekTotalDisplay}<span className="text-[13px] opacity-50 font-normal"> / 40 h</span></div>
+                </div>
+                <Pill tone="green" dot>I fas</Pill>
+              </div>
+              <div className="mt-2.5" style={{ height: 4, background: "var(--line-2)", borderRadius: 2 }}>
+                <div style={{ width: `${Math.min(100, (weekTotal / 40) * 100)}%`, height: "100%", background: "var(--green-3)", borderRadius: 2 }} />
+              </div>
+            </div>
+
+            {/* Daily entries */}
+            <div className="card overflow-hidden fade-in">
+              {timeEntries.map((t, i) => (
+                <div key={t.id} className="px-4 py-3 flex items-center gap-3 row-tap"
+                  style={{ borderBottom: i === timeEntries.length - 1 ? "none" : "1px solid var(--line-2)", background: t.isToday ? "var(--green-soft)" : "transparent" }}>
+                  <div className="text-center" style={{ width: 38 }}>
+                    <div className="text-[10.5px] uppercase font-medium" style={{ color: "var(--ink-4)", letterSpacing: "0.04em" }}>{t.day}</div>
+                    <div className="font-display num font-semibold text-[18px]">{parseInt(t.date.split("-")[2], 10)}</div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[12.5px] font-medium flex items-center gap-1.5 flex-wrap">
+                      <span><span className="num">{t.in}</span> – <span className="num">{t.out}</span></span>
+                      {t.isToday && me.clockedIn && <Pill tone="green" dot><span className="text-[10px]">Pågår</span></Pill>}
+                    </div>
+                    {t.note && <div className="text-[11px] mt-0.5" style={{ color: "var(--ink-4)" }}>{t.note}</div>}
+                  </div>
+                  <div className="text-right">
+                    <span className="font-display num font-semibold text-[15px]">{t.hours}<span className="text-[11px] opacity-60 font-normal"> h</span></span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button onClick={() => setShowAddTimeModal(true)}
+              className="w-full py-3 rounded-lg text-[13px] font-medium flex items-center justify-center gap-1.5"
+              style={{ background: "var(--primary)", color: "white" }}>
+              <Icon name="plus" size={15} /> Lägg till tid manuellt
+            </button>
+          </div>
+        )}
+
+        {view === "franvaro" && (
+          <div className="space-y-3 pb-6">
+            <button onClick={() => setShowAbsenceModal(true)}
+              className="w-full py-3 rounded-lg text-[13px] font-medium flex items-center justify-center gap-1.5"
+              style={{ background: "var(--primary)", color: "white" }}>
+              <Icon name="plus" size={15} /> Ansök om ledighet
+            </button>
+
+            <div>
+              <div className="eyebrow mb-2 px-1">Mina ansökningar</div>
+              <div className="card overflow-hidden fade-in">
+                {absences.length === 0 ? (
+                  <div className="px-4 py-6 text-center text-[12.5px]" style={{ color: "var(--ink-4)" }}>Inga ansökningar än</div>
+                ) : (
+                  absences.map((a, i) => {
+                    const statusMeta = {
+                      godkand: { tone: "green", label: "Godkänd" },
+                      vantar: { tone: "amber", label: "Väntar attest" },
+                      avslagen: { tone: "rust", label: "Avslagen" },
+                    }[a.status] || { tone: "neutral", label: a.status };
+                    const iconBg = a.status === "godkand" ? "var(--green-soft)" : a.status === "vantar" ? "var(--amber-soft)" : "rgba(176,67,27,0.10)";
+                    const iconColor = a.status === "godkand" ? "var(--success-text)" : a.status === "vantar" ? "#7A5300" : "var(--rust)";
+                    return (
+                      <div key={a.id} className="px-4 py-3.5 flex items-center gap-3 row-tap"
+                        style={{ borderBottom: i === absences.length - 1 ? "none" : "1px solid var(--line-2)" }}>
+                        <div style={{ width: 34, height: 34, borderRadius: 8, background: iconBg, color: iconColor, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                          <Icon name={a.icon} size={15} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <span className="text-[13px] font-semibold">{a.typeLabel}</span>
+                            <Pill tone={statusMeta.tone} dot>{statusMeta.label}</Pill>
+                          </div>
+                          <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>
+                            <span className="num">{a.start}</span> → <span className="num">{a.end}</span> · <span className="num">{a.days}</span> {a.days === 1 ? "dag" : "dagar"}
+                          </div>
+                        </div>
+                        <Icon name="chevR" size={16} style={{ color: "var(--ink-4)" }} />
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {showAbsenceModal && <AbsenceModal onClose={() => setShowAbsenceModal(false)} />}
+      {showAddTimeModal && <AddTimeModal onClose={() => setShowAddTimeModal(false)} />}
+    </div>
+  );
+};
+
+const AddTimeModal = ({ onClose }) => {
+  const { addTimeEntry } = useAppState();
+  const [date, setDate] = useState("2026-05-23");
+  const [inTime, setInTime] = useState("08:00");
+  const [outTime, setOutTime] = useState("16:30");
+  const [note, setNote] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  // Compute hours from in/out
+  const hoursFromTimes = useMemo(() => {
+    if (!inTime || !outTime) return 0;
+    const [ih, im] = inTime.split(":").map(Number);
+    const [oh, om] = outTime.split(":").map(Number);
+    const mins = (oh * 60 + om) - (ih * 60 + im) - 30; // minus 30 min lunch
+    return Math.max(0, Math.round((mins / 60) * 10) / 10);
+  }, [inTime, outTime]);
+
+  if (submitted) {
+    return (
+      <div className="fade-in" style={{ position: "absolute", inset: 0, background: "white", zIndex: 60, display: "flex", flexDirection: "column" }}>
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div style={{ width: 72, height: 72, borderRadius: 36, background: "var(--green-soft)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
+            <Icon name="check2" size={36} strokeWidth={2.6} style={{ color: "var(--success-text)" }} />
+          </div>
+          <h2 className="font-display font-semibold mb-2" style={{ fontSize: 22, letterSpacing: "-0.015em" }}>Tid registrerad</h2>
+          <p className="text-[13.5px] mb-4" style={{ color: "var(--ink-3)" }}>
+            <span className="num font-semibold" style={{ color: "var(--ink)" }}>{hoursFromTimes} h</span> · <span className="num">{date}</span>
+          </p>
+        </div>
+        <div className="p-4">
+          <button onClick={onClose} className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+            style={{ background: "var(--primary)", color: "white" }}>
+            Stäng
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fade-in" style={{ position: "absolute", inset: 0, background: "white", zIndex: 60, display: "flex", flexDirection: "column" }}>
+      <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line)" }}>
+        <button onClick={onClose} style={{ color: "var(--ink-2)" }}><Icon name="x" size={20} /></button>
+        <div className="font-display font-semibold text-[15px]">Lägg till tid</div>
+        <div style={{ width: 20 }} />
+      </div>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div>
+          <div className="eyebrow mb-2">Datum</div>
+          <input type="date" value={date} onChange={e => setDate(e.target.value)}
+            className="w-full card px-3.5 py-3 text-[13px] outline-none num" />
+        </div>
+        <div>
+          <div className="eyebrow mb-2">Tid</div>
+          <div className="card overflow-hidden">
+            <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line-2)" }}>
+              <span className="text-[13px]" style={{ color: "var(--ink-2)" }}>Från</span>
+              <input type="time" value={inTime} onChange={e => setInTime(e.target.value)}
+                className="num text-[13px] font-medium text-right outline-none bg-transparent" />
+            </div>
+            <div className="px-4 py-3 flex items-center justify-between">
+              <span className="text-[13px]" style={{ color: "var(--ink-2)" }}>Till</span>
+              <input type="time" value={outTime} onChange={e => setOutTime(e.target.value)}
+                className="num text-[13px] font-medium text-right outline-none bg-transparent" />
+            </div>
+          </div>
+          <div className="mt-2 text-[11.5px] px-1 flex items-center gap-1.5" style={{ color: "var(--ink-3)" }}>
+            <Icon name="info" size={11} />
+            <span>Beräknad arbetstid <span className="num font-semibold" style={{ color: "var(--ink)" }}>{hoursFromTimes} h</span> (efter 30 min lunch)</span>
+          </div>
+        </div>
+        <div>
+          <div className="eyebrow mb-2">Kommentar <span className="opacity-50 normal-case font-normal">(valfritt)</span></div>
+          <textarea value={note} onChange={e => setNote(e.target.value)}
+            placeholder="T.ex. Sen ankomst pga bilkö"
+            className="w-full card px-3.5 py-3 text-[13px] outline-none"
+            style={{ minHeight: 70, resize: "none" }} />
+        </div>
+      </div>
+      <div className="p-4" style={{ borderTop: "1px solid var(--line)" }}>
+        <button onClick={() => {
+          addTimeEntry({ date, hours: hoursFromTimes, inTime, outTime, note });
+          setSubmitted(true);
+        }}
+          disabled={hoursFromTimes <= 0}
+          className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+          style={{ background: hoursFromTimes > 0 ? "var(--primary)" : "var(--line)", color: hoursFromTimes > 0 ? "white" : "var(--ink-4)" }}>
+          Spara tid
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const AbsenceModal = ({ onClose }) => {
+  const { submitAbsence, me } = useAppState();
+  const [type, setType] = useState("semester");
+  const [start, setStart] = useState("2026-08-04");
+  const [end, setEnd] = useState("2026-08-18");
+  const [note, setNote] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const types = [
+    { id: "semester", label: "Semester", icon: "umbrella", color: "#0C4D33" },
+    { id: "vab", label: "VAB", icon: "stethoscope", color: "#4E7476" },
+    { id: "sjuk", label: "Sjuk", icon: "thermometer", color: "#9B2222" },
+    { id: "foraldraledig", label: "Föräldraledig", icon: "stroller", color: "#7A4A8C" },
+    { id: "tjanstledig", label: "Tjänstledig", icon: "briefcase-out", color: "#B97E0A" },
+    { id: "komptid", label: "Komptid", icon: "hourglass", color: "#5A6B7E" },
+  ];
+
+  const selectedType = types.find(t => t.id === type);
+
+  // Calculate days
+  const days = useMemo(() => {
+    if (!start || !end) return 0;
+    const s = new Date(start), e = new Date(end);
+    if (e < s) return 0;
+    return Math.floor((e - s) / (1000 * 60 * 60 * 24)) + 1;
+  }, [start, end]);
+
+  const submit = () => {
+    submitAbsence({
+      type,
+      typeLabel: selectedType.label,
+      icon: selectedType.icon,
+      start, end, days, note,
+    });
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <div className="fade-in" style={{ position: "absolute", inset: 0, background: "white", zIndex: 60, display: "flex", flexDirection: "column" }}>
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div style={{ width: 72, height: 72, borderRadius: 36, background: "var(--green-soft)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
+            <Icon name="check2" size={36} strokeWidth={2.6} style={{ color: "var(--success-text)" }} />
+          </div>
+          <h2 className="font-display font-semibold mb-2" style={{ fontSize: 22, letterSpacing: "-0.015em" }}>Ansökan inskickad</h2>
+          <p className="text-[13.5px] mb-4" style={{ color: "var(--ink-3)" }}>
+            Anders Hellström har fått din ansökan om <span className="font-semibold" style={{ color: "var(--ink)" }}>{selectedType.label.toLowerCase()} <span className="num">{start} → {end}</span></span>.
+          </p>
+          <p className="text-[12px]" style={{ color: "var(--ink-4)" }}>
+            Den syns nu i din lista som "Väntar attest". Växla till chef-vyn för att se den i attestkön.
+          </p>
+        </div>
+        <div className="p-4">
+          <button onClick={onClose} className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+            style={{ background: "var(--primary)", color: "white" }}>
+            Stäng
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fade-in" style={{ position: "absolute", inset: 0, background: "white", zIndex: 60, display: "flex", flexDirection: "column" }}>
+      <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line)" }}>
+        <button onClick={onClose} style={{ color: "var(--ink-2)" }}>
+          <Icon name="x" size={20} />
+        </button>
+        <div className="font-display font-semibold text-[15px]">Ny ledighet</div>
+        <div style={{ width: 20 }} />
+      </div>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div>
+          <div className="eyebrow mb-2">Typ</div>
+          <div className="grid grid-cols-3 gap-2">
+            {types.map(t => (
+              <button key={t.id} onClick={() => setType(t.id)}
+                className="card py-3 flex flex-col items-center gap-1.5 transition"
+                style={{
+                  background: type === t.id ? t.color : "white",
+                  color: type === t.id ? "white" : "var(--ink-2)",
+                  border: type === t.id ? `1px solid ${t.color}` : "1px solid var(--line)",
+                }}>
+                <Icon name={t.icon} size={18} />
+                <span className="text-[11px] font-medium">{t.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="eyebrow mb-2">Period</div>
+          <div className="card overflow-hidden">
+            <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line-2)" }}>
+              <span className="text-[13px]" style={{ color: "var(--ink-2)" }}>Från och med</span>
+              <input type="date" value={start} onChange={e => setStart(e.target.value)}
+                className="num text-[13px] font-medium text-right outline-none"
+                style={{ background: "transparent", color: "var(--ink)" }} />
+            </div>
+            <div className="px-4 py-3 flex items-center justify-between">
+              <span className="text-[13px]" style={{ color: "var(--ink-2)" }}>Till och med</span>
+              <input type="date" value={end} onChange={e => setEnd(e.target.value)} min={start}
+                className="num text-[13px] font-medium text-right outline-none"
+                style={{ background: "transparent", color: "var(--ink)" }} />
+            </div>
+          </div>
+          <div className="mt-2 text-[11.5px] flex items-center gap-1.5 px-1" style={{ color: "var(--ink-3)" }}>
+            <Icon name="info" size={11} />
+            <span>
+              <span className="num font-semibold" style={{ color: "var(--ink)" }}>{days}</span> {days === 1 ? "dag" : "dagar"}
+              {type === "semester" && <> · Du har <span className="num font-semibold" style={{ color: "var(--ink)" }}>{me.vacationDays}</span> semesterdagar kvar 2026</>}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <div className="eyebrow mb-2">Kommentar <span className="opacity-50 normal-case font-normal">(valfritt)</span></div>
+          <textarea value={note} onChange={e => setNote(e.target.value)}
+            placeholder="T.ex. Sommarsemester med familjen"
+            className="w-full card px-3.5 py-3 text-[13px] outline-none"
+            style={{ minHeight: 80, resize: "none" }} />
+        </div>
+
+        <div className="card px-4 py-3 flex items-start gap-3" style={{ background: "var(--bg-warm)", borderColor: "var(--line)" }}>
+          <Icon name="info" size={15} style={{ color: "var(--ink-3)", marginTop: 1, flexShrink: 0 }} />
+          <div className="text-[12px]" style={{ color: "var(--ink-2)" }}>
+            <div className="font-semibold mb-0.5" style={{ color: "var(--ink)" }}>Ansökan går till Anders Hellström</div>
+            Din chef får en notis och behandlar ansökan. Du får svar inom 1–2 arbetsdagar.
+          </div>
+        </div>
+      </div>
+      <div className="p-4" style={{ borderTop: "1px solid var(--line)" }}>
+        <button onClick={submit}
+          disabled={days <= 0}
+          className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+          style={{ background: days > 0 ? "var(--primary)" : "var(--line)", color: days > 0 ? "white" : "var(--ink-4)" }}>
+          Skicka ansökan
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   EMPLOYEE — EXPENSES
+   ================================================================ */
+
+const EmployeeExpenses = () => {
+  const { expenses } = useAppState();
+  const [showAdd, setShowAdd] = useState(false);
+  const [showTravel, setShowTravel] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState(null);
+  const totalThisMonth = expenses.reduce((s, e) => s + e.amount, 0);
+  const pending = expenses.filter(e => e.status === "vantar").length;
+  const approved = expenses.filter(e => e.status === "godkand").length;
+
+  return (
+    <div>
+      <AppHeader title="Utlägg & Resa" subtitle="Maj 2026" large
+        trailing={<button onClick={() => setShowAdd(true)} style={{ color: "var(--ink-2)" }}><Icon name="plus" size={22} strokeWidth={2.2} /></button>} />
+
+      <div className="px-4 pb-6 space-y-4">
+        {/* Summary card */}
+        <div className="card overflow-hidden slide-up"
+          style={{ background: "linear-gradient(135deg, #122121 0%, #1d3a35 100%)", color: "white", border: "none" }}>
+          <div className="px-5 py-5">
+            <div className="eyebrow opacity-60 mb-1" style={{ color: "rgba(255,255,255,0.7)" }}>Totalt denna månad</div>
+            <div className="font-display num font-semibold" style={{ fontSize: 30, letterSpacing: "-0.02em" }}>
+              {totalThisMonth.toLocaleString("sv-SE")} <span className="text-[14px] opacity-60 font-normal">kr</span>
+            </div>
+            <div className="flex items-center gap-3 mt-3 text-[12px]">
+              <span className="flex items-center gap-1.5">
+                <span style={{ width: 7, height: 7, borderRadius: 4, background: "var(--green-3)" }} />
+                <span className="num">{approved} godkända</span>
+              </span>
+              <span className="opacity-30">·</span>
+              <span className="flex items-center gap-1.5">
+                <span style={{ width: 7, height: 7, borderRadius: 4, background: "#FFCB80" }} />
+                <span className="num">{pending} väntar</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Two action buttons */}
+        <div className="grid grid-cols-2 gap-2.5">
+          <button onClick={() => setShowAdd(true)}
+            className="card flex flex-col items-center gap-1.5 py-3.5 row-tap"
+            style={{ borderStyle: "dashed" }}>
+            <Icon name="receipt" size={18} style={{ color: "var(--ink-2)" }} />
+            <span className="text-[12px] font-semibold">Nytt utlägg</span>
+          </button>
+          <button onClick={() => setShowTravel(true)}
+            className="card flex flex-col items-center gap-1.5 py-3.5 row-tap"
+            style={{ borderStyle: "dashed" }}>
+            <Icon name="plane" size={18} style={{ color: "var(--ink-2)" }} />
+            <span className="text-[12px] font-semibold">Ny reseräkning</span>
+          </button>
+        </div>
+
+        <div>
+          <div className="eyebrow mb-2 px-1">Mina utlägg</div>
+          <div className="card overflow-hidden">
+            {expenses.length === 0 ? (
+              <div className="px-4 py-6 text-center text-[12.5px]" style={{ color: "var(--ink-4)" }}>Inga utlägg än</div>
+            ) : (
+              expenses.map((e, i) => {
+                const statusMeta = {
+                  godkand: { tone: "green", label: "Godkänt" },
+                  vantar: { tone: "amber", label: "Väntar attest" },
+                  avslagen: { tone: "rust", label: "Avslaget" },
+                  komplettering: { tone: "amber", label: "Komplettera" },
+                }[e.status] || { tone: "neutral", label: e.status };
+                const isTravel = e.type === "travel";
+                return (
+                  <button key={e.id}
+                    onClick={() => setSelectedExpense(e)}
+                    className="w-full text-left px-4 py-3.5 flex items-center gap-3 row-tap"
+                    style={{ borderBottom: i === expenses.length - 1 ? "none" : "1px solid var(--line-2)" }}>
+                    <div style={{
+                      width: 38, height: 38, borderRadius: 9,
+                      background: isTravel ? "var(--ink)" : "var(--bg-warm)",
+                      color: isTravel ? "white" : "var(--ink-2)",
+                      display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                    }}>
+                      <Icon name={e.icon} size={17} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-[13px] font-semibold truncate">{e.merchant}</span>
+                        {isTravel && <Pill tone="ink">Reseräkning</Pill>}
+                      </div>
+                      <div className="text-[11.5px] truncate" style={{ color: "var(--ink-3)" }}>{e.purpose}</div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10.5px] num" style={{ color: "var(--ink-4)" }}>{e.date}</span>
+                        <Pill tone={statusMeta.tone} dot>{statusMeta.label}</Pill>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-display num font-semibold text-[14px]">{e.amount.toLocaleString("sv-SE")}<span className="text-[10.5px] font-normal opacity-60"> kr</span></div>
+                      <Icon name="chevR" size={13} style={{ color: "var(--ink-4)", marginTop: 2, marginLeft: "auto", display: "block" }} />
+                    </div>
+                  </button>
+                );
+              })
+            )}
+          </div>
+        </div>
+      </div>
+
+      {showAdd && <ExpenseModal onClose={() => setShowAdd(false)} />}
+      {showTravel && <TravelClaimModal onClose={() => setShowTravel(false)} />}
+      {selectedExpense && <ExpenseDetail expense={selectedExpense} onClose={() => setSelectedExpense(null)} />}
+    </div>
+  );
+};
+
+const ExpenseModal = ({ onClose }) => {
+  const { submitExpense } = useAppState();
+  const [category, setCategory] = useState("Restaurang");
+  const [amount, setAmount] = useState("");
+  const [merchant, setMerchant] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [submitted, setSubmitted] = useState(false);
+  const [scanState, setScanState] = useState("idle"); // idle | scanning | done
+  const [autofilledFields, setAutofilledFields] = useState({}); // visual highlight
+
+  const categories = [
+    { id: "Restaurang", label: "Restaurang", icon: "coffee" },
+    { id: "Resa", label: "Resa", icon: "plane" },
+    { id: "Drivmedel", label: "Drivmedel", icon: "car" },
+    { id: "Hotell", label: "Hotell", icon: "home" },
+    { id: "Övrigt", label: "Övrigt", icon: "receipt" },
+  ];
+  const selectedCategory = categories.find(c => c.id === category) || categories[0];
+
+  // Auto-guess category as user types merchant
+  useEffect(() => {
+    if (!merchant || autofilledFields.category) return;
+    const hint = MERCHANT_HINTS.find(h => h.match.test(merchant));
+    if (hint && hint.category !== category) {
+      setCategory(hint.category);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [merchant]);
+
+  // Compute VAT live
+  const amt = parseFloat(amount) || 0;
+  const vatRate = VAT_RATES[category] || 0.25;
+  const vatAmount = amt > 0 ? Math.round(amt - (amt / (1 + vatRate))) : 0;
+  const exVat = amt - vatAmount;
+  const suggestedAccount = ACCOUNT_CODES[category] || "5410 Förbrukningsmaterial";
+
+  const handleScan = () => {
+    setScanState("scanning");
+    setTimeout(() => {
+      // Pick a random fake scan
+      const scan = FAKE_SCANS[Math.floor(Math.random() * FAKE_SCANS.length)];
+      setMerchant(scan.merchant);
+      setAmount(scan.amount.toString());
+      setCategory(scan.category);
+      setPurpose(scan.purpose);
+      setDate(scan.date);
+      setAutofilledFields({ merchant: true, amount: true, category: true, purpose: true, date: true });
+      setScanState("done");
+      setTimeout(() => setScanState("idle"), 1200);
+      // Clear highlight after 4s
+      setTimeout(() => setAutofilledFields({}), 4500);
+    }, 2200);
+  };
+
+  const submit = () => {
+    submitExpense({
+      amount,
+      category,
+      icon: selectedCategory.icon,
+      merchant, purpose, date,
+    });
+    setSubmitted(true);
+  };
+
+  // Scanning overlay
+  if (scanState === "scanning") {
+    return (
+      <div className="fade-in" style={{ position: "absolute", inset: 0, background: "#0a0c0a", zIndex: 60, display: "flex", flexDirection: "column" }}>
+        <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", color: "white" }}>
+          <button onClick={() => setScanState("idle")} style={{ color: "rgba(255,255,255,0.7)" }}>
+            <Icon name="x" size={20} />
+          </button>
+          <div className="font-display font-semibold text-[14px]">Skannar kvitto</div>
+          <div style={{ width: 20 }} />
+        </div>
+        <div className="flex-1 flex flex-col items-center justify-center px-6" style={{ color: "white" }}>
+          {/* Mock receipt frame */}
+          <div style={{ position: "relative", width: 220, height: 280 }}>
+            {/* Receipt visual */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "white", borderRadius: 4,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+              padding: "16px 14px",
+              fontFamily: "monospace",
+              fontSize: 9,
+              color: "#333",
+            }}>
+              <div style={{ textAlign: "center", fontWeight: 700, marginBottom: 8 }}>OKQ8 NORRKÖPING</div>
+              <div style={{ textAlign: "center", marginBottom: 10, fontSize: 8 }}>Org.nr 556027-7305</div>
+              <div style={{ borderTop: "1px dashed #999", paddingTop: 6, marginBottom: 6 }}>
+                <div className="flex justify-between"><span>BENSIN 95</span><span>32,4 L</span></div>
+                <div className="flex justify-between"><span>á 16,89</span><span>547,24</span></div>
+              </div>
+              <div style={{ borderTop: "1px dashed #999", paddingTop: 6, marginBottom: 6 }}>
+                <div className="flex justify-between" style={{ fontWeight: 700 }}><span>TOTALT</span><span>547,24</span></div>
+                <div className="flex justify-between" style={{ fontSize: 8, color: "#666" }}><span>Moms 25%</span><span>109,45</span></div>
+              </div>
+              <div style={{ marginTop: 10, fontSize: 8, color: "#666" }}>
+                <div>Bankkort *5829</div>
+                <div>2026-05-22 14:23</div>
+                <div>Kvitto: 384192</div>
+              </div>
+            </div>
+            {/* Scanning line */}
+            <div style={{
+              position: "absolute", left: -10, right: -10, height: 2,
+              background: "linear-gradient(90deg, transparent, #61BC8F, transparent)",
+              boxShadow: "0 0 12px #61BC8F",
+              animation: "scanLine 1.8s ease-in-out infinite",
+              top: 0,
+            }} />
+            {/* Corner brackets */}
+            {[0, 1, 2, 3].map(i => {
+              const pos = [
+                { top: -6, left: -6, borderTop: "2px solid #61BC8F", borderLeft: "2px solid #61BC8F" },
+                { top: -6, right: -6, borderTop: "2px solid #61BC8F", borderRight: "2px solid #61BC8F" },
+                { bottom: -6, left: -6, borderBottom: "2px solid #61BC8F", borderLeft: "2px solid #61BC8F" },
+                { bottom: -6, right: -6, borderBottom: "2px solid #61BC8F", borderRight: "2px solid #61BC8F" },
+              ][i];
+              return <div key={i} style={{ position: "absolute", width: 16, height: 16, ...pos }} />;
+            })}
+          </div>
+          <style>{`
+            @keyframes scanLine {
+              0% { top: 0; }
+              50% { top: calc(100% - 2px); }
+              100% { top: 0; }
+            }
+          `}</style>
+          <div className="mt-8 text-center">
+            <div className="text-[13px] font-semibold mb-1">Läser av kvitto...</div>
+            <div className="text-[11.5px]" style={{ color: "rgba(255,255,255,0.6)" }}>Identifierar belopp, datum och leverantör</div>
+          </div>
+          <div className="mt-6 flex items-center gap-1.5">
+            <span style={{ width: 6, height: 6, borderRadius: 3, background: "#61BC8F", animation: "pulse 1.2s infinite" }}/>
+            <span style={{ width: 6, height: 6, borderRadius: 3, background: "#61BC8F", animation: "pulse 1.2s infinite 0.2s" }}/>
+            <span style={{ width: 6, height: 6, borderRadius: 3, background: "#61BC8F", animation: "pulse 1.2s infinite 0.4s" }}/>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (submitted) {
+    return (
+      <div className="fade-in" style={{ position: "absolute", inset: 0, background: "white", zIndex: 60, display: "flex", flexDirection: "column" }}>
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div style={{ width: 72, height: 72, borderRadius: 36, background: "var(--green-soft)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
+            <Icon name="check2" size={36} strokeWidth={2.6} style={{ color: "var(--success-text)" }} />
+          </div>
+          <h2 className="font-display font-semibold mb-2" style={{ fontSize: 22, letterSpacing: "-0.015em" }}>Utlägget inskickat</h2>
+          <p className="text-[13.5px] mb-1" style={{ color: "var(--ink-3)" }}>
+            <span className="num font-semibold" style={{ color: "var(--ink)" }}>{amt.toLocaleString("sv-SE")} kr</span> · {merchant || "Utan namn"}
+          </p>
+          <p className="text-[11.5px] mb-4" style={{ color: "var(--ink-4)" }}>
+            Varav moms <span className="num">{vatAmount.toLocaleString("sv-SE")} kr</span> · {suggestedAccount.split(" ")[0]}
+          </p>
+          <p className="text-[12px]" style={{ color: "var(--ink-4)" }}>
+            Anders Hellström får utlägget för attest. Betalas ut med nästa lön.
+          </p>
+        </div>
+        <div className="p-4">
+          <button onClick={onClose} className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+            style={{ background: "var(--primary)", color: "white" }}>
+            Stäng
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const highlightStyle = (key) => autofilledFields[key]
+    ? { background: "var(--green-soft)", borderColor: "var(--success)" }
+    : {};
+
+  return (
+    <div className="fade-in" style={{ position: "absolute", inset: 0, background: "white", zIndex: 60, display: "flex", flexDirection: "column" }}>
+      <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line)" }}>
+        <button onClick={onClose} style={{ color: "var(--ink-2)" }}>
+          <Icon name="x" size={20} />
+        </button>
+        <div className="font-display font-semibold text-[15px]">Nytt utlägg</div>
+        <div style={{ width: 20 }} />
+      </div>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {/* Receipt scan area */}
+        <button onClick={handleScan}
+          className="w-full card flex flex-col items-center justify-center py-7 px-4 row-tap"
+          style={{ borderStyle: "dashed", textAlign: "center", background: scanState === "done" ? "var(--green-soft)" : "white", borderColor: scanState === "done" ? "var(--success)" : "var(--line)" }}>
+          <div style={{ width: 50, height: 50, borderRadius: 25, background: scanState === "done" ? "var(--success)" : "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 10, color: scanState === "done" ? "white" : "var(--ink-2)" }}>
+            <Icon name={scanState === "done" ? "check2" : "camera"} size={22} strokeWidth={scanState === "done" ? 2.4 : 1.8} />
+          </div>
+          <div className="text-[13px] font-semibold" style={{ color: scanState === "done" ? "var(--success-text)" : "var(--ink)" }}>
+            {scanState === "done" ? "Kvitto avläst" : "Skanna kvitto"}
+          </div>
+          <div className="text-[11.5px] mt-0.5" style={{ color: "var(--ink-3)" }}>
+            {scanState === "done" ? "Granska och justera vid behov" : "Belopp och leverantör fylls i automatiskt"}
+          </div>
+        </button>
+
+        <div>
+          <div className="eyebrow mb-2">Kategori</div>
+          <div className="grid grid-cols-3 gap-2">
+            {categories.map(c => (
+              <button key={c.id} onClick={() => setCategory(c.id)}
+                className="card py-3 flex flex-col items-center gap-1.5 transition"
+                style={{
+                  background: category === c.id ? "var(--ink)" : "white",
+                  color: category === c.id ? "white" : "var(--ink-2)",
+                  border: category === c.id ? "1px solid var(--ink)" : (autofilledFields.category && category === c.id ? "1px solid var(--success)" : "1px solid var(--line)"),
+                }}>
+                <Icon name={c.icon} size={17} />
+                <span className="text-[11px] font-medium">{c.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="eyebrow mb-2">Belopp</div>
+          <div className="card flex items-center px-4 py-3" style={highlightStyle("amount")}>
+            <input type="number" value={amount} onChange={e => { setAmount(e.target.value); setAutofilledFields(f => ({ ...f, amount: false })); }}
+              placeholder="0"
+              className="flex-1 font-display num font-semibold outline-none bg-transparent"
+              style={{ fontSize: 26, color: "var(--ink)" }} />
+            <span className="text-[14px] font-medium" style={{ color: "var(--ink-3)" }}>kr</span>
+          </div>
+          {amt > 0 && (
+            <div className="mt-2 px-3 py-2 rounded-lg flex items-center justify-between text-[11.5px] fade-in"
+              style={{ background: "var(--bg-warm)", border: "1px solid var(--line-2)" }}>
+              <span style={{ color: "var(--ink-3)" }}>Varav moms ({Math.round(vatRate * 100)}%)</span>
+              <span className="num font-semibold" style={{ color: "var(--ink-2)" }}>
+                {vatAmount.toLocaleString("sv-SE")} kr <span className="opacity-50 font-normal">· ex moms {exVat.toLocaleString("sv-SE")} kr</span>
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <div className="eyebrow mb-2">Var</div>
+          <input value={merchant} onChange={e => { setMerchant(e.target.value); setAutofilledFields(f => ({ ...f, merchant: false })); }}
+            placeholder="T.ex. Restaurang Östergök"
+            className="w-full card px-3.5 py-3 text-[13px] outline-none"
+            style={highlightStyle("merchant")} />
+        </div>
+
+        <div>
+          <div className="eyebrow mb-2">Datum</div>
+          <input type="date" value={date} onChange={e => { setDate(e.target.value); setAutofilledFields(f => ({ ...f, date: false })); }}
+            className="w-full card px-3.5 py-3 text-[13px] outline-none num"
+            style={highlightStyle("date")} />
+        </div>
+
+        <div>
+          <div className="eyebrow mb-2">Syfte</div>
+          <textarea value={purpose} onChange={e => { setPurpose(e.target.value); setAutofilledFields(f => ({ ...f, purpose: false })); }}
+            placeholder="T.ex. Lunch med kund — ABB Robotics"
+            className="w-full card px-3.5 py-3 text-[13px] outline-none"
+            style={{ minHeight: 60, resize: "none", ...highlightStyle("purpose") }} />
+        </div>
+
+        {/* Suggested account */}
+        {amt > 0 && (
+          <div className="card px-3.5 py-3 flex items-start gap-2.5 fade-in" style={{ background: "var(--bg-warm)", borderColor: "var(--line)" }}>
+            <Icon name="info" size={14} style={{ color: "var(--ink-3)", marginTop: 1, flexShrink: 0 }} />
+            <div className="text-[11.5px] flex-1" style={{ color: "var(--ink-2)" }}>
+              <div className="font-semibold mb-0.5" style={{ color: "var(--ink)" }}>Föreslås konteras som</div>
+              <div className="num">{suggestedAccount}</div>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="p-4" style={{ borderTop: "1px solid var(--line)" }}>
+        <button onClick={submit}
+          disabled={!amount}
+          className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+          style={{ background: amount ? "var(--primary)" : "var(--line)", color: amount ? "white" : "var(--ink-4)" }}>
+          Skicka in
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   TRAVEL CLAIM MODAL — composite expense with perdiem + mileage
+   ================================================================ */
+
+const TravelClaimModal = ({ onClose }) => {
+  const { submitTravelClaim } = useAppState();
+  const [step, setStep] = useState(1); // 1: trip info, 2: perdiem/mileage, 3: items, 4: review
+  const [tripName, setTripName] = useState("");
+  const [destination, setDestination] = useState("");
+  const [startDate, setStartDate] = useState("2026-05-19");
+  const [endDate, setEndDate] = useState("2026-05-21");
+  const [purpose, setPurpose] = useState("");
+  const [perdiemDays, setPerdiemDays] = useState("2");
+  const [perdiemHalf, setPerdiemHalf] = useState("0");
+  const [perdiemNights, setPerdiemNights] = useState("2");
+  const [mileageKm, setMileageKm] = useState("");
+  const [items, setItems] = useState([
+    { id: "ti-1", merchant: "Scandic Stockholm", amount: 1890, category: "Hotell", icon: "home" },
+  ]);
+  const [showItemForm, setShowItemForm] = useState(false);
+  const [newItem, setNewItem] = useState({ merchant: "", amount: "", category: "Restaurang", icon: "coffee" });
+  const [submitted, setSubmitted] = useState(false);
+
+  const itemsTotal = items.reduce((s, i) => s + (parseFloat(i.amount) || 0), 0);
+  const perdiemTotal =
+    (parseInt(perdiemDays) || 0) * TRAVEL_RATES.trakInrikesHel +
+    (parseInt(perdiemHalf) || 0) * TRAVEL_RATES.trakInrikesHalv +
+    (parseInt(perdiemNights) || 0) * TRAVEL_RATES.trakInrikesNatt;
+  const mileageTotal = Math.round(((parseFloat(mileageKm) || 0) / 10) * TRAVEL_RATES.milMileage);
+  const grandTotal = itemsTotal + perdiemTotal + mileageTotal;
+
+  const addItem = () => {
+    if (!newItem.amount) return;
+    setItems(list => [...list, { ...newItem, id: genId("ti"), amount: parseFloat(newItem.amount) }]);
+    setNewItem({ merchant: "", amount: "", category: "Restaurang", icon: "coffee" });
+    setShowItemForm(false);
+  };
+
+  const removeItem = (id) => setItems(list => list.filter(i => i.id !== id));
+
+  const submit = () => {
+    submitTravelClaim({
+      tripName: tripName || destination || "Tjänsteresa",
+      destination, startDate, endDate, purpose,
+      items, perdiemDays, perdiemHalf, perdiemNights, mileageKm,
+    });
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <div className="fade-in" style={{ position: "absolute", inset: 0, background: "white", zIndex: 60, display: "flex", flexDirection: "column" }}>
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div style={{ width: 72, height: 72, borderRadius: 36, background: "var(--green-soft)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
+            <Icon name="check2" size={36} strokeWidth={2.6} style={{ color: "var(--success-text)" }} />
+          </div>
+          <h2 className="font-display font-semibold mb-2" style={{ fontSize: 22, letterSpacing: "-0.015em" }}>Reseräkning inskickad</h2>
+          <p className="text-[13.5px] mb-1" style={{ color: "var(--ink-3)" }}>
+            <span className="font-semibold" style={{ color: "var(--ink)" }}>{tripName || destination || "Tjänsteresa"}</span>
+          </p>
+          <p className="text-[11.5px] mb-4 num" style={{ color: "var(--ink-4)" }}>
+            Totalt {grandTotal.toLocaleString("sv-SE")} kr · {items.length} utlägg{perdiemTotal > 0 ? " + traktamente" : ""}{mileageTotal > 0 ? " + milersättning" : ""}
+          </p>
+          <p className="text-[12px]" style={{ color: "var(--ink-4)" }}>
+            Anders Hellström får reseräkningen för attest. Skattefria delar (traktamente, milersättning) betalas separat.
+          </p>
+        </div>
+        <div className="p-4">
+          <button onClick={onClose} className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+            style={{ background: "var(--primary)", color: "white" }}>
+            Stäng
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const stepLabels = ["Resan", "Traktamente", "Utlägg", "Granska"];
+  const goNext = () => setStep(s => Math.min(4, s + 1));
+  const goBack = () => setStep(s => Math.max(1, s - 1));
+
+  return (
+    <div className="fade-in" style={{ position: "absolute", inset: 0, background: "white", zIndex: 60, display: "flex", flexDirection: "column" }}>
+      <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line)" }}>
+        <button onClick={step === 1 ? onClose : goBack} style={{ color: "var(--ink-2)" }}>
+          <Icon name={step === 1 ? "x" : "chevL"} size={20} />
+        </button>
+        <div className="font-display font-semibold text-[15px]">Ny reseräkning</div>
+        <div style={{ width: 20 }} />
+      </div>
+
+      {/* Step progress */}
+      <div className="px-4 py-2.5 flex items-center gap-1.5" style={{ background: "var(--bg-warm)" }}>
+        {stepLabels.map((label, i) => (
+          <div key={i} className="flex-1 flex items-center gap-1.5">
+            <div style={{
+              width: 18, height: 18, borderRadius: 9,
+              background: step > i + 1 ? "var(--success)" : step === i + 1 ? "var(--ink)" : "var(--line)",
+              color: "white", display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 9, fontWeight: 700,
+            }}>
+              {step > i + 1 ? <Icon name="check2" size={10} strokeWidth={2.8} /> : i + 1}
+            </div>
+            <span className="text-[11px] font-medium truncate" style={{ color: step >= i + 1 ? "var(--ink)" : "var(--ink-4)" }}>{label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {step === 1 && (
+          <div className="space-y-4 fade-in">
+            <div>
+              <div className="eyebrow mb-2">Resa till</div>
+              <input value={destination} onChange={e => setDestination(e.target.value)}
+                placeholder="T.ex. Stockholm"
+                className="w-full card px-3.5 py-3 text-[13px] outline-none" />
+            </div>
+            <div>
+              <div className="eyebrow mb-2">Period</div>
+              <div className="card overflow-hidden">
+                <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <span className="text-[13px]" style={{ color: "var(--ink-2)" }}>Avresa</span>
+                  <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
+                    className="num text-[13px] font-medium text-right outline-none bg-transparent" />
+                </div>
+                <div className="px-4 py-3 flex items-center justify-between">
+                  <span className="text-[13px]" style={{ color: "var(--ink-2)" }}>Hemkomst</span>
+                  <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} min={startDate}
+                    className="num text-[13px] font-medium text-right outline-none bg-transparent" />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="eyebrow mb-2">Syfte</div>
+              <textarea value={purpose} onChange={e => setPurpose(e.target.value)}
+                placeholder="T.ex. Kundmöte med ABB Robotics och leverantörsbesök"
+                className="w-full card px-3.5 py-3 text-[13px] outline-none"
+                style={{ minHeight: 70, resize: "none" }} />
+            </div>
+            <div>
+              <div className="eyebrow mb-2">Namn på resan <span className="opacity-50 normal-case font-normal">(valfritt)</span></div>
+              <input value={tripName} onChange={e => setTripName(e.target.value)}
+                placeholder={destination ? `Tjänsteresa till ${destination}` : "T.ex. ABB-möte vecka 21"}
+                className="w-full card px-3.5 py-3 text-[13px] outline-none" />
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className="space-y-4 fade-in">
+            <div className="card px-3.5 py-3 flex items-start gap-2.5" style={{ background: "var(--bg-warm)", borderColor: "var(--line)" }}>
+              <Icon name="info" size={14} style={{ color: "var(--ink-3)", marginTop: 1, flexShrink: 0 }} />
+              <div className="text-[11.5px]" style={{ color: "var(--ink-2)" }}>
+                Skattefria belopp enligt Skatteverket 2026 — heldag <span className="num">{TRAVEL_RATES.trakInrikesHel}</span> kr, halvdag <span className="num">{TRAVEL_RATES.trakInrikesHalv}</span> kr, natt <span className="num">{TRAVEL_RATES.trakInrikesNatt}</span> kr.
+              </div>
+            </div>
+
+            <div>
+              <div className="eyebrow mb-2">Traktamente</div>
+              <div className="card overflow-hidden">
+                <NumberRow label="Heldagar" sublabel={`${TRAVEL_RATES.trakInrikesHel} kr/dag`} value={perdiemDays} onChange={setPerdiemDays} />
+                <NumberRow label="Halvdagar" sublabel={`${TRAVEL_RATES.trakInrikesHalv} kr/dag`} value={perdiemHalf} onChange={setPerdiemHalf} />
+                <NumberRow label="Nattraktamente" sublabel={`${TRAVEL_RATES.trakInrikesNatt} kr/natt`} value={perdiemNights} onChange={setPerdiemNights} last />
+              </div>
+              {perdiemTotal > 0 && (
+                <div className="mt-2 px-3 py-2 rounded-lg flex items-center justify-between text-[12px] fade-in"
+                  style={{ background: "var(--green-soft)", border: "1px solid var(--success)" }}>
+                  <span style={{ color: "var(--success-text)" }}>Traktamente totalt</span>
+                  <span className="num font-semibold" style={{ color: "var(--success-text)" }}>{perdiemTotal.toLocaleString("sv-SE")} kr</span>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <div className="eyebrow mb-2">Milersättning</div>
+              <div className="card overflow-hidden">
+                <div className="px-4 py-3 flex items-center justify-between">
+                  <div>
+                    <div className="text-[13px]" style={{ color: "var(--ink-2)" }}>Egen bil</div>
+                    <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}>{TRAVEL_RATES.milMileage} kr/mil skattefri</div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input type="number" value={mileageKm} onChange={e => setMileageKm(e.target.value)} placeholder="0"
+                      className="num text-[14px] font-semibold text-right outline-none bg-transparent"
+                      style={{ width: 70 }} />
+                    <span className="text-[12px]" style={{ color: "var(--ink-3)" }}>km</span>
+                  </div>
+                </div>
+              </div>
+              {mileageTotal > 0 && (
+                <div className="mt-2 px-3 py-2 rounded-lg flex items-center justify-between text-[12px] fade-in"
+                  style={{ background: "var(--green-soft)", border: "1px solid var(--success)" }}>
+                  <span style={{ color: "var(--success-text)" }}>
+                    {(parseFloat(mileageKm) / 10).toFixed(1).replace(".", ",")} mil × {TRAVEL_RATES.milMileage} kr
+                  </span>
+                  <span className="num font-semibold" style={{ color: "var(--success-text)" }}>{mileageTotal.toLocaleString("sv-SE")} kr</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-4 fade-in">
+            <div className="text-[12px]" style={{ color: "var(--ink-3)" }}>
+              Lägg till alla utlägg du gjorde under resan (hotell, mat, taxi, etc.). Du kan skanna kvitton också.
+            </div>
+
+            {items.length > 0 && (
+              <div className="card overflow-hidden">
+                {items.map((it, i) => (
+                  <div key={it.id} className="px-4 py-3 flex items-center gap-3"
+                    style={{ borderBottom: i === items.length - 1 ? "none" : "1px solid var(--line-2)" }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 8, background: "var(--bg-warm)", color: "var(--ink-2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Icon name={it.icon} size={15} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[12.5px] font-semibold truncate">{it.merchant}</div>
+                      <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}>{it.category}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-display num font-semibold text-[13px]">{(parseFloat(it.amount) || 0).toLocaleString("sv-SE")}<span className="text-[10.5px] font-normal opacity-60"> kr</span></div>
+                    </div>
+                    <button onClick={() => removeItem(it.id)} style={{ color: "var(--ink-4)" }}>
+                      <Icon name="x" size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {!showItemForm ? (
+              <button onClick={() => setShowItemForm(true)}
+                className="w-full card flex items-center justify-center gap-2 py-3 row-tap font-medium text-[13px]"
+                style={{ borderStyle: "dashed", color: "var(--ink-2)" }}>
+                <Icon name="plus" size={15} /> Lägg till utlägg
+              </button>
+            ) : (
+              <div className="card p-3 space-y-2.5 fade-in">
+                <div className="text-[12px] font-semibold mb-1">Nytt utlägg</div>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {[
+                    { id: "Restaurang", icon: "coffee" }, { id: "Hotell", icon: "home" },
+                    { id: "Drivmedel", icon: "car" }, { id: "Övrigt", icon: "receipt" },
+                  ].map(c => (
+                    <button key={c.id} onClick={() => setNewItem({ ...newItem, category: c.id, icon: c.icon })}
+                      className="py-2 rounded-md flex flex-col items-center gap-1 transition"
+                      style={{
+                        background: newItem.category === c.id ? "var(--ink)" : "var(--bg-warm)",
+                        color: newItem.category === c.id ? "white" : "var(--ink-2)",
+                      }}>
+                      <Icon name={c.icon} size={13} />
+                      <span style={{ fontSize: 10 }}>{c.id}</span>
+                    </button>
+                  ))}
+                </div>
+                <input value={newItem.merchant} onChange={e => setNewItem({ ...newItem, merchant: e.target.value })}
+                  placeholder="Var (t.ex. Restaurang Operakällaren)"
+                  className="w-full px-3 py-2 text-[12.5px] outline-none rounded-md"
+                  style={{ background: "var(--bg-warm)", border: "1px solid var(--line-2)" }} />
+                <div className="flex items-center gap-2 px-3 py-2 rounded-md"
+                  style={{ background: "var(--bg-warm)", border: "1px solid var(--line-2)" }}>
+                  <input type="number" value={newItem.amount} onChange={e => setNewItem({ ...newItem, amount: e.target.value })}
+                    placeholder="0"
+                    className="flex-1 num font-semibold text-[14px] outline-none bg-transparent" />
+                  <span className="text-[11px]" style={{ color: "var(--ink-3)" }}>kr</span>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => setShowItemForm(false)}
+                    className="flex-1 py-2 rounded-md text-[12px] font-medium"
+                    style={{ background: "white", color: "var(--ink-2)", border: "1px solid var(--line)" }}>
+                    Avbryt
+                  </button>
+                  <button onClick={addItem}
+                    disabled={!newItem.amount}
+                    className="flex-1 py-2 rounded-md text-[12px] font-semibold"
+                    style={{ background: newItem.amount ? "var(--primary)" : "var(--line)", color: newItem.amount ? "white" : "var(--ink-4)" }}>
+                    Lägg till
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {itemsTotal > 0 && (
+              <div className="px-3 py-2 rounded-lg flex items-center justify-between text-[12px] fade-in"
+                style={{ background: "var(--bg-warm)" }}>
+                <span style={{ color: "var(--ink-3)" }}>Utlägg totalt</span>
+                <span className="num font-semibold">{itemsTotal.toLocaleString("sv-SE")} kr</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="space-y-3 fade-in">
+            <div className="card overflow-hidden">
+              <div className="px-4 py-3" style={{ background: "var(--ink)", color: "white" }}>
+                <div className="text-[10.5px] uppercase tracking-wider opacity-60 font-semibold" style={{ letterSpacing: "0.06em" }}>Reseräkning</div>
+                <div className="font-display font-semibold text-[16px] mt-0.5">{tripName || destination || "Tjänsteresa"}</div>
+                <div className="text-[11.5px] opacity-70 mt-1 num">{startDate} → {endDate}</div>
+              </div>
+
+              <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                <div className="eyebrow mb-2">Utlägg ({items.length})</div>
+                {items.map(it => (
+                  <div key={it.id} className="flex items-center justify-between py-1 text-[12px]">
+                    <span style={{ color: "var(--ink-2)" }}>{it.merchant}</span>
+                    <span className="num font-medium">{(parseFloat(it.amount) || 0).toLocaleString("sv-SE")} kr</span>
+                  </div>
+                ))}
+                <div className="flex justify-between mt-1.5 pt-1.5 text-[12px] font-semibold" style={{ borderTop: "1px solid var(--line-2)" }}>
+                  <span>Summa utlägg</span>
+                  <span className="num">{itemsTotal.toLocaleString("sv-SE")} kr</span>
+                </div>
+              </div>
+
+              {perdiemTotal > 0 && (
+                <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <div className="eyebrow mb-2">Traktamente</div>
+                  {parseInt(perdiemDays) > 0 && (
+                    <div className="flex justify-between py-1 text-[12px]">
+                      <span style={{ color: "var(--ink-2)" }}><span className="num">{perdiemDays}</span> heldagar á <span className="num">{TRAVEL_RATES.trakInrikesHel}</span></span>
+                      <span className="num font-medium">{(parseInt(perdiemDays) * TRAVEL_RATES.trakInrikesHel).toLocaleString("sv-SE")} kr</span>
+                    </div>
+                  )}
+                  {parseInt(perdiemHalf) > 0 && (
+                    <div className="flex justify-between py-1 text-[12px]">
+                      <span style={{ color: "var(--ink-2)" }}><span className="num">{perdiemHalf}</span> halvdagar á <span className="num">{TRAVEL_RATES.trakInrikesHalv}</span></span>
+                      <span className="num font-medium">{(parseInt(perdiemHalf) * TRAVEL_RATES.trakInrikesHalv).toLocaleString("sv-SE")} kr</span>
+                    </div>
+                  )}
+                  {parseInt(perdiemNights) > 0 && (
+                    <div className="flex justify-between py-1 text-[12px]">
+                      <span style={{ color: "var(--ink-2)" }}><span className="num">{perdiemNights}</span> nätter á <span className="num">{TRAVEL_RATES.trakInrikesNatt}</span></span>
+                      <span className="num font-medium">{(parseInt(perdiemNights) * TRAVEL_RATES.trakInrikesNatt).toLocaleString("sv-SE")} kr</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between mt-1.5 pt-1.5 text-[12px] font-semibold" style={{ borderTop: "1px solid var(--line-2)" }}>
+                    <span>Summa traktamente</span>
+                    <span className="num" style={{ color: "var(--success-text)" }}>{perdiemTotal.toLocaleString("sv-SE")} kr</span>
+                  </div>
+                  <div className="text-[10.5px] mt-1" style={{ color: "var(--ink-4)" }}>Skattefritt enligt Skatteverket 2026</div>
+                </div>
+              )}
+
+              {mileageTotal > 0 && (
+                <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <div className="eyebrow mb-2">Milersättning</div>
+                  <div className="flex justify-between text-[12px]">
+                    <span style={{ color: "var(--ink-2)" }}><span className="num">{(parseFloat(mileageKm) / 10).toFixed(1).replace(".", ",")}</span> mil á <span className="num">{TRAVEL_RATES.milMileage}</span> kr</span>
+                    <span className="num font-semibold" style={{ color: "var(--success-text)" }}>{mileageTotal.toLocaleString("sv-SE")} kr</span>
+                  </div>
+                  <div className="text-[10.5px] mt-1" style={{ color: "var(--ink-4)" }}>Skattefritt enligt Skatteverket 2026</div>
+                </div>
+              )}
+
+              <div className="px-4 py-3.5 flex items-center justify-between" style={{ background: "var(--bg-warm)" }}>
+                <span className="font-display font-semibold text-[14px]">Total reseräkning</span>
+                <span className="font-display num font-semibold text-[20px]">{grandTotal.toLocaleString("sv-SE")} <span className="text-[12px] opacity-60 font-normal">kr</span></span>
+              </div>
+            </div>
+
+            <div className="card px-3.5 py-3 flex items-start gap-2.5" style={{ background: "var(--bg-warm)", borderColor: "var(--line)" }}>
+              <Icon name="info" size={14} style={{ color: "var(--ink-3)", marginTop: 1, flexShrink: 0 }} />
+              <div className="text-[11.5px]" style={{ color: "var(--ink-2)" }}>
+                <span className="font-semibold" style={{ color: "var(--ink)" }}>Skickas till Anders Hellström för attest.</span> Skattefria delar (traktamente, milersättning) betalas ut separat enligt Skatteverkets regelverk.
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="p-4" style={{ borderTop: "1px solid var(--line)" }}>
+        {step < 4 ? (
+          <button onClick={goNext}
+            disabled={step === 1 && !destination}
+            className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+            style={{ background: (step === 1 && !destination) ? "var(--line)" : "var(--ink)", color: (step === 1 && !destination) ? "var(--ink-4)" : "white" }}>
+            Fortsätt
+          </button>
+        ) : (
+          <button onClick={submit}
+            className="w-full py-3 rounded-lg text-[13.5px] font-semibold"
+            style={{ background: "var(--primary)", color: "white" }}>
+            Skicka in reseräkning ({grandTotal.toLocaleString("sv-SE")} kr)
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const NumberRow = ({ label, sublabel, value, onChange, last }) => (
+  <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: last ? "none" : "1px solid var(--line-2)" }}>
+    <div>
+      <div className="text-[13px]" style={{ color: "var(--ink-2)" }}>{label}</div>
+      {sublabel && <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}>{sublabel}</div>}
+    </div>
+    <div className="flex items-center gap-2">
+      <button onClick={() => onChange(Math.max(0, (parseInt(value) || 0) - 1).toString())}
+        style={{ width: 26, height: 26, borderRadius: 13, background: "var(--bg-warm)", color: "var(--ink-2)", border: "1px solid var(--line)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Icon name="x" size={11} style={{ transform: "rotate(0)" }} />
+      </button>
+      <span className="num font-semibold text-[15px]" style={{ minWidth: 24, textAlign: "center" }}>{value}</span>
+      <button onClick={() => onChange(((parseInt(value) || 0) + 1).toString())}
+        style={{ width: 26, height: 26, borderRadius: 13, background: "var(--ink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Icon name="plus" size={11} strokeWidth={2.4} />
+      </button>
+    </div>
+  </div>
+);
+
+/* ================================================================
+   EXPENSE DETAIL — shows status timeline + breakdown
+   ================================================================ */
+
+const ExpenseDetail = ({ expense, onClose }) => {
+  const isTravel = expense.type === "travel";
+  const t = expense.tripDetails;
+  const statusMeta = {
+    godkand: { tone: "green", label: "Godkänt", color: "var(--success-text)", bg: "var(--green-soft)" },
+    vantar: { tone: "amber", label: "Väntar attest", color: "#7A5300", bg: "var(--amber-soft)" },
+    avslagen: { tone: "rust", label: "Avslaget", color: "var(--rust)", bg: "rgba(176,67,27,0.10)" },
+    komplettering: { tone: "amber", label: "Komplettering begärd", color: "#7A5300", bg: "var(--amber-soft)" },
+  }[expense.status] || { tone: "neutral", label: expense.status, color: "var(--ink-3)", bg: "var(--bg-warm)" };
+
+  return (
+    <div className="fade-in" style={{ position: "absolute", inset: 0, background: "var(--bg)", zIndex: 60, display: "flex", flexDirection: "column" }}>
+      <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line)", background: "white" }}>
+        <button onClick={onClose} style={{ color: "var(--ink-2)" }}>
+          <Icon name="chevL" size={20} />
+        </button>
+        <div className="font-display font-semibold text-[15px]">{isTravel ? "Reseräkning" : "Utlägg"}</div>
+        <div style={{ width: 20 }} />
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {/* Hero */}
+        <div className="card overflow-hidden" style={{ background: "linear-gradient(135deg, #122121 0%, #1d3a35 100%)", color: "white", border: "none" }}>
+          <div className="px-5 py-5">
+            <div className="flex items-center gap-3 mb-3">
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Icon name={expense.icon} size={18} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-display font-semibold text-[15px] truncate">{expense.merchant}</div>
+                <div className="text-[11.5px] opacity-70 truncate">{expense.purpose}</div>
+              </div>
+            </div>
+            <div className="font-display num font-semibold" style={{ fontSize: 30, letterSpacing: "-0.02em" }}>
+              {expense.amount.toLocaleString("sv-SE")} <span className="text-[14px] opacity-60 font-normal">kr</span>
+            </div>
+            <div className="text-[11.5px] opacity-70 mt-1 num">{expense.date}</div>
+          </div>
+        </div>
+
+        {/* Status */}
+        <div className="card px-4 py-3" style={{ background: statusMeta.bg, borderColor: "transparent" }}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Icon name={expense.status === "godkand" ? "check2" : expense.status === "avslagen" ? "x" : "clock"} size={15} style={{ color: statusMeta.color }} strokeWidth={2.2} />
+              <span className="text-[13px] font-semibold" style={{ color: statusMeta.color }}>{statusMeta.label}</span>
+            </div>
+            {expense.status === "vantar" && (
+              <span className="text-[11px]" style={{ color: statusMeta.color }}>Hos Anders Hellström</span>
+            )}
+            {expense.status === "komplettering" && (
+              <span className="text-[11px]" style={{ color: statusMeta.color }}>Från Anders Hellström</span>
+            )}
+          </div>
+        </div>
+
+        {/* Manager question (if komplettering) */}
+        {expense.status === "komplettering" && expense.managerQuestion && (
+          <div className="card overflow-hidden">
+            <div className="px-4 py-3 flex items-start gap-3">
+              <Avatar initials="AH" size={32} color="var(--ink-2)" />
+              <div className="flex-1">
+                <div className="text-[10.5px] uppercase tracking-wider font-semibold mb-1" style={{ color: "var(--ink-3)", letterSpacing: "0.06em" }}>Anders Hellström frågar</div>
+                <div className="text-[13px] leading-snug" style={{ color: "var(--ink)" }}>"{expense.managerQuestion}"</div>
+              </div>
+            </div>
+            <button className="w-full py-2.5 text-[12.5px] font-semibold flex items-center justify-center gap-1.5"
+              style={{ background: "var(--primary)", color: "white", borderTop: "1px solid var(--line-2)" }}>
+              <Icon name="send" size={12} /> Svara och skicka in igen
+            </button>
+          </div>
+        )}
+
+        {/* Travel breakdown */}
+        {isTravel && t && (
+          <div>
+            <div className="eyebrow mb-2 px-1">Specifikation</div>
+            <div className="card overflow-hidden">
+              {t.items && t.items.length > 0 && (
+                <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <div className="text-[10.5px] uppercase tracking-wider font-semibold mb-1.5" style={{ color: "var(--ink-3)", letterSpacing: "0.06em" }}>Utlägg</div>
+                  {t.items.map((it, i) => (
+                    <div key={i} className="flex items-center justify-between py-1 text-[12px]">
+                      <span style={{ color: "var(--ink-2)" }}>{it.merchant}</span>
+                      <span className="num font-medium">{(parseFloat(it.amount) || 0).toLocaleString("sv-SE")} kr</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {t.perdiemTotal > 0 && (
+                <div className="px-4 py-3 flex justify-between" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <div>
+                    <div className="text-[12px]">Traktamente</div>
+                    <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}>
+                      <span className="num">{t.perdiemDays}</span> heldagar
+                      {parseInt(t.perdiemHalf) > 0 && <> · <span className="num">{t.perdiemHalf}</span> halvdagar</>}
+                      {parseInt(t.perdiemNights) > 0 && <> · <span className="num">{t.perdiemNights}</span> nätter</>}
+                    </div>
+                  </div>
+                  <span className="num font-medium" style={{ color: "var(--success-text)" }}>{t.perdiemTotal.toLocaleString("sv-SE")} kr</span>
+                </div>
+              )}
+              {t.mileageTotal > 0 && (
+                <div className="px-4 py-3 flex justify-between" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <div>
+                    <div className="text-[12px]">Milersättning</div>
+                    <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}><span className="num">{(parseFloat(t.mileageKm) / 10).toFixed(1).replace(".", ",")}</span> mil</div>
+                  </div>
+                  <span className="num font-medium" style={{ color: "var(--success-text)" }}>{t.mileageTotal.toLocaleString("sv-SE")} kr</span>
+                </div>
+              )}
+              <div className="px-4 py-3 flex justify-between" style={{ background: "var(--bg-warm)" }}>
+                <span className="font-semibold text-[13px]">Total</span>
+                <span className="font-display num font-semibold text-[15px]">{expense.amount.toLocaleString("sv-SE")} kr</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Standard expense details */}
+        {!isTravel && (
+          <>
+            <div>
+              <div className="eyebrow mb-2 px-1">Specifikation</div>
+              <div className="card overflow-hidden">
+                <ProfileRow icon="receipt" label="Kategori" value={expense.category} />
+                {expense.vat !== undefined && (
+                  <ProfileRow icon="info" label="Moms" value={`${expense.vat.toLocaleString("sv-SE")} kr`} mono />
+                )}
+                {expense.account && (
+                  <ProfileRow icon="doc" label="Kontering" value={expense.account} mono last />
+                )}
+              </div>
+            </div>
+
+            {expense.hasReceipt && (
+              <div>
+                <div className="eyebrow mb-2 px-1">Kvitto</div>
+                <div className="card overflow-hidden">
+                  <div className="px-4 py-6 flex flex-col items-center" style={{ background: "var(--bg-warm)" }}>
+                    <div style={{
+                      width: 110, height: 140, background: "white", borderRadius: 6,
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05)",
+                      padding: "10px 8px", fontFamily: "monospace", fontSize: 7, color: "#333",
+                      transform: "rotate(-2deg)",
+                    }}>
+                      <div style={{ textAlign: "center", fontWeight: 700, fontSize: 8, marginBottom: 4 }}>{expense.merchant.toUpperCase().slice(0, 18)}</div>
+                      <div style={{ borderTop: "1px dashed #999", borderBottom: "1px dashed #999", padding: "4px 0", marginBottom: 4 }}>
+                        <div className="flex justify-between"><span>{expense.category}</span><span className="num">{expense.amount}</span></div>
+                      </div>
+                      <div className="flex justify-between" style={{ fontWeight: 700, fontSize: 8 }}><span>TOTALT</span><span className="num">{expense.amount} kr</span></div>
+                      <div style={{ fontSize: 6, color: "#999", marginTop: 6 }}><div>{expense.date}</div></div>
+                    </div>
+                    <div className="mt-4 text-[11.5px] font-medium" style={{ color: "var(--ink-2)" }}>Tryck för att förstora</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Status timeline */}
+        <div>
+          <div className="eyebrow mb-2 px-1">Historik</div>
+          <div className="card overflow-hidden">
+            <TimelineEvent
+              icon="send" iconBg="var(--ink)" iconColor="white"
+              label="Inskickad av dig"
+              time={`${expense.date} · ${expense.merchant}`}
+            />
+            {expense.status === "godkand" && (
+              <TimelineEvent
+                icon="check2" iconBg="var(--success)" iconColor="white"
+                label="Attesterad"
+                time="Anders Hellström godkände"
+              />
+            )}
+            {expense.status === "avslagen" && (
+              <TimelineEvent
+                icon="x" iconBg="var(--rust)" iconColor="white"
+                label="Avslagen"
+                time="Anders Hellström avslog"
+              />
+            )}
+            {expense.status === "vantar" && (
+              <TimelineEvent
+                icon="clock" iconBg="var(--amber-soft)" iconColor="var(--amber)"
+                label="Väntar attest"
+                time="Hos Anders Hellström"
+                last
+              />
+            )}
+            {expense.status === "godkand" && (
+              <TimelineEvent
+                icon="wallet" iconBg="var(--bg-warm)" iconColor="var(--ink-3)"
+                label="Betalas ut med nästa lön"
+                time="2026-05-25"
+                last
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TimelineEvent = ({ icon, iconBg, iconColor, label, time, last }) => (
+  <div className="px-4 py-3 flex items-center gap-3" style={{ borderBottom: last ? "none" : "1px solid var(--line-2)" }}>
+    <div style={{
+      width: 30, height: 30, borderRadius: 8,
+      background: iconBg, color: iconColor,
+      display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+    }}>
+      <Icon name={icon} size={13} strokeWidth={2.2} />
+    </div>
+    <div className="flex-1">
+      <div className="text-[12.5px] font-semibold">{label}</div>
+      <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}>{time}</div>
+    </div>
+  </div>
+);
+
+/* ================================================================
+   EMPLOYEE — ME (profile, payslips, settings)
+   ================================================================ */
+
+const EmployeeMe = ({ role, switchRole }) => {
+  const { me } = useAppState();
+  return (
+    <div>
+      <AppHeader title="Mig" large />
+
+      <div className="px-4 pb-6 space-y-4">
+        {/* Identity card */}
+        <div className="card slide-up overflow-hidden">
+          <div className="px-5 py-5 flex items-center gap-3.5">
+            <Avatar initials={me.initials} size={56} color="var(--ink)" />
+            <div className="flex-1 min-w-0">
+              <div className="font-display font-semibold text-[17px]">{me.name}</div>
+              <div className="text-[12px]" style={{ color: "var(--ink-3)" }}>{me.role} · {me.dept}</div>
+              <div className="text-[11px] mt-0.5 num" style={{ color: "var(--ink-4)" }}>Anst.nr {me.empNo}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Payslips */}
+        <div>
+          <div className="eyebrow mb-2 px-1">Lönespecar</div>
+          <div className="card overflow-hidden">
+            {MY_PAYSLIPS.map((p, i) => (
+              <div key={p.period} className="px-4 py-3.5 flex items-center gap-3 row-tap"
+                style={{ borderBottom: i === MY_PAYSLIPS.length - 1 ? "none" : "1px solid var(--line-2)" }}>
+                <div style={{ width: 36, height: 36, borderRadius: 8, background: "var(--green-soft)", color: "var(--success-text)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <Icon name="receipt" size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[12.5px] font-semibold">{p.period}</div>
+                  <div className="text-[11px] num" style={{ color: "var(--ink-3)" }}>Utbetalad {p.paid}</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-display num font-semibold text-[13.5px]">{p.net.toLocaleString("sv-SE")}<span className="text-[10.5px] opacity-60 font-normal"> kr</span></div>
+                  <div className="text-[10.5px] num" style={{ color: "var(--ink-4)" }}>{p.gross.toLocaleString("sv-SE")} brutto</div>
+                </div>
+                <Icon name="download" size={15} style={{ color: "var(--ink-4)" }} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Profile fields */}
+        <div>
+          <div className="eyebrow mb-2 px-1">Mina uppgifter</div>
+          <div className="card overflow-hidden">
+            <ProfileRow icon="user" label="Anställd sedan" value={me.startDate} mono />
+            <ProfileRow icon="users" label="Närmaste chef" value={me.manager} />
+            <ProfileRow icon="doc" label="Kollektivavtal" value={me.agreement} />
+            <ProfileRow icon="send" label="E-post" value={me.email} />
+            <ProfileRow icon="bell" label="Telefon" value={me.phone} mono last />
+          </div>
+        </div>
+
+        {/* Settings */}
+        <div>
+          <div className="eyebrow mb-2 px-1">Inställningar</div>
+          <div className="card overflow-hidden">
+            <SettingsRow icon="bell" label="Notiser" trailing={<Pill tone="green">På</Pill>} />
+            <SettingsRow icon="globe" label="Språk" trailing={<span className="text-[12.5px]" style={{ color: "var(--ink-3)" }}>Svenska</span>} />
+            <SettingsRow icon="moon" label="Mörkt läge" trailing={<Pill tone="neutral">Av</Pill>} />
+            <SettingsRow icon="shield" label="Sekretess och säkerhet" />
+            <SettingsRow icon="info" label="Om Kontek Sphere" last />
+          </div>
+        </div>
+
+        {role === "manager" && (
+          <button onClick={switchRole}
+            className="card w-full px-4 py-3.5 flex items-center gap-3 row-tap"
+            style={{ background: "var(--bg-warm)", border: "1px dashed var(--ink-4)" }}>
+            <div style={{ width: 36, height: 36, borderRadius: 8, background: "var(--ink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Icon name="user" size={17} />
+            </div>
+            <div className="flex-1 text-left">
+              <div className="text-[12.5px] font-semibold">Du är chef-vyn</div>
+              <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>Växla till din anställd-vy</div>
+            </div>
+            <Icon name="chevR" size={18} style={{ color: "var(--ink-4)" }} />
+          </button>
+        )}
+
+        {role === "employee" && (
+          <button onClick={switchRole}
+            className="card w-full px-4 py-3.5 flex items-center gap-3 row-tap"
+            style={{ background: "var(--bg-warm)", border: "1px dashed var(--ink-4)" }}>
+            <div style={{ width: 36, height: 36, borderRadius: 8, background: "var(--ink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Icon name="users" size={17} />
+            </div>
+            <div className="flex-1 text-left">
+              <div className="text-[12.5px] font-semibold">Växla till chef-vyn</div>
+              <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>Hantera ditt team och attester</div>
+            </div>
+            <Icon name="chevR" size={18} style={{ color: "var(--ink-4)" }} />
+          </button>
+        )}
+
+        <button className="w-full text-center text-[12.5px] py-3 font-medium" style={{ color: "var(--ink-4)" }}>
+          Logga ut
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const ProfileRow = ({ icon, label, value, mono, last }) => (
+  <div className="px-4 py-3.5 flex items-center gap-3" style={{ borderBottom: last ? "none" : "1px solid var(--line-2)" }}>
+    <div style={{ width: 30, height: 30, borderRadius: 7, background: "var(--bg)", color: "var(--ink-3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <Icon name={icon} size={14} />
+    </div>
+    <div className="flex-1 min-w-0">
+      <div className="text-[10.5px] uppercase font-medium" style={{ color: "var(--ink-4)", letterSpacing: "0.06em" }}>{label}</div>
+      <div className={"text-[13px] truncate " + (mono ? "num" : "")}>{value}</div>
+    </div>
+  </div>
+);
+
+const SettingsRow = ({ icon, label, trailing, last }) => (
+  <div className="px-4 py-3.5 flex items-center gap-3 row-tap" style={{ borderBottom: last ? "none" : "1px solid var(--line-2)" }}>
+    <div style={{ width: 30, height: 30, borderRadius: 7, background: "var(--bg)", color: "var(--ink-3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <Icon name={icon} size={14} />
+    </div>
+    <div className="flex-1 text-[13px] font-medium">{label}</div>
+    <div className="flex items-center gap-2">
+      {trailing}
+      <Icon name="chevR" size={15} style={{ color: "var(--ink-4)" }} />
+    </div>
+  </div>
+);
+
+/* ================================================================
+   MANAGER — HOME
+   ================================================================ */
+
+const ManagerHome = ({ switchRole, setTab }) => {
+  const { me, team, approvals } = useAppState();
+  const hour = new Date().getHours();
+  const greeting = hour < 10 ? "God morgon" : hour < 17 ? "Hej" : "God kväll";
+
+  const teamWorking = team.filter(m => m.status === "i_arbete").length;
+  const teamOut = team.filter(m => m.status === "franvarande").length;
+  const teamMissing = team.filter(m => m.status === "saknar_tidrapport").length;
+
+  const timeCount = approvals.filter(p => p.type === "time").length;
+  const absenceCount = approvals.filter(p => p.type === "absence").length;
+  const expenseCount = approvals.filter(p => p.type === "expense").length;
+
+  return (
+    <div>
+      <AppHeader
+        title={`${greeting}, Erik`}
+        subtitle={`Du är produktionsledare · ${team.length} i ditt team`}
+        large
+        leading={<Avatar initials={me.initials} size={32} color="var(--ink)" />}
+        trailing={<button className="relative" style={{ color: "var(--ink-2)" }}>
+          <Icon name="bell" size={20} />
+          {approvals.length > 0 && (
+            <span className="absolute -top-1 -right-1 num"
+              style={{ width: 14, height: 14, borderRadius: 7, background: "var(--rust)", color: "white", fontSize: 9, fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{approvals.length}</span>
+          )}
+        </button>}
+      />
+
+      <div className="px-4 pb-6 space-y-4">
+        {/* Approvals hero */}
+        <div className="card overflow-hidden slide-up"
+          style={{ background: "linear-gradient(135deg, #122121 0%, #1d3a35 100%)", color: "white", border: "none" }}>
+          <div className="px-5 py-5">
+            <div className="flex items-start justify-between mb-2">
+              <div className="text-[11px] uppercase tracking-wider opacity-60 font-semibold" style={{ letterSpacing: "0.06em" }}>Att attestera</div>
+              <div style={{ width: 32, height: 32, borderRadius: 16, background: "rgba(255,255,255,0.10)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon name="check2" size={16} />
+              </div>
+            </div>
+            <div className="font-display num font-semibold mb-1" style={{ fontSize: 44, letterSpacing: "-0.02em", lineHeight: 1 }}>
+              {approvals.length}
+            </div>
+            <div className="text-[13px] opacity-80 mb-4">
+              {timeCount} {timeCount === 1 ? "tid" : "tider"} · {absenceCount} {absenceCount === 1 ? "ledighet" : "ledigheter"} · {expenseCount} utlägg
+            </div>
+            <button onClick={() => setTab("approvals")}
+              className="w-full py-2.5 rounded-lg text-[13px] font-semibold flex items-center justify-center gap-1.5"
+              style={{ background: "white", color: "var(--ink)" }}>
+              {approvals.length === 0 ? "Inkorgen är tom" : "Granska"}
+              {approvals.length > 0 && <Icon name="chevR" size={15} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Team at a glance */}
+        <div>
+          <div className="eyebrow mb-2 px-1">Mitt team idag</div>
+          <div className="grid grid-cols-3 gap-2">
+            <TeamStatStat label="I arbete" value={teamWorking} color="var(--success-text)" bg="var(--green-soft)" />
+            <TeamStatStat label="Frånvarande" value={teamOut} color="var(--rust)" bg="rgba(176,67,27,0.10)" />
+            <TeamStatStat label="Saknar tid" value={teamMissing} color="var(--amber)" bg="var(--amber-soft)" />
+          </div>
+        </div>
+
+        {/* Team list */}
+        <div>
+          <div className="flex items-center justify-between mb-2 px-1">
+            <div className="eyebrow">Mitt team</div>
+            <button onClick={() => setTab("team")} className="text-[11.5px] font-medium" style={{ color: "var(--ink-3)" }}>Visa alla →</button>
+          </div>
+          <div className="card overflow-hidden">
+            {team.slice(0, 4).map((m, i) => (
+              <div key={m.id} className="px-4 py-3 flex items-center gap-3 row-tap"
+                style={{ borderBottom: i === 3 ? "none" : "1px solid var(--line-2)" }}>
+                <Avatar initials={m.initials} size={34} color={teamStatusColor(m.status)} />
+                <div className="flex-1 min-w-0">
+                  <div className="text-[12.5px] font-semibold truncate">{m.name}</div>
+                  <div className="text-[11px] truncate" style={{ color: teamStatusTextColor(m.status) }}>{m.statusLabel}</div>
+                </div>
+                {m.todayHours > 0 && (
+                  <div className="text-right">
+                    <div className="font-display num font-semibold text-[13px]">{m.todayHours}<span className="text-[10.5px] opacity-60 font-normal"> h</span></div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Switch to employee view */}
+        <button onClick={switchRole}
+          className="card w-full px-4 py-3.5 flex items-center gap-3 row-tap"
+          style={{ background: "var(--bg-warm)", border: "1px dashed var(--ink-4)" }}>
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: "var(--ink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Icon name="user" size={17} />
+          </div>
+          <div className="flex-1 text-left">
+            <div className="text-[12.5px] font-semibold">Växla till din egen vy</div>
+            <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>Se din egen tid och utlägg</div>
+          </div>
+          <Icon name="chevR" size={18} style={{ color: "var(--ink-4)" }} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const teamStatusColor = (status) => ({
+  i_arbete: "var(--green-2)",
+  franvarande: "var(--ink-4)",
+  saknar_tidrapport: "var(--amber)",
+}[status] || "var(--ink-3)");
+
+const teamStatusTextColor = (status) => ({
+  i_arbete: "var(--success-text)",
+  franvarande: "var(--ink-4)",
+  saknar_tidrapport: "var(--rust)",
+}[status] || "var(--ink-3)");
+
+const TeamStatStat = ({ label, value, color, bg }) => (
+  <div className="card px-3 py-3" style={{ background: bg, borderColor: "transparent" }}>
+    <div className="font-display num font-semibold" style={{ fontSize: 22, color, letterSpacing: "-0.01em" }}>{value}</div>
+    <div className="text-[11px] mt-0.5" style={{ color: "var(--ink-2)" }}>{label}</div>
+  </div>
+);
+
+/* ================================================================
+   MANAGER — APPROVALS
+   ================================================================ */
+
+const ManagerApprovals = () => {
+  const { approvals, approveItem, declineItem, requestInfo, findLinkedRecord } = useAppState();
+  const [filter, setFilter] = useState("all");
+  const [justActed, setJustActed] = useState(null);
+  const [openApproval, setOpenApproval] = useState(null);
+
+  const flash = (msg) => {
+    setJustActed(msg);
+    setTimeout(() => setJustActed(null), 2800);
+  };
+
+  const approve = (id) => {
+    const item = approveItem(id);
+    if (item) flash(`${item.title} godkänd för ${item.employeeName}.`);
+    setOpenApproval(null);
+  };
+  const decline = (id) => {
+    const item = declineItem(id);
+    if (item) flash(`${item.title} avslagen för ${item.employeeName}.`);
+    setOpenApproval(null);
+  };
+  const askForMore = (id, question) => {
+    const item = requestInfo(id, question);
+    if (item) flash(`Begärt komplettering från ${item.employeeName}.`);
+    setOpenApproval(null);
+  };
+
+  const filtered = filter === "all" ? approvals : approvals.filter(i => i.type === filter);
+
+  return (
+    <div>
+      <AppHeader title="Attestkö" subtitle={`${approvals.length} ${approvals.length === 1 ? "post" : "poster"} väntar`} large />
+
+      <div className="px-4 pb-6">
+        {justActed && (
+          <div className="fade-in mb-3 px-3.5 py-2.5 rounded-lg flex items-center gap-2"
+            style={{ background: "var(--green-soft)", border: "1px solid var(--success)" }}>
+            <Icon name="check2" size={14} strokeWidth={2.4} style={{ color: "var(--success-text)" }} />
+            <span className="text-[12px]" style={{ color: "var(--success-text)" }}>{justActed}</span>
+          </div>
+        )}
+
+        {/* Filter pills */}
+        <div className="flex gap-2 mb-3 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+          {[
+            { id: "all", label: "Alla", count: approvals.length },
+            { id: "time", label: "Tider", count: approvals.filter(i => i.type === "time").length },
+            { id: "absence", label: "Ledighet", count: approvals.filter(i => i.type === "absence").length },
+            { id: "expense", label: "Utlägg", count: approvals.filter(i => i.type === "expense").length },
+          ].map(f => (
+            <button key={f.id} onClick={() => setFilter(f.id)}
+              className="px-3 py-1.5 rounded-full text-[12px] font-medium whitespace-nowrap transition"
+              style={{
+                background: filter === f.id ? "var(--ink)" : "white",
+                color: filter === f.id ? "white" : "var(--ink-2)",
+                border: filter === f.id ? "1px solid var(--ink)" : "1px solid var(--line)",
+              }}>
+              {f.label} <span className="num opacity-70 ml-0.5">{f.count}</span>
+            </button>
+          ))}
+        </div>
+
+        {filtered.length === 0 && (
+          <div className="card px-5 py-10 text-center">
+            <div style={{ width: 50, height: 50, borderRadius: 25, background: "var(--green-soft)", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+              <Icon name="check2" size={22} strokeWidth={2.4} style={{ color: "var(--success-text)" }} />
+            </div>
+            <div className="text-[14px] font-semibold mb-1">Inkorgen är tom</div>
+            <div className="text-[12px]" style={{ color: "var(--ink-3)" }}>Allt är hanterat.</div>
+          </div>
+        )}
+
+        <div className="space-y-2.5">
+          {filtered.map(item => {
+            const isExpense = item.type === "expense";
+            const linked = isExpense ? findLinkedRecord(item.id) : null;
+            const canDrillIn = isExpense && linked && linked.record;
+            return (
+              <div key={item.id} className="card overflow-hidden slide-up">
+                <div className="px-4 py-3.5">
+                  <button
+                    onClick={() => canDrillIn && setOpenApproval(item)}
+                    className="w-full text-left"
+                    disabled={!canDrillIn}>
+                    <div className="flex items-start gap-3">
+                      <Avatar initials={item.initials} size={36} color={item.isOwn ? "var(--ink)" : "var(--ink-2)"} />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
+                          <span className="text-[13px] font-semibold">{item.employeeName}</span>
+                          {item.isOwn && <Pill tone="ink" dot>Din egen</Pill>}
+                          {item.priority === "high" && <Pill tone="rust" dot>Hög prio</Pill>}
+                        </div>
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <Icon name={item.icon} size={12} style={{ color: "var(--ink-3)" }} />
+                          <span className="text-[12.5px] font-medium" style={{ color: "var(--ink-2)" }}>{item.title}</span>
+                        </div>
+                        <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>{item.summary}</div>
+                        <div className="flex items-center gap-2 text-[10.5px] mt-1" style={{ color: "var(--ink-4)" }}>
+                          <span>Skickat {item.submitted}</span>
+                          {canDrillIn && (
+                            <>
+                              <span>·</span>
+                              <span className="flex items-center gap-0.5 font-medium" style={{ color: "var(--ink-3)" }}>
+                                Granska <Icon name="chevR" size={10} />
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  <div className="grid grid-cols-2 gap-2 mt-3">
+                    <button onClick={() => decline(item.id)}
+                      className="py-2 rounded-lg text-[12.5px] font-medium"
+                      style={{ background: "white", color: "var(--ink-2)", border: "1px solid var(--line)" }}>
+                      Avslå
+                    </button>
+                    <button onClick={() => approve(item.id)}
+                      className="py-2 rounded-lg text-[12.5px] font-semibold flex items-center justify-center gap-1"
+                      style={{ background: "var(--primary)", color: "white" }}>
+                      <Icon name="check2" size={13} strokeWidth={2.4} /> Godkänn
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {openApproval && (
+        <ApprovalExpenseDetail
+          approval={openApproval}
+          onClose={() => setOpenApproval(null)}
+          onApprove={() => approve(openApproval.id)}
+          onDecline={() => decline(openApproval.id)}
+          onRequestInfo={(q) => askForMore(openApproval.id, q)}
+        />
+      )}
+    </div>
+  );
+};
+
+/* ================================================================
+   APPROVAL EXPENSE DETAIL — manager view of one expense or travel claim
+   ================================================================ */
+
+const ApprovalExpenseDetail = ({ approval, onClose, onApprove, onDecline, onRequestInfo }) => {
+  const { findLinkedRecord } = useAppState();
+  const linked = findLinkedRecord(approval.id);
+  const expense = linked && linked.record;
+  const [showAskModal, setShowAskModal] = useState(false);
+
+  if (!expense) {
+    return (
+      <div className="fade-in" style={{ position: "absolute", inset: 0, background: "var(--bg)", zIndex: 60, display: "flex", flexDirection: "column" }}>
+        <div className="px-5 py-3.5 flex items-center" style={{ borderBottom: "1px solid var(--line)", background: "white" }}>
+          <button onClick={onClose} style={{ color: "var(--ink-2)" }}>
+            <Icon name="chevL" size={20} />
+          </button>
+        </div>
+        <div className="flex-1 flex items-center justify-center text-[12.5px]" style={{ color: "var(--ink-4)" }}>
+          Underlaget kunde inte hittas.
+        </div>
+      </div>
+    );
+  }
+
+  const isTravel = expense.type === "travel";
+  const t = expense.tripDetails;
+
+  return (
+    <div className="fade-in" style={{ position: "absolute", inset: 0, background: "var(--bg)", zIndex: 60, display: "flex", flexDirection: "column" }}>
+      <div className="px-5 py-3.5 flex items-center justify-between" style={{ borderBottom: "1px solid var(--line)", background: "white" }}>
+        <button onClick={onClose} style={{ color: "var(--ink-2)" }}>
+          <Icon name="chevL" size={20} />
+        </button>
+        <div className="font-display font-semibold text-[15px]">{isTravel ? "Reseräkning" : "Utlägg"}</div>
+        <div style={{ width: 20 }} />
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ paddingBottom: 12 }}>
+        {/* Who submitted */}
+        <div className="card px-4 py-3 flex items-center gap-3">
+          <Avatar initials={approval.initials} size={40} color={approval.isOwn ? "var(--ink)" : "var(--ink-2)"} />
+          <div className="flex-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[13px] font-semibold">{approval.employeeName}</span>
+              {approval.isOwn && <Pill tone="ink" dot>Din egen</Pill>}
+            </div>
+            <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>Skickade in {approval.submitted}</div>
+          </div>
+        </div>
+
+        {/* Hero */}
+        <div className="card overflow-hidden" style={{ background: "linear-gradient(135deg, #122121 0%, #1d3a35 100%)", color: "white", border: "none" }}>
+          <div className="px-5 py-5">
+            <div className="flex items-center gap-3 mb-3">
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Icon name={expense.icon} size={18} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-display font-semibold text-[15px] truncate">{expense.merchant}</div>
+                <div className="text-[11.5px] opacity-70 truncate">{expense.purpose || (isTravel ? "Tjänsteresa" : "Utlägg")}</div>
+              </div>
+            </div>
+            <div className="font-display num font-semibold" style={{ fontSize: 30, letterSpacing: "-0.02em" }}>
+              {expense.amount.toLocaleString("sv-SE")} <span className="text-[14px] opacity-60 font-normal">kr</span>
+            </div>
+            <div className="text-[11.5px] opacity-70 mt-1 num">{expense.date}</div>
+          </div>
+        </div>
+
+        {/* Travel breakdown */}
+        {isTravel && t && (
+          <div>
+            <div className="eyebrow mb-2 px-1">Specifikation</div>
+            <div className="card overflow-hidden">
+              {t.items && t.items.length > 0 && (
+                <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <div className="text-[10.5px] uppercase tracking-wider font-semibold mb-1.5" style={{ color: "var(--ink-3)", letterSpacing: "0.06em" }}>Utlägg ({t.items.length})</div>
+                  {t.items.map((it, i) => (
+                    <div key={i} className="flex items-center justify-between py-1.5 text-[12px]">
+                      <div className="flex items-center gap-2">
+                        <Icon name={it.icon} size={11} style={{ color: "var(--ink-3)" }} />
+                        <span style={{ color: "var(--ink-2)" }}>{it.merchant}</span>
+                        <span className="text-[10px]" style={{ color: "var(--ink-4)" }}>{it.category}</span>
+                      </div>
+                      <span className="num font-medium">{(parseFloat(it.amount) || 0).toLocaleString("sv-SE")} kr</span>
+                    </div>
+                  ))}
+                  <div className="flex justify-between mt-2 pt-2 text-[12px] font-semibold" style={{ borderTop: "1px solid var(--line-2)" }}>
+                    <span>Summa utlägg</span>
+                    <span className="num">{t.itemsTotal.toLocaleString("sv-SE")} kr</span>
+                  </div>
+                </div>
+              )}
+              {t.perdiemTotal > 0 && (
+                <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <div className="text-[10.5px] uppercase tracking-wider font-semibold mb-1.5" style={{ color: "var(--ink-3)", letterSpacing: "0.06em" }}>Traktamente</div>
+                  {parseInt(t.perdiemDays) > 0 && (
+                    <div className="flex justify-between py-1 text-[12px]">
+                      <span style={{ color: "var(--ink-2)" }}><span className="num">{t.perdiemDays}</span> heldagar á <span className="num">{TRAVEL_RATES.trakInrikesHel}</span></span>
+                      <span className="num font-medium">{(parseInt(t.perdiemDays) * TRAVEL_RATES.trakInrikesHel).toLocaleString("sv-SE")} kr</span>
+                    </div>
+                  )}
+                  {parseInt(t.perdiemHalf) > 0 && (
+                    <div className="flex justify-between py-1 text-[12px]">
+                      <span style={{ color: "var(--ink-2)" }}><span className="num">{t.perdiemHalf}</span> halvdagar á <span className="num">{TRAVEL_RATES.trakInrikesHalv}</span></span>
+                      <span className="num font-medium">{(parseInt(t.perdiemHalf) * TRAVEL_RATES.trakInrikesHalv).toLocaleString("sv-SE")} kr</span>
+                    </div>
+                  )}
+                  {parseInt(t.perdiemNights) > 0 && (
+                    <div className="flex justify-between py-1 text-[12px]">
+                      <span style={{ color: "var(--ink-2)" }}><span className="num">{t.perdiemNights}</span> nätter á <span className="num">{TRAVEL_RATES.trakInrikesNatt}</span></span>
+                      <span className="num font-medium">{(parseInt(t.perdiemNights) * TRAVEL_RATES.trakInrikesNatt).toLocaleString("sv-SE")} kr</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between mt-2 pt-2 text-[12px] font-semibold" style={{ borderTop: "1px solid var(--line-2)" }}>
+                    <span>Summa traktamente</span>
+                    <span className="num" style={{ color: "var(--success-text)" }}>{t.perdiemTotal.toLocaleString("sv-SE")} kr</span>
+                  </div>
+                  <div className="text-[10px] mt-1" style={{ color: "var(--ink-4)" }}>Skattefritt enligt Skatteverket 2026</div>
+                </div>
+              )}
+              {t.mileageTotal > 0 && (
+                <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+                  <div className="text-[10.5px] uppercase tracking-wider font-semibold mb-1.5" style={{ color: "var(--ink-3)", letterSpacing: "0.06em" }}>Milersättning</div>
+                  <div className="flex justify-between text-[12px]">
+                    <span style={{ color: "var(--ink-2)" }}><span className="num">{(parseFloat(t.mileageKm) / 10).toFixed(1).replace(".", ",")}</span> mil á <span className="num">{TRAVEL_RATES.milMileage}</span> kr</span>
+                    <span className="num font-semibold" style={{ color: "var(--success-text)" }}>{t.mileageTotal.toLocaleString("sv-SE")} kr</span>
+                  </div>
+                  <div className="text-[10px] mt-1" style={{ color: "var(--ink-4)" }}>Skattefritt enligt Skatteverket 2026</div>
+                </div>
+              )}
+              <div className="px-4 py-3.5 flex items-center justify-between" style={{ background: "var(--bg-warm)" }}>
+                <span className="font-display font-semibold text-[14px]">Total reseräkning</span>
+                <span className="font-display num font-semibold text-[18px]">{expense.amount.toLocaleString("sv-SE")} <span className="text-[12px] opacity-60 font-normal">kr</span></span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Standard expense details */}
+        {!isTravel && (
+          <>
+            <div>
+              <div className="eyebrow mb-2 px-1">Specifikation</div>
+              <div className="card overflow-hidden">
+                <ProfileRow icon="receipt" label="Kategori" value={expense.category} />
+                {expense.vat !== undefined && (
+                  <ProfileRow icon="info" label="Moms" value={`${expense.vat.toLocaleString("sv-SE")} kr`} mono />
+                )}
+                {expense.account && (
+                  <ProfileRow icon="doc" label="Kontering" value={expense.account} mono last />
+                )}
+              </div>
+            </div>
+
+            {expense.hasReceipt && (
+              <div>
+                <div className="eyebrow mb-2 px-1">Kvitto</div>
+                <div className="card overflow-hidden">
+                  <div className="px-4 py-6 flex flex-col items-center" style={{ background: "var(--bg-warm)" }}>
+                    <div style={{
+                      width: 110, height: 140, background: "white", borderRadius: 6,
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05)",
+                      padding: "10px 8px", fontFamily: "monospace", fontSize: 7, color: "#333",
+                      transform: "rotate(-2deg)",
+                    }}>
+                      <div style={{ textAlign: "center", fontWeight: 700, fontSize: 8, marginBottom: 4 }}>{expense.merchant.toUpperCase().slice(0, 18)}</div>
+                      <div style={{ borderTop: "1px dashed #999", borderBottom: "1px dashed #999", padding: "4px 0", marginBottom: 4 }}>
+                        <div className="flex justify-between"><span>{expense.category}</span><span className="num">{expense.amount}</span></div>
+                      </div>
+                      <div className="flex justify-between" style={{ fontWeight: 700, fontSize: 8 }}><span>TOTALT</span><span className="num">{expense.amount} kr</span></div>
+                      <div style={{ fontSize: 6, color: "#999", marginTop: 6 }}><div>{expense.date}</div></div>
+                    </div>
+                    <div className="mt-4 text-[11.5px] font-medium" style={{ color: "var(--ink-2)" }}>Tryck för att förstora</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Approval guidance for manager */}
+        <div className="card px-3.5 py-3 flex items-start gap-2.5" style={{ background: "var(--bg-warm)", borderColor: "var(--line)" }}>
+          <Icon name="info" size={14} style={{ color: "var(--ink-3)", marginTop: 1, flexShrink: 0 }} />
+          <div className="text-[11.5px]" style={{ color: "var(--ink-2)" }}>
+            <span className="font-semibold" style={{ color: "var(--ink)" }}>Granska innan beslut.</span>
+            {" "}Kontrollera att kvitto, syfte och belopp ser rimligt ut.
+            {isTravel && " För reseräkning: kontrollera att traktamentet stämmer med resans omfattning."}
+            {" "}Om något är otydligt — be om komplettering istället för att avslå.
+          </div>
+        </div>
+      </div>
+
+      {/* Decision footer */}
+      <div className="px-4 py-3 flex flex-col gap-2" style={{ borderTop: "1px solid var(--line)", background: "white" }}>
+        <div className="grid grid-cols-2 gap-2">
+          <button onClick={onDecline}
+            className="py-2.5 rounded-lg text-[13px] font-semibold flex items-center justify-center gap-1.5"
+            style={{ background: "white", color: "var(--rust)", border: "1px solid var(--line)" }}>
+            <Icon name="x" size={13} strokeWidth={2.4} /> Avslå
+          </button>
+          <button onClick={onApprove}
+            className="py-2.5 rounded-lg text-[13px] font-semibold flex items-center justify-center gap-1.5"
+            style={{ background: "var(--primary)", color: "white" }}>
+            <Icon name="check2" size={13} strokeWidth={2.4} /> Godkänn
+          </button>
+        </div>
+        <button onClick={() => setShowAskModal(true)}
+          className="py-2 rounded-lg text-[12.5px] font-medium flex items-center justify-center gap-1.5"
+          style={{ background: "var(--bg-warm)", color: "var(--ink-2)", border: "1px solid var(--line-2)" }}>
+          <Icon name="send" size={12} /> Begär komplettering
+        </button>
+      </div>
+
+      {showAskModal && (
+        <RequestInfoModal
+          employeeName={approval.employeeName}
+          onClose={() => setShowAskModal(false)}
+          onSend={(q) => { setShowAskModal(false); onRequestInfo(q); }}
+        />
+      )}
+    </div>
+  );
+};
+
+/* ================================================================
+   REQUEST INFO MODAL — ask employee for more info without declining
+   ================================================================ */
+
+const RequestInfoModal = ({ employeeName, onClose, onSend }) => {
+  const suggested = [
+    "Kan du ladda upp ett tydligare kvitto?",
+    "Vilken kund eller projekt avser utlägget?",
+    "Kan du specificera vad som ingick i beloppet?",
+  ];
+  const [question, setQuestion] = useState("");
+
+  return (
+    <div className="fade-in" style={{ position: "absolute", inset: 0, background: "rgba(15,17,18,0.45)", zIndex: 70, display: "flex", alignItems: "flex-end" }}>
+      <div className="w-full" style={{ background: "white", borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingBottom: 30 }}>
+        <div style={{ width: 36, height: 4, background: "var(--line)", borderRadius: 2, margin: "10px auto 14px" }} />
+        <div className="px-5">
+          <div className="font-display font-semibold text-[16px] mb-1">Begär komplettering</div>
+          <div className="text-[12px] mb-4" style={{ color: "var(--ink-3)" }}>
+            Skicka tillbaka till {employeeName} med en fråga. Utlägget förblir öppet — anställd får möjlighet att komplettera och skicka in igen.
+          </div>
+
+          <div className="eyebrow mb-2">Snabbval</div>
+          <div className="space-y-1.5 mb-3">
+            {suggested.map(s => (
+              <button key={s} onClick={() => setQuestion(s)}
+                className="w-full text-left px-3 py-2 rounded-lg text-[12.5px] transition"
+                style={{
+                  background: question === s ? "var(--bg-warm)" : "white",
+                  border: question === s ? "1px solid var(--ink-4)" : "1px solid var(--line)",
+                  color: "var(--ink-2)",
+                }}>
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <div className="eyebrow mb-2">Eller skriv egen fråga</div>
+          <textarea value={question} onChange={e => setQuestion(e.target.value)}
+            placeholder="T.ex. Vilket projekt avser utlägget?"
+            className="w-full card px-3.5 py-3 text-[13px] outline-none"
+            style={{ minHeight: 70, resize: "none" }} />
+
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            <button onClick={onClose}
+              className="py-2.5 rounded-lg text-[13px] font-medium"
+              style={{ background: "white", color: "var(--ink-2)", border: "1px solid var(--line)" }}>
+              Avbryt
+            </button>
+            <button onClick={() => onSend(question)}
+              disabled={!question.trim()}
+              className="py-2.5 rounded-lg text-[13px] font-semibold flex items-center justify-center gap-1.5"
+              style={{ background: question.trim() ? "var(--primary)" : "var(--line)", color: question.trim() ? "white" : "var(--ink-4)" }}>
+              <Icon name="send" size={12} /> Skicka
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   MANAGER — TEAM
+   ================================================================ */
+
+const ManagerTeam = () => {
+  const { team } = useAppState();
+  return (
+    <div>
+      <AppHeader title="Mitt team" subtitle={`${team.length} medarbetare`} large
+        trailing={<button style={{ color: "var(--ink-2)" }}><Icon name="search" size={20} /></button>} />
+
+      <div className="px-4 pb-6 space-y-4">
+        {/* Status overview */}
+        <div className="card slide-up overflow-hidden">
+          <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--line-2)" }}>
+            <div className="eyebrow">Status just nu</div>
+          </div>
+          <div className="grid grid-cols-3">
+            <div className="px-3 py-3 text-center" style={{ borderRight: "1px solid var(--line-2)" }}>
+              <div className="font-display num font-semibold text-[20px]" style={{ color: "var(--success-text)" }}>
+                {team.filter(m => m.status === "i_arbete").length}
+              </div>
+              <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>I arbete</div>
+            </div>
+            <div className="px-3 py-3 text-center" style={{ borderRight: "1px solid var(--line-2)" }}>
+              <div className="font-display num font-semibold text-[20px]" style={{ color: "var(--rust)" }}>
+                {team.filter(m => m.status === "franvarande").length}
+              </div>
+              <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>Frånvarande</div>
+            </div>
+            <div className="px-3 py-3 text-center">
+              <div className="font-display num font-semibold text-[20px]" style={{ color: "var(--amber)" }}>
+                {team.filter(m => m.status === "saknar_tidrapport").length}
+              </div>
+              <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>Saknar tid</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Team list */}
+        <div>
+          <div className="eyebrow mb-2 px-1">Alla medarbetare</div>
+          <div className="card overflow-hidden">
+            {team.map((m, i) => (
+              <div key={m.id} className="px-4 py-3.5 flex items-center gap-3 row-tap"
+                style={{ borderBottom: i === team.length - 1 ? "none" : "1px solid var(--line-2)" }}>
+                <Avatar initials={m.initials} size={38} color={teamStatusColor(m.status)} />
+                <div className="flex-1 min-w-0">
+                  <div className="text-[13px] font-semibold">{m.name}</div>
+                  <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>{m.role}</div>
+                  <div className="text-[10.5px] mt-0.5" style={{ color: teamStatusTextColor(m.status) }}>{m.statusLabel}</div>
+                </div>
+                {m.todayHours > 0 && (
+                  <div className="text-right">
+                    <div className="font-display num font-semibold text-[13.5px]">{m.todayHours}<span className="text-[10.5px] opacity-60 font-normal"> h</span></div>
+                    <div className="text-[10px]" style={{ color: "var(--ink-4)" }}>idag</div>
+                  </div>
+                )}
+                <Icon name="chevR" size={15} style={{ color: "var(--ink-4)" }} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   APP — phone shell, persona switching, routing
+   ================================================================ */
+
+const App = () => {
+  const [role, setRole] = useState("employee");
+  const [tab, setTab] = useState("home");
+  const { resetAll } = useAppState();
+
+  const switchRole = () => {
+    setRole(role === "employee" ? "manager" : "employee");
+    setTab("home");
+  };
+
+  const handleReset = () => {
+    resetAll();
+    setRole("employee");
+    setTab("home");
+  };
+
+  const renderTab = () => {
+    if (role === "employee") {
+      switch (tab) {
+        case "home":     return <EmployeeHome role={role} switchRole={switchRole} setTab={setTab} />;
+        case "time":     return <EmployeeTime />;
+        case "expenses": return <EmployeeExpenses />;
+        case "me":       return <EmployeeMe role={role} switchRole={switchRole} />;
+        default:         return null;
+      }
+    } else {
+      switch (tab) {
+        case "home":      return <ManagerHome switchRole={switchRole} setTab={setTab} />;
+        case "approvals": return <ManagerApprovals />;
+        case "team":      return <ManagerTeam />;
+        case "me":        return <EmployeeMe role={role} switchRole={switchRole} />;
+        default:          return null;
+      }
+    }
+  };
+
+  return (
+    <div className="phone-frame">
+      <div className="persona-switcher">
+        <button onClick={() => { setRole("employee"); setTab("home"); }}
+          className={"persona-pill" + (role === "employee" ? " active" : "")}>
+          <Icon name="user" size={11} className="inline mr-1.5" /> Anställd
+        </button>
+        <button onClick={() => { setRole("manager"); setTab("home"); }}
+          className={"persona-pill" + (role === "manager" ? " active" : "")}>
+          <Icon name="users" size={11} className="inline mr-1.5" /> Chef
+        </button>
+      </div>
+
+      <div className="frame-meta">
+        Kontek Sphere · Erik Bergström, Produktionsledare hos Norrström Industrier
+        <button onClick={handleReset}
+          style={{ marginLeft: 12, padding: "3px 10px", borderRadius: 6, background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.12)", fontSize: 10.5, cursor: "pointer" }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "white"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}>
+          ↻ Återställ prototyp
+        </button>
+      </div>
+
+      <div className="phone-screen">
+        <div className="phone-island" />
+        <StatusBar />
+        <div className="phone-content">
+          {renderTab()}
+        </div>
+        <TabBar activeTab={tab} setTab={setTab} role={role} />
+      </div>
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <AppStateProvider><App /></AppStateProvider>
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!-- @dsCard group="Atoms" name="Motion" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Motion &amp; transitions — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .durs { display:flex; flex-direction:column; gap:0; width:100%; }
+  .drow { display:flex; align-items:center; gap:16px; padding:12px 4px; border-bottom:1px solid var(--line-2); }
+  .drow:last-child { border-bottom:0; }
+  .drow .tok { width:160px; font-size:13px; font-weight:600; color:var(--ink); flex-shrink:0; }
+  .drow .ms { width:56px; font-size:12.5px; color:var(--ink-3); font-variant-numeric:tabular-nums; flex-shrink:0; }
+  .drow .track { flex:1; height:8px; background:var(--surface-2); border-radius:999px; position:relative; overflow:hidden; min-width:80px; }
+  .drow .fill { position:absolute; inset:0; width:0; background:var(--green); border-radius:999px; }
+  .drow .use { width:190px; font-size:12.5px; color:var(--ink-3); flex-shrink:0; }
+
+  .curves { display:flex; gap:26px; flex-wrap:wrap; }
+  .curve { text-align:center; }
+  .curve svg { display:block; background:var(--surface-2); border-radius:10px; }
+  .curve .cn { font-size:12px; font-weight:600; color:var(--ink); margin-top:9px; }
+  .curve .cv { font-size:10.5px; color:var(--ink-3); margin-top:1px; }
+
+  .demo-card { width:170px; padding:18px; border-radius:14px; background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow-sm); font-size:13px; color:var(--ink-2); }
+  .loader { width:34px; height:34px; border-radius:50%; border:3px solid var(--surface-2); border-top-color:var(--green); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .drow .fill { animation: grow 2.6s var(--gaia-easing-standard) infinite; }
+    .demo-card { transition: transform var(--gaia-transition-reveal), box-shadow var(--gaia-transition-reveal); }
+    .demo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .loader { animation: spin 0.9s linear infinite; }
+    @keyframes grow { 0%,8% { width:0; } 55%,100% { width:100%; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Motion</h1>
+  <div class="dg-intro"><p>Återhållsam rörelse: 120–320ms, mjuk easing. Tryck = liten scale(0.98). <b>Ingen studs, ingen oändlig loop</b>; respektera reducerad rörelse.</p></div>
+
+  <div class="sec">
+    <h2>Duration</h2>
+    <p>Hela skalan ryms inom 400ms — rörelsen ska kännas, inte väntas på. Kortare för direkt feedback, längre för ytor som glider in. Vid <em>prefers-reduced-motion</em> kollapsar alla till 0ms.</p>
+    <div class="frame">
+      <div class="durs">
+        <div class="drow"><span class="tok">instant</span><span class="ms">50ms</span><span class="track"><span class="fill"></span></span><span class="use">Hover-ton, kantbyte</span></div>
+        <div class="drow"><span class="tok">fast</span><span class="ms">100ms</span><span class="track"><span class="fill"></span></span><span class="use">Kryssruta, reglage, klick</span></div>
+        <div class="drow"><span class="tok">moderate</span><span class="ms">150ms</span><span class="track"><span class="fill"></span></span><span class="use">Dropdown, tooltip, dragspel</span></div>
+        <div class="drow"><span class="tok">slow</span><span class="ms">250ms</span><span class="track"><span class="fill"></span></span><span class="use">Modal, drawer, notis</span></div>
+        <div class="drow"><span class="tok">slower</span><span class="ms">400ms</span><span class="track"><span class="fill"></span></span><span class="use">Scrim / bakgrundsdimning</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Easing</h2>
+    <p>Standard för synliga övergångar, entrance för element som dyker upp, exit för element som lämnar, linear för konstant takt (loaders, progress).</p>
+    <div class="frame">
+      <div class="curves">
+        <div class="curve">
+          <svg width="100" height="100" viewBox="0 0 100 100"><path d="M0 100 C20 100 38 10 100 0" fill="none" stroke="var(--green-deep)" stroke-width="2.5"/></svg>
+          <div class="cn">standard</div><div class="cv">0.2, 0, 0.38, 0.9</div>
+        </div>
+        <div class="curve">
+          <svg width="100" height="100" viewBox="0 0 100 100"><path d="M0 100 C0 100 38 10 100 0" fill="none" stroke="var(--green-deep)" stroke-width="2.5"/></svg>
+          <div class="cn">entrance</div><div class="cv">0, 0, 0.38, 0.9</div>
+        </div>
+        <div class="curve">
+          <svg width="100" height="100" viewBox="0 0 100 100"><path d="M0 100 C20 100 100 10 100 0" fill="none" stroke="var(--green-deep)" stroke-width="2.5"/></svg>
+          <div class="cn">exit</div><div class="cv">0.2, 0, 1, 0.9</div>
+        </div>
+        <div class="curve">
+          <svg width="100" height="100" viewBox="0 0 100 100"><path d="M0 100 L100 0" fill="none" stroke="var(--green-deep)" stroke-width="2.5"/></svg>
+          <div class="cn">linear</div><div class="cv">jämn takt</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>In practice</h2>
+    <p>Hovra kortet för det lyft de flesta ytor gör. Loadern går i konstant linjär takt. Ingen studs, ingen oändlig dekorativ rörelse på innehåll.</p>
+    <div class="frame center">
+      <div class="demo-card">Hovra för lyft + djupare skugga</div>
+      <div class="loader"></div>
+      <span style="font-size:12.5px;color:var(--ink-3);">Loader · linear · kontinuerlig</span>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Keep motion 120&ndash;320ms on <code>cubic-bezier(.22,.61,.36,1)</code>.</li>
+          <li>Press = a slight <code>scale(0.98)</code> that springs back.</li>
+          <li>Make entrances transform-only and respect <code>prefers-reduced-motion</code>.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Add hover states on the phone &mdash; resting and hover look identical.</li>
+          <li>Use bounce, spin or infinite loops on content.</li>
+          <li>Animate opacity-from-0 with no reduced-motion fallback &mdash; a paused frame must still show content.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

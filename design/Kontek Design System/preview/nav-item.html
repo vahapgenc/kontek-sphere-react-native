@@ -1,0 +1,206 @@
+<!-- @dsCard group="Organisms" viewport="1240x760" name="Top menu" subtitle="Desktop navigation — 80px bar, full & compact" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Top menu — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding:30px 34px 60px; }
+  .lead { max-width:760px; margin:0 0 24px; }
+  .lead h1 { font-family:var(--font-ui); font-size:22px; font-weight:var(--w-semibold); margin:0 0 6px; color:var(--ink); }
+  .lead p { font-size:13.5px; color:var(--ink-3); margin:0; line-height:1.55; }
+
+  /* ===================== TOP MENU BAR ===================== */
+  .tm {
+    display:flex; align-items:stretch; height:80px; background:var(--kontek-green);
+    border-radius:16px; font-family:var(--font-ui); position:relative;
+  }
+  .tm--compact { height:64px; }
+
+  /* logo */
+  .tm__logo { display:flex; align-items:center; padding-left:28px; padding-right:14px; flex-shrink:0; }
+  .tm__logo img { height:30px; width:auto; display:block; }
+  .tm--compact .tm__logo img { height:26px; }
+
+  /* nav items */
+  .tm__nav { display:flex; align-items:stretch; flex-shrink:0; }
+  .tm-item {
+    position:relative; display:flex; align-items:center; gap:7px; padding:0 16px; border:none; cursor:pointer;
+    background:transparent; color:var(--status-badge); font-family:var(--font-ui); flex-shrink:0;
+    font-size:15px; font-weight:500; white-space:nowrap;
+    transition:background var(--gaia-transition-state), color var(--gaia-transition-state);
+  }
+  .tm--compact .tm-item { font-size:14px; }
+  .tm-item:hover { background:rgba(255,255,255,0.06); }
+  .tm-item .chev { width:15px; height:15px; opacity:.85; }
+  .tm-item.is-active { color:#ffffff; font-weight:700; background:rgba(255,255,255,0.15); }
+  .tm-item.is-active::after {
+    content:''; position:absolute; left:16px; right:16px; bottom:0; height:3px;
+    border-radius:3px 3px 0 0; background:var(--status-badge);
+  }
+  .tm-item svg { fill:none; stroke:currentColor; stroke-width:1.85; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* right cluster */
+  .tm__right { margin-left:auto; min-width:0; display:flex; align-items:center; gap:18px; padding:0 22px; }
+  .tm-icon, .tm-avatar { flex-shrink:0; }
+  .tm-icon {
+    position:relative; width:40px; height:40px; border-radius:10px; border:none; cursor:pointer;
+    background:transparent; color:var(--status-badge); display:flex; align-items:center; justify-content:center;
+    transition:background var(--gaia-transition-state), color var(--gaia-transition-state);
+  }
+  .tm-icon:hover { background:rgba(255,255,255,0.06); color:#fff; }
+  .tm-icon svg { width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.85; stroke-linecap:round; stroke-linejoin:round; }
+  .tm-badge {
+    position:absolute; top:2px; right:0; min-width:18px; padding:2px 6px; border-radius:999px;
+    background:var(--ok-soft); color:var(--ok-text); font-size:12px; font-weight:600;
+    line-height:1; text-align:center; box-sizing:border-box;
+  }
+  /* company pill */
+  .tm-company {
+    display:flex; align-items:center; gap:9px; height:42px; padding:0 14px; border-radius:10px; cursor:pointer;
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+    color:#fff; font-family:var(--font-ui); font-size:15px; font-weight:700; white-space:nowrap;
+    min-width:0; transition:background var(--gaia-transition-state);
+  }
+  .tm-company:hover { background:rgba(255,255,255,0.13); }
+  .tm-company__name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px; }
+  .tm-company .bi { width:18px; height:18px; opacity:.92; flex-shrink:0; }
+  .tm-company .chev { width:15px; height:15px; opacity:.7; flex-shrink:0; }
+  .tm-company svg { fill:none; stroke:currentColor; stroke-width:1.85; stroke-linecap:round; stroke-linejoin:round; }
+  /* avatar */
+  .tm-avatar { width:40px; height:40px; border-radius:999px; flex-shrink:0; border:1.5px solid rgba(255,255,255,0.25);
+    display:flex; align-items:center; justify-content:center; color:#fff; background:rgba(255,255,255,0.06); }
+  .tm-avatar svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ===================== DROPDOWN PANEL ===================== */
+  .tm-drop {
+    position:absolute; top:calc(100% + 6px); left:0; min-width:248px; background:var(--surface);
+    border-radius:14px; padding:7px 0; box-shadow:var(--elev-menu); z-index:20;
+  }
+  .tm-row {
+    display:flex; align-items:center; gap:12px; padding:11px 20px; cursor:pointer;
+    font-family:var(--font-ui); font-size:15px; font-weight:400; color:var(--ink); white-space:nowrap;
+    transition:background var(--gaia-transition-state);
+  }
+  .tm-row:hover, .tm-row.is-active { background:var(--surface-2); }
+  .tm-row.is-disabled { color:var(--silver-mist); cursor:not-allowed; }
+  .tm-row svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ===================== STATE SWATCHES ===================== */
+  .states { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start; }
+  .stategroup { display:flex; flex-direction:column; gap:10px; }
+  .stategroup .cap { font-size:11px; font-weight:600; color:var(--ink-3); letter-spacing:.04em;  }
+  .barstrip { display:inline-flex; background:var(--kontek-green); border-radius:12px; padding:0; height:64px; align-items:stretch; }
+  .anatomy div b { color:var(--ink); }
+</style>
+</head>
+<body>
+
+  <div class="lead">
+    <h1>Toppmeny (desktop)</h1>
+    <p>Den vägvisande ytan på <strong>desktop</strong> — en vågrät meny högst upp i vyn istället för en sidopanel. Logotyp till vänster, navigeringsflikar i mitten och ett höger­kluster med ikonknappar, företagsväljare och konto. Klädd i Konteks gröna varumärkesyta med mint navigeringstext. <strong>80px hög</strong> i fullt läge, <strong>64px</strong> i kompakt läge. På mobil ersätts den av den nedre flikraden (se Bottom tab bar).</p>
+  </div>
+
+  <!-- ========== FULL BAR (with dropdown) ========== -->
+  <div class="sec">
+    <h2>Full mode · 80px</h2>
+    <p>Aktiv flik i vit fet text med 3px mint-understreck och en svag vit ton. Vilande flikar i mint; hover lägger en svag vit ton. En flik kan fälla ut en panel.</p>
+    <div class="frame" style="display:block; padding-bottom:150px;">
+      <div class="tm">
+        <div class="tm__logo"><img src="../assets/kontek-logo-negative.png" alt="Kontek"></div>
+        <nav class="tm__nav">
+          <button class="tm-item is-active">Översikt
+            <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            <div class="tm-drop">
+              <div class="tm-row is-active"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg> Start</div>
+              <div class="tm-row"><svg viewBox="0 0 24 24"><path d="M11 12H3M16 6H3M21 18H3"/></svg> Att göra</div>
+              <div class="tm-row"><svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> Kalender</div>
+              <div class="tm-row is-disabled"><svg viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></svg> Arkiverat</div>
+            </div>
+          </button>
+          <button class="tm-item">Lön</button>
+          <button class="tm-item">Tid</button>
+          <button class="tm-item">Rapporter <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+          <button class="tm-item">Anställda</button>
+        </nav>
+        <div class="tm__right">
+          <button class="tm-icon" aria-label="Sök"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+          <button class="tm-icon" aria-label="Notiser"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="tm-badge">3</span></button>
+          <button class="tm-icon" aria-label="Hjälp"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></button>
+          <button class="tm-company"><svg class="bi" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M16 10h.01M8 10h.01M12 14h.01M16 14h.01M8 14h.01"/></svg> <span class="tm-company__name">Norrström AB</span> <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+          <span class="tm-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5.5 21a8.38 8.38 0 0 1 13 0"/></svg></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== COMPACT BAR ========== -->
+  <div class="sec">
+    <h2>Compact mode · 64px</h2>
+    <p>Samma struktur, lägre bar och mindre logotyp — för täta arbetsytor och vid nedrullning.</p>
+    <div class="frame" style="display:block;">
+      <div class="tm tm--compact">
+        <div class="tm__logo"><img src="../assets/kontek-logo-negative.png" alt="Kontek"></div>
+        <nav class="tm__nav">
+          <button class="tm-item">Översikt</button>
+          <button class="tm-item is-active">Lön</button>
+          <button class="tm-item">Tid</button>
+          <button class="tm-item">Rapporter</button>
+          <button class="tm-item">Anställda</button>
+        </nav>
+        <div class="tm__right">
+          <button class="tm-icon" aria-label="Sök"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+          <button class="tm-icon" aria-label="Notiser"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="tm-badge">3</span></button>
+          <button class="tm-company"><svg class="bi" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/></svg> <span class="tm-company__name">Norrström AB</span> <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+          <span class="tm-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5.5 21a8.38 8.38 0 0 1 13 0"/></svg></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ANATOMY ========== -->
+  <div class="sec">
+    <h2>Dimensions &amp; tokens</h2>
+    <div class="frame anatomy">
+      <div><b>Bar</b> &nbsp;80px (64px kompakt) · <span class="u-strong">--kontek-green</span> #053F22</div>
+      <div><b>Logotyp</b> &nbsp;30px hög (26px kompakt), 28px vänstermarginal</div>
+      <div><b>Flik</b> &nbsp;padding 0 16px · 15px/500 (14px kompakt)</div>
+      <div><b>Vilande flik</b> &nbsp;--status-badge #9DDFB5</div>
+      <div><b>Aktiv flik</b> &nbsp;#ffffff / 700 · ton rgba(255,255,255,.15) · 3px understreck</div>
+      <div><b>Hover</b> &nbsp;rgba(255,255,255,0.06)</div>
+      <div><b>Högerkluster</b> &nbsp;padding 0 22px · gap 18px</div>
+      <div><b>Ikonknappar</b> &nbsp;40×40px</div>
+      <div><b>Företagspill</b> &nbsp;42px hög · padding 0 14px · radie 10px</div>
+      <div><b>Notisbricka</b> &nbsp;--ok-soft #E6F7ED bg · --ok-text #053F22 · 12px/600</div>
+      <div><b>Panel</b> &nbsp;min 248px · radie 14px (--r-card) · rad 11px 20px · --elev-menu</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use this horizontal top menu on the <b>desktop</b> web app (80px bar).</li>
+          <li>Keep it visually consistent with the dark forest sidebar of the desktop kit.</li>
+          <li>On the phone, navigate with the bottom tab bar instead.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Ship this top menu on a phone &mdash; it is desktop chrome.</li>
+          <li>Diverge its brand colours from the desktop system.</li>
+          <li>Duplicate it alongside a bottom tab bar on the same screen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

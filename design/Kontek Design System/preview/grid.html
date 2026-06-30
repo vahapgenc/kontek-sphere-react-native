@@ -1,0 +1,100 @@
+<!-- @dsCard group="Atoms" name="Grid" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Grid — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .grid12 { display:grid; grid-template-columns:repeat(12,1fr); gap:16px; width:100%; }
+  .col { height:72px; background:var(--green-soft); border:1px solid var(--green-line); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--green-deep); font-weight:600; }
+  .layout { display:grid; grid-template-columns:repeat(12,1fr); gap:16px; width:100%; }
+  .blk { height:56px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; }
+  .bp { width:100%; border-collapse:collapse; font-size:13px; }
+  .bp th, .bp td { text-align:left; padding:11px 12px; border-bottom:1px solid var(--line-2); }
+  .bp th { font-size:11px; letter-spacing:.06em;  color:var(--ink-3); font-weight:700; }
+  .bp td { color:var(--ink-2); }
+  .bp td b { color:var(--ink); font-weight:600; }
+  .bp tr:last-child td { border-bottom:0; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Grid</h1>
+  <div class="dg-intro"><p>12-kolumners layoutrutnät med 16px mellanrum. Gruppera element med <b>flex/grid och gap</b>, aldrig lösa marginaler.</p></div>
+
+  <div class="sec">
+    <h2>12-column grid</h2>
+    <p>Allt innehåll vilar på ett 12-kolumners rutnät. Tolv kolumner delar jämnt i 2, 3, 4 och 6 — vilket täcker de flesta uppställningar i den här desktop-applikationen. Standardränna 24px; marginalerna växer med fönsterbredden.</p>
+    <div class="frame">
+      <div class="grid12">
+        <div class="col">1</div><div class="col">2</div><div class="col">3</div><div class="col">4</div>
+        <div class="col">5</div><div class="col">6</div><div class="col">7</div><div class="col">8</div>
+        <div class="col">9</div><div class="col">10</div><div class="col">11</div><div class="col">12</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Common layouts</h2>
+    <p>Spann uttrycks i kolumner. Sido­panel + innehåll (3 / 9), tre kort (4 + 4 + 4) eller halvor (6 / 6).</p>
+    <div class="frame col">
+      <div class="layout">
+        <div class="blk" style="grid-column:span 3;background:var(--signature);color:#fff;">3</div>
+        <div class="blk" style="grid-column:span 9;background:var(--surface-2);color:var(--ink-2);">9</div>
+      </div>
+      <div class="layout">
+        <div class="blk" style="grid-column:span 4;background:var(--surface-2);color:var(--ink-2);">4</div>
+        <div class="blk" style="grid-column:span 4;background:var(--surface-2);color:var(--ink-2);">4</div>
+        <div class="blk" style="grid-column:span 4;background:var(--surface-2);color:var(--ink-2);">4</div>
+      </div>
+      <div class="layout">
+        <div class="blk" style="grid-column:span 6;background:var(--green-soft);color:var(--green-deep);">6</div>
+        <div class="blk" style="grid-column:span 6;background:var(--green-soft);color:var(--green-deep);">6</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Breakpoints</h2>
+    <p>Kontek Next är en desktop-applikation. Kolumnantalet är alltid 12; marginal och ränna växer med fönstret. Innehållsytan ligger till höger om sidonavigeringen (280px). Över 1920px centreras innehållet i en maxbredd.</p>
+    <div class="frame">
+      <table class="bp">
+        <thead><tr><th>Fönster</th><th>Bredd</th><th>Kolumner</th><th>Marginal</th><th>Ränna</th></tr></thead>
+        <tbody>
+          <tr><td><b>Liten desktop</b></td><td>1024–1280px</td><td>12</td><td>24px</td><td>24px</td></tr>
+          <tr><td><b>Standard</b></td><td>1280–1440px</td><td>12</td><td>32px</td><td>24px</td></tr>
+          <tr><td><b>Stor</b></td><td>1440–1920px</td><td>12</td><td>40px</td><td>24px</td></tr>
+          <tr><td><b>Bred</b></td><td>&gt; 1920px</td><td>12</td><td>auto</td><td>24px · max 1680px</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Lay out with the 16px gutter and keep the screen gutter on every edge.</li>
+          <li>Group rows of elements with <code>display:flex</code>/<code>grid</code> + <code>gap</code>.</li>
+          <li>Let columns collapse to a single column on the narrowest phones.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Space siblings with per-element margins &mdash; use <code>gap</code>.</li>
+          <li>Crowd content edge-to-edge; keep the 16px screen gutter.</li>
+          <li>Mix gutter widths within one screen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,410 @@
+/* ============================================================
+   KONTEK NEXT — Colors & Type  (DASHBOARD-PINNED SNAPSHOT)
+   Frozen copy of the original palette. The Dashboard UI kit loads
+   THIS file so it stays on the original colors while the wider
+   design system (../../colors_and_type.css) moves to the new palette.
+   Do not delete — index.html depends on it.
+   Fonts: Open Sans (UI + display)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ---------- BRAND CORE (provided tokens) ---------- */
+  --ground:        #122121; /* Deepest Ground — darkest nav / footer */
+  --signature:     #203B3C; /* Brand Signature — primary dark green */
+  --guide:         #4E7476; /* Guide — mid-tone teal-green */
+  --green:         #61BC8F; /* Accent — sparingly: icons, eyebrows, CTA */
+  --red:           #E1462E; /* Primary CTA red */
+
+  /* ---------- BRAND SUPPORT (derived, harmonized) ---------- */
+  --signature-hi:  #2A4B4C; /* hover/raised state on signature */
+  --guide-hi:      #6E9092; /* lighter guide — hairlines on dark */
+  --green-deep:    #053F22; /* deep green — legible as text on light (success text), Kontek Green */
+  --green-soft:    #E6F7ED; /* green tint — subtle fills/badges */
+  --green-line:    #BFE3CF; /* green tint — borders on light */
+
+  /* ---------- PRIMARY ACTION (teal-green, per button spec) ----------
+     The default primary button is mid-tone teal-green that deepens to a
+     near-black teal on hover/press. Green = positive/approve. Red = destructive. */
+  --action:              #395F61; /* primary button fill (rest) */
+  --action-hi:           #052225; /* primary button hover — near-black teal */
+  --action-press:        #052225; /* primary button active/pressed */
+  --action-ring:         #395F61; /* focus ring (2px solid, 2px offset) */
+  --action-disabled:     #E2E4E9; /* disabled fill — cool light gray */
+  --action-disabled-ink: #9CA3AE; /* disabled label */
+
+  /* ---------- NEUTRALS (cool near-white, faint teal tint) ----------
+     Reconciled to the shipping prototypes (Hub / Sphere). */
+  --canvas:        #FAFBFB; /* app background — cool near-white */
+  --surface:       #FFFFFF; /* cards, panels */
+  --surface-2:     #F4F6F6; /* inset / secondary surface */
+  --ink:           #0F1B1B; /* primary text — near-black, faint teal */
+  --ink-2:         #2A3C3C; /* secondary text */
+  --ink-3:         #5E6E6E; /* muted / captions */
+  --ink-4:         #8B9899; /* faintest — placeholders */
+  --on-dark:       #EEF2EF; /* primary text on dark */
+  --on-dark-2:     #A9BEBC; /* secondary text on dark */
+  --on-dark-3:     #748B8A; /* muted text on dark */
+
+  /* ---------- HAIRLINES & DIVIDERS ---------- */
+  --line:          #E5E9E9;
+  --line-2:        #EEF1F1;
+  --line-on-dark:  rgba(238, 242, 239, 0.12);
+
+  /* ---------- SEMANTIC STATUS ----------
+     Each status: text/icon colour + soft alert background. */
+  --ok:            #053F22; /* success text & icons (Kontek Green) */
+  --ok-text:       #053F22;
+  --ok-soft:       #E6F7ED; /* success notification background */
+  --ok-accent:     #61BC8F; /* success brand accent (progress, dots) */
+  --warn:          #7A4A0E; /* warning text & icons */
+  --warn-text:     #7A4A0E;
+  --warn-soft:     #FEF4E7; /* warning alert background */
+  --danger:        #9C3232; /* error text & icons */
+  --danger-text:   #9C3232;
+  --danger-soft:   #FDEEED; /* error message background */
+  --info:          #1A5298; /* informational text & icons */
+  --info-text:     #1A5298;
+  --info-soft:     #EBF2FB; /* information alert background */
+
+  /* ---------- TYPE FAMILIES ---------- */
+  --font-display:  'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-ui:       'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:     'JetBrains Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
+
+  /* ---------- TYPE SCALE (px) ---------- */
+  --t-display:     56px; /* hero serif */
+  --t-h1:          40px;
+  --t-h2:          30px;
+  --t-h3:          22px;
+  --t-title:       18px; /* card titles */
+  --t-body:        15px;
+  --t-body-sm:     14px;
+  --t-caption:     13px;
+  --t-eyebrow:     12px;
+  --t-micro:       11px;
+
+  /* ---------- WEIGHTS ---------- */
+  --w-regular:     400;
+  --w-medium:      500;
+  --w-semibold:    600;
+  --w-bold:        700;
+
+  /* ---------- RADII ---------- */
+  --r-button:      8px;  /* provided: 8pt button radius */
+  --r-input:       8px;
+  --r-card:        14px;
+  --r-panel:       18px;
+  --r-pill:        999px;
+  --r-sm:          6px;
+
+  /* ---------- SPACING (4px base) ---------- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px;
+
+  /* ---------- ELEVATION ---------- */
+  --shadow-xs:  0 1px 2px rgba(18, 33, 33, 0.05);
+  --shadow-sm:  0 1px 3px rgba(18, 33, 33, 0.06), 0 1px 2px rgba(18, 33, 33, 0.04);
+  --shadow-md:  0 4px 14px rgba(18, 33, 33, 0.08), 0 1px 3px rgba(18, 33, 33, 0.05);
+  --shadow-lg:  0 12px 32px rgba(18, 33, 33, 0.12), 0 2px 8px rgba(18, 33, 33, 0.06);
+  --shadow-cta: 0 6px 18px rgba(18, 33, 33, 0.18);
+
+  /* ---------- APP SHELL / LAYOUT (Dashboard layout spec) ----------
+     The new application frame: a near-black teal sidebar with a soft glow,
+     a mint call-to-action, and a floating white content panel. */
+  --shell-bg:        #052225; /* sidebar — near-black teal (= primary hover) */
+  --shell-bg-2:      #0E2E30; /* glow / raised tone inside sidebar */
+  --shell-active:    #203B3C; /* active nav pill — Brand Signature */
+  --shell-hover:     rgba(255,255,255,0.07); /* nav item hover wash */
+  --shell-ink:       #FFFFFF; /* nav label + icon (active/primary) */
+  --shell-ink-2:     #8FA1A1; /* muted nav label (resting) */
+  --shell-line:      rgba(255,255,255,0.08); /* dividers on shell */
+  --shell-cta:       #A9E3BE; /* mint CTA fill */
+  --shell-cta-hi:    #97D9AE; /* mint CTA hover */
+  --shell-cta-ink:   #052225; /* CTA label + icon */
+
+  /* shell dimensions */
+  --sidebar-w:           280px;
+  --sidebar-w-collapsed: 84px;
+  --topbar-h:            80px;
+  --shell-gap:           10px;  /* float margin of content panel (right/bottom) */
+  --r-shell-panel:       18px;  /* content-panel corner radius */
+
+  /* content-panel background — faint green glow top-left → white */
+  --panel-grad: radial-gradient(135% 105% at 0% 0%, #EEF5F5 0%, #F8FBFB 40%, #FFFFFF 78%);
+
+  /* elevation measured from the layout */
+  --elev-panel: 0 1px 2px rgba(5, 34, 37, 0.04);
+  --elev-menu:  0 14px 38px rgba(5, 34, 37, 0.20), 0 3px 10px rgba(5, 34, 37, 0.12); /* fly-out / dropdown */
+  --elev-pop:   0 8px 24px rgba(5, 34, 37, 0.14), 0 2px 6px rgba(5, 34, 37, 0.08);  /* company / user popover */
+  --elev-float: 0 18px 48px rgba(0, 0, 0, 0.34), 0 4px 12px rgba(0, 0, 0, 0.20);    /* white panel floating on dark */
+
+  /* ============================================================
+     GAIA FOUNDATION SCALES (Atoms) — canonical primitive tokens.
+     Spacing · Sizing · Radius · Shadows · Motion.
+     ============================================================ */
+
+  /* ---------- SPACING SCALE (spacing-00 … spacing-13) ----------
+     Layout gaps, padding and margins. Base unit 4px. */
+  --space-00: 0;      /* 0rem    */
+  --space-01: 2px;    /* 0.125rem */
+  --space-02: 4px;    /* 0.25rem */
+  --space-03: 8px;    /* 0.5rem  */
+  --space-04: 12px;   /* 0.75rem */
+  --space-05: 16px;   /* 1rem    */
+  --space-06: 24px;   /* 1.5rem  */
+  --space-07: 32px;   /* 2rem    */
+  --space-08: 40px;   /* 2.5rem  */
+  --space-09: 48px;   /* 3rem    */
+  --space-10: 64px;   /* 4rem    */
+  --space-11: 80px;   /* 5rem    */
+  --space-12: 96px;   /* 6rem    */
+  --space-13: 160px;  /* 10rem   */
+
+  /* ---------- SIZING SCALE (size-N) — Major Second (1.125) ----------
+     Widths / heights of elements. Token number == px value. */
+  --size-0: 0;     --size-1: 1px;    --size-2: 2px;    --size-4: 4px;
+  --size-6: 6px;   --size-8: 8px;    --size-10: 10px;  --size-12: 12px;
+  --size-14: 14px; --size-16: 16px;  --size-18: 18px;  --size-20: 20px;
+  --size-24: 24px; --size-28: 28px;  --size-32: 32px;  --size-36: 36px;
+  --size-40: 40px; --size-44: 44px;  --size-48: 48px;  --size-56: 56px;
+  --size-64: 64px; --size-80: 80px;  --size-96: 96px;  --size-112: 112px;
+  --size-128: 128px; --size-144: 144px; --size-160: 160px; --size-192: 192px;
+  --size-224: 224px; --size-256: 256px; --size-288: 288px; --size-320: 320px;
+  --size-352: 352px; --size-384: 384px; --size-416: 416px;
+
+  /* ---------- RADIUS PRIMITIVES (minimal — 3 values) ---------- */
+  --radius-default: 4px;     /* standard corner */
+  --radius-sharp:   0.02em;  /* near-square */
+  --radius-round:   999px;   /* pills / circles */
+
+  /* ---------- SHADOWS — directional elevation (base rgb 1,53,71) ----------
+     Named by light direction; the shadow falls on the opposite side.
+     4 stacked layers per token for a soft, realistic falloff. */
+  --shadow-north:
+      0 61px 24px rgba(1,53,71,0.01),
+      0 34px 21px rgba(1,53,71,0.05),
+      0 15px 15px rgba(1,53,71,0.09),
+      0 4px  8px  rgba(1,53,71,0.10);
+  --shadow-south:
+      0 -10px 4px rgba(1,53,71,0.01),
+      0 -6px  3px rgba(1,53,71,0.04),
+      0 -2px  2px rgba(1,53,71,0.07),
+      0 -1px  1px rgba(1,53,71,0.08);
+  --shadow-east:
+      -34px 0 14px rgba(1,53,71,0.01),
+      -19px 0 11px rgba(1,53,71,0.05),
+      -8px  0 8px  rgba(1,53,71,0.09),
+      -2px  0 5px  rgba(1,53,71,0.10);
+  --shadow-west:
+      21px 0 8px rgba(1,53,71,0.01),
+      12px 0 7px rgba(1,53,71,0.05),
+      5px  0 5px rgba(1,53,71,0.09),
+      1px  0 3px rgba(1,53,71,0.10);
+
+  /* ---------- MOTION ---------- */
+  /* legacy aliases (kept for existing components) */
+  --ease:        cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast:    120ms;
+  --dur:         200ms;
+  --dur-slow:    320ms;
+
+  /* duration tokens — entire range fits within 400ms.
+     Scaled by --gaia-duration-scalar so reduced-motion collapses to 0ms. */
+  --gaia-duration-scalar: 1;
+  --gaia-duration-0:        calc(0ms   * var(--gaia-duration-scalar)); /* instant swaps, disabled */
+  --gaia-duration-instant:  calc(50ms  * var(--gaia-duration-scalar)); /* hover tints, border shifts */
+  --gaia-duration-fast:     calc(100ms * var(--gaia-duration-scalar)); /* checkbox, toggle, button press */
+  --gaia-duration-moderate: calc(150ms * var(--gaia-duration-scalar)); /* dropdown, tooltip, accordion */
+  --gaia-duration-slow:     calc(250ms * var(--gaia-duration-scalar)); /* modal fade, drawer, notification */
+  --gaia-duration-slower:   calc(400ms * var(--gaia-duration-scalar)); /* scrim / overlay backdrop fade */
+
+  /* easing tokens */
+  --gaia-easing-standard: cubic-bezier(0.2, 0, 0.38, 0.9); /* visible throughout (color, border) */
+  --gaia-easing-entrance: cubic-bezier(0, 0, 0.38, 0.9);   /* element appearing */
+  --gaia-easing-exit:     cubic-bezier(0.2, 0, 1, 0.9);    /* element leaving */
+  --gaia-easing-linear:   linear;                          /* constant rate (loader, progress) */
+
+  /* transition tokens — composite (duration + easing). Primary API:
+     use as `transition: <property> var(--gaia-transition-hover);` */
+  --gaia-transition-hover:       var(--gaia-duration-instant)  var(--gaia-easing-standard);
+  --gaia-transition-state:       var(--gaia-duration-fast)     var(--gaia-easing-standard);
+  --gaia-transition-reveal:      var(--gaia-duration-moderate) var(--gaia-easing-entrance);
+  --gaia-transition-dismiss:     var(--gaia-duration-moderate) var(--gaia-easing-exit);
+  --gaia-transition-overlay-in:  var(--gaia-duration-slow)     var(--gaia-easing-entrance);
+  --gaia-transition-overlay-out: var(--gaia-duration-slow)     var(--gaia-easing-exit);
+  --gaia-transition-backdrop:    var(--gaia-duration-slower)   var(--gaia-easing-standard);
+}
+
+/* Reduced motion — collapse all scaled durations to 0ms. Continuous
+   animations (loaders) should swap to a static variant in markup. */
+@media (prefers-reduced-motion: reduce) {
+  :root { --gaia-duration-scalar: 0; }
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES
+   Apply directly or mirror these in component CSS.
+   ============================================================ */
+
+.ds-display {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  font-weight: var(--w-bold);
+  color: var(--ink);
+}
+.ds-h1 {
+  font-family: var(--font-display);
+  font-size: var(--t-h1);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: var(--w-bold);
+  color: var(--ink);
+}
+.ds-h2 {
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-h3 {
+  font-family: var(--font-ui);
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-title {
+  font-family: var(--font-ui);
+  font-size: var(--t-title);
+  line-height: 1.3;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-body {
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  font-weight: var(--w-regular);
+  color: var(--ink-2);
+}
+.ds-body-sm {
+  font-family: var(--font-ui);
+  font-size: var(--t-body-sm);
+  line-height: 1.5;
+  font-weight: var(--w-regular);
+  color: var(--ink-2);
+}
+.ds-caption {
+  font-family: var(--font-ui);
+  font-size: var(--t-caption);
+  line-height: 1.45;
+  font-weight: var(--w-regular);
+  color: var(--ink-3);
+}
+.ds-eyebrow {
+  font-family: var(--font-ui);
+  font-size: var(--t-eyebrow);
+  line-height: 1;
+  font-weight: var(--w-semibold);
+  letter-spacing: 0.01em;
+  color: var(--ink-4); /* muted by default, as shipping apps */
+}
+.ds-eyebrow--green { color: var(--green-deep); } /* accent variant */
+.ds-mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-body-sm);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   BUTTONS — 4 types (primary · secondary · ghost · transparent)
+   + danger + approve + icon. Height 40px · radius 4px · 8px gap.
+   States: default · hover · pressed · focus-visible · disabled
+   ============================================================ */
+.ds-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-03);            /* 8px */
+  height: 40px;
+  padding: 0 var(--space-05);      /* 16px */
+  font-family: var(--font-ui);
+  font-size: var(--t-body-sm);     /* 14px */
+  font-weight: var(--w-semibold);
+  line-height: 1;
+  border-radius: var(--radius-default); /* 4px */
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background var(--gaia-transition-hover),
+              color var(--gaia-transition-hover),
+              border-color var(--gaia-transition-hover),
+              box-shadow var(--gaia-transition-hover);
+}
+.ds-btn:focus { outline: none; }
+.ds-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.ds-btn:disabled, .ds-btn[disabled], .ds-btn[aria-disabled="true"] { cursor: not-allowed; }
+
+/* focus ring — shared */
+.ds-btn:focus-visible { outline: 2px solid var(--action-ring); outline-offset: 2px; }
+
+/* 1 — Primary (filled teal) */
+.ds-btn--primary { background: var(--action); color: #FFFFFF; }
+.ds-btn--primary:hover { background: var(--action-hi); }
+.ds-btn--primary:active { background: var(--action-press); }
+.ds-btn--primary:disabled, .ds-btn--primary[disabled] {
+  background: var(--action-disabled); color: var(--action-disabled-ink);
+}
+
+/* 2 — Secondary (outline) */
+.ds-btn--secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.ds-btn--secondary:hover { background: var(--surface-2); border-color: var(--ink-3); }
+.ds-btn--secondary:active { background: var(--surface-2); border-color: var(--ink-2); }
+.ds-btn--secondary:disabled, .ds-btn--secondary[disabled] {
+  background: var(--surface); color: var(--action-disabled-ink); border-color: var(--line);
+}
+
+/* 3 — Ghost (no border, fills on hover) */
+.ds-btn--ghost { background: transparent; color: var(--ink); }
+.ds-btn--ghost:hover { background: var(--surface-2); }
+.ds-btn--ghost:active { background: var(--line-2); }
+.ds-btn--ghost:disabled, .ds-btn--ghost[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* 4 — Transparent (text / link-like) */
+.ds-btn--transparent { background: transparent; color: var(--action); padding: 0 var(--space-03); }
+.ds-btn--transparent:hover { background: var(--green-soft); color: var(--action-hi); }
+.ds-btn--transparent:active { color: var(--action-press); }
+.ds-btn--transparent:disabled, .ds-btn--transparent[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* Approve / positive — accent green (distinct semantic) */
+.ds-btn--approve { background: var(--green); color: var(--ground); }
+.ds-btn--approve:hover { background: #4FA77B; }
+.ds-btn--approve:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* Destructive — red, ghost/transparent treatment */
+.ds-btn--danger { background: transparent; color: var(--danger); }
+.ds-btn--danger:hover { background: var(--danger-soft); }
+.ds-btn--danger:active { background: var(--danger-soft); }
+.ds-btn--danger:focus-visible { outline: 2px solid var(--danger); outline-offset: 2px; }
+.ds-btn--danger:disabled, .ds-btn--danger[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* Icon-only — square; combine with a type, e.g. "ds-btn ds-btn--secondary ds-btn--icon" */
+.ds-btn--icon { width: 40px; height: 40px; padding: 0; }
+.ds-btn--icon.ds-btn--transparent { width: 40px; padding: 0; }
+
+/* Small size modifier */
+.ds-btn--sm { height: 32px; padding: 0 var(--space-04); font-size: var(--t-caption); }
+.ds-btn--sm.ds-btn--icon { width: 32px; padding: 0; }
+.ds-btn--sm svg { width: 16px; height: 16px; }

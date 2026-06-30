@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kontek – Anställd-app (prototyp)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="ds-combined.css" />
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: oklch(0.93 0.006 250);
+    font-family: "Open Sans", system-ui, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  .stage {
+    display: flex; gap: 48px; align-items: flex-start; justify-content: center;
+    padding: 40px 32px 64px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;
+  }
+  .brief { display: none !important; }
+  .brief {
+    width: 380px; flex-shrink: 0; padding-top: 12px;
+  }
+  .brief h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 6px; line-height: 1.08; }
+  .brief .sub { color: oklch(0.5 0.01 250); font-size: 15px; margin-bottom: 26px; }
+  .brief .card {
+    background: #fff; border: 1px solid oklch(0.9 0.006 250); border-radius: 18px;
+    padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(20,30,35,0.04);
+  }
+  .brief h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: oklch(0.55 0.01 250); margin: 0 0 12px; font-weight: 700; }
+  .brief p { font-size: 14px; line-height: 1.55; color: oklch(0.34 0.012 250); margin: 0 0 10px; }
+  .brief li { font-size: 14px; line-height: 1.5; color: oklch(0.34 0.012 250); margin-bottom: 7px; }
+  .brief ul { margin: 0; padding-left: 18px; }
+  .brief b { font-weight: 700; color: var(--ink); }
+  .tag { display: inline-block; background: var(--brand-100); color: var(--brand-700); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; margin-bottom: 14px; }
+  .note { background: var(--brand-50); border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+  .phone-wrap { flex-shrink: 0; }
+  .hint { text-align: center; font-size: 12.5px; color: oklch(0.55 0.01 250); margin-top: 14px; }
+  @media (max-width: 860px) { .stage { gap: 28px; } .brief { width: 100%; max-width: 440px; } }
+</style>
+</head>
+<body>
+  <template id="__bundler_thumbnail">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#0e4f52"/>
+      <rect x="34" y="22" width="32" height="56" rx="6" fill="#fff"/>
+      <rect x="40" y="30" width="20" height="3" rx="1.5" fill="#0e4f52"/>
+      <rect x="40" y="38" width="20" height="3" rx="1.5" fill="#9fc7c4"/>
+      <rect x="40" y="46" width="14" height="3" rx="1.5" fill="#9fc7c4"/>
+      <circle cx="50" cy="64" r="7" fill="#e3a04b"/>
+    </svg>
+  </template>
+
+  <div class="stage">
+    <aside class="brief">
+      <span class="tag">Prototyp · iOS / Android</span>
+      <h1>Kontek – anställd&shy;app</h1>
+      <div class="sub">Lönebesked, frånvaro & utlägg för anställda i retail. Klickbar prototyp byggd på din flow.</div>
+
+      <div class="card">
+        <h2>Vad jag byggt</h2>
+        <ul>
+          <li><b>Startsida</b> – kommande (preliminär) lön, "Att göra", status på det du registrerat, saldon.</li>
+          <li><b>Se lönebesked</b> – nuvarande/föregående, med "Varför ser lönen ut så här?" och en inbyggd <b>Stämmer din lön?</b>-koll. Bara om något är fel går man vidare till <b>kontakta lön</b>.</li>
+          <li><b>Registrera frånvaro</b> – sjuk, VAB, semester m.m. med intyg/bilaga när det krävs, påverkan på lön, bekräfta → attest.</li>
+          <li><b>Registrera utlägg</b> – med/utan kvitto ("inget kvitto = inga pengar"), påverkan, bekräfta.</li>
+          <li><b>Komplettera</b> – bifoga kvitto/intyg som saknas, från notis eller "Att göra".</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Designval & antaganden</h2>
+        <p>Tonen är <b>enkel och rak</b> på svenska, för butiksanställda. Varje registrering visar tydligt <b>vad som händer med lönen</b> innan man bekräftar – kärnan i din flow.</p>
+        <p>Allt landar i samma slut: <b>"klicka ok → notis till attest → status"</b>, som följs på startsidan.</p>
+        <div class="note">Byggd på <b>Kontek Next</b> design­system — Open Sans, forest/teal-grön palett, 48px touch-targets och systemets röst (svenska, sentence case, inga emoji).</div>
+      </div>
+
+      <div class="card">
+        <h2>Prova flödet</h2>
+        <p>Börja på startsidan → tryck <b>+</b> eller en åtgärd. Testa gärna en sjukperiod på <b>8+ dagar</b> för att se intygskravet, och ett utlägg <b>utan kvitto</b>.</p>
+      </div>
+    </aside>
+
+    <div class="phone-wrap">
+      <div id="root"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script src="_ds/kontek-design-system-mobile-e2959130-faf3-44af-a1e9-2563ce3b2991/_ds_bundle.js"></script>
+
+  <script src="k-i18n.js"></script>
+
+  <script type="text/babel" src="ios-frame.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="k-ui.jsx"></script>
+  <script type="text/babel" src="k-data.jsx"></script>
+  <script type="text/babel" src="k-login.jsx"></script>
+  <script type="text/babel" src="k-flow.jsx"></script>
+  <script type="text/babel" src="k-absence.jsx"></script>
+  <script type="text/babel" src="k-expense.jsx"></script>
+  <script type="text/babel" src="k-misc.jsx"></script>
+  <script type="text/babel" src="k-app.jsx"></script>
+  <script type="text/babel">
+    const { createRoot } = ReactDOM;
+    function Mount() {
+      return (
+        <IOSDevice>
+          <App />
+        </IOSDevice>
+      );
+    }
+    createRoot(document.getElementById("root")).render(<Mount />);
+  </script>
+</body>
+</html>

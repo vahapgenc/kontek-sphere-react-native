@@ -1,0 +1,10 @@
+/* ============================================================
+   KONTEK — Design System root stylesheet.
+   Single entry point for consumers: link this one file.
+   It pulls in the canonical tokens, typography and component
+   classes from colors_and_type.css.
+   (preview/_card.css is spec-card chrome and ui_kits/kontek-next/
+   tokens.css is a pinned dashboard snapshot — neither is part of
+   the consumable system, so they are intentionally not imported.)
+   ============================================================ */
+@import url("colors_and_type.css");

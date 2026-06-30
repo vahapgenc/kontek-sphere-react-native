@@ -1,0 +1,113 @@
+<!-- @dsCard group="Atoms" name="Logo" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Logo — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .logo-tile { border-radius:var(--r-card); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; padding:40px; min-height:120px; }
+  .logo-tile img { width:auto; max-width:100%; display:block; }
+  .tile-dark { border-color:transparent; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; width:100%; }
+  .cap { font-size:11px; color:var(--ink-3); font-weight:var(--w-medium); margin-bottom:9px; }
+  .clearbox { position:relative; padding:40px; border-radius:var(--r-card); border:1px solid var(--line); background:var(--surface); }
+  .clearbox .inner { position:relative; display:inline-block; outline:2px dashed var(--green-line); outline-offset:24px; }
+  .clearbox img { height:56px; display:block; }
+  .dont { border:1px solid var(--line); border-radius:var(--r-card); background:var(--surface); padding:18px; display:flex; align-items:center; justify-content:center; min-height:96px; position:relative; }
+  .dont .tag { position:absolute; top:10px; left:12px; font-size:10.5px; font-weight:700; letter-spacing:.04em;  color:var(--danger); }
+  .dont img { height:40px; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Logo</h1>
+  <div class="dg-intro"><p>Den medföljande Kontek-ordbilden — <b>grön på ljust, vit på mörkt</b>. Håll friyta runt om och respektera minsta storlek.</p></div>
+
+  <div class="sec">
+    <h2>Primary logo</h2>
+    <p>Den fullständiga logotypen — symbol och ordbild tillsammans — i Kontek-grönt på ljus, neutral yta. Detta är förstahandsvalet i alla sammanhang där bakgrunden tillåter det.</p>
+    <div class="logo-tile" style="background:var(--surface);">
+      <img src="../assets/kontek-logo-positive.png" alt="Kontek" style="height:64px;">
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Monochrome</h2>
+    <p>När färg inte är möjlig — tryck, gravyr, en­färgade ytor. Svart på ljust, vitt på mörkt. Aldrig grå eller nedtonad.</p>
+    <div class="grid2">
+      <div>
+        <div class="cap">Svart · på ljust</div>
+        <div class="logo-tile" style="background:var(--surface);"><img src="../assets/kontek-logo-mono-black-full.png" alt="Kontek" style="height:52px;"></div>
+      </div>
+      <div>
+        <div class="cap">Vit · på mörkt</div>
+        <div class="logo-tile tile-dark" style="background:var(--ground);"><img src="../assets/kontek-logo-mono-white-full.png" alt="Kontek" style="height:52px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Negative — on colour</h2>
+    <p>Den vita negativa logotypen på Kontek Green eller annan mörk varumärkesyta. Säkerställ alltid tillräcklig kontrast.</p>
+    <div class="grid2">
+      <div>
+        <div class="cap">På Kontek Green</div>
+        <div class="logo-tile tile-dark" style="background:var(--kontek-green);"><img src="../assets/kontek-logo-negative.png" alt="Kontek" style="height:52px;"></div>
+      </div>
+      <div>
+        <div class="cap">På Signature</div>
+        <div class="logo-tile tile-dark" style="background:var(--signature);"><img src="../assets/kontek-logo-negative.png" alt="Kontek" style="height:52px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Clear space &amp; minimum size</h2>
+    <p>Håll en frizon runt logotypen motsvarande symbolens höjd. Använd den aldrig mindre än 96px bred på skärm (24mm i tryck) så att symbolen förblir läsbar.</p>
+    <div class="frame center" style="gap:40px;">
+      <div class="clearbox"><span class="inner"><img src="../assets/kontek-logo-positive.png" alt="Kontek"></span></div>
+      <div style="display:flex;align-items:flex-end;gap:16px;">
+        <img src="../assets/kontek-logo-positive.png" alt="Kontek" style="height:30px;">
+        <span style="font-size:12px;color:var(--ink-3);">min. 96px / 24mm</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Incorrect usage</h2>
+    <p>Förvräng inte, färglägg inte om och lägg inte till effekter. Logotypen används som den är.</p>
+    <div class="grid2" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="dont"><span class="tag">Töj inte</span><img src="../assets/kontek-logo-positive.png" alt="" style="height:34px;transform:scaleX(1.6);"></div>
+      <div class="dont"><span class="tag">Färga inte om</span><img src="../assets/kontek-logo-positive.png" alt="" style="height:34px;filter:hue-rotate(160deg) saturate(2);"></div>
+      <div class="dont" style="background:var(--canvas);"><span class="tag">Låg kontrast</span><img src="../assets/kontek-logo-mono-white-full.png" alt="" style="height:34px;opacity:.5;"></div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use the supplied wordmark &mdash; green on light, white on dark.</li>
+          <li>Keep clear space around it and respect the minimum size.</li>
+          <li>Place it on a calm, high-contrast ground.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Recolour, stretch, rotate or add effects to the logo.</li>
+          <li>Place it on a busy or low-contrast ground.</li>
+          <li>Shrink it below the minimum size.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,1164 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* === mobile.css === */
+/* ============================================================
+   KONTEK NEXT — MOBILE COMPONENTS
+   Phone-native patterns for the payroll app (iOS + Android, one
+   brand-led visual language — not native-flavoured). Built entirely
+   on the tokens in colors_and_type.css. Every interactive element is
+   tap-safe (>= --tap-min, 48px). Loaded via @import from the
+   source-of-truth stylesheet.
+
+   Sections:
+     1. App bar (compact + large-title)
+     2. Bottom tab bar (light + dark)
+     3. List rows (full-bleed + inset groups)
+     4. Bottom sheet / action sheet
+     5. Floating action button (FAB)
+     6. Feedback — banner, snackbar, toast
+     7. Dialog / alert
+     8. Loading — skeleton, spinner, pull-to-refresh
+     9. Mobile layout helpers (screen, scroll, sticky CTA)
+   ============================================================ */
+
+/* ============================================================
+   1 — APP BAR
+   Sticky top chrome. Compact row (56px) holds a leading action, a
+   centred or leading title, and trailing actions. The large-title
+   variant stacks a 28px screen title beneath the compact row — the
+   standard "Översikt / Lön / Time" header. Translucent + blur so
+   content scrolls under it.
+   ============================================================ */
+.ds-appbar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; flex-direction: column;
+  padding-top: var(--safe-top);
+  background: color-mix(in srgb, var(--canvas) 82%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  border-bottom: 1px solid var(--line-2);
+}
+.ds-appbar__bar {
+  display: flex; align-items: center; gap: var(--space-02);
+  height: var(--appbar-h); padding: 0 var(--space-02);
+}
+.ds-appbar__title {
+  flex: 1; min-width: 0; font-family: var(--font-ui);
+  font-size: var(--t-title); font-weight: var(--w-semibold); color: var(--ink);
+  text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ds-appbar--leading .ds-appbar__title { text-align: left; padding-left: var(--space-02); }
+/* icon action — tap-safe, ghost wash on press */
+.ds-appbar__action {
+  flex-shrink: 0; width: var(--tap-min); height: var(--tap-min); padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; background: transparent; border-radius: var(--r-pill);
+  color: var(--ink-2); cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background var(--gaia-transition-hover), color var(--gaia-transition-hover);
+}
+.ds-appbar__action:hover { background: rgba(18,33,33,0.05); color: var(--ink); }
+.ds-appbar__action:active { background: rgba(18,33,33,0.09); }
+.ds-appbar__action svg { width: 24px; height: 24px; }
+/* notification dot on an action */
+.ds-appbar__action { position: relative; }
+.ds-appbar__action .ds-dot {
+  position: absolute; top: 11px; right: 12px; width: 8px; height: 8px; border-radius: var(--r-pill);
+  background: var(--red); border: 1.5px solid var(--canvas);
+}
+/* large title row */
+.ds-appbar__large {
+  padding: var(--space-01) var(--screen-gutter) var(--space-04);
+}
+.ds-appbar__eyebrow {
+  font-size: var(--t-eyebrow); font-weight: var(--w-semibold); letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-4); margin-bottom: 6px;
+}
+.ds-appbar__h1 {
+  font-family: var(--font-display); font-size: var(--t-h1); font-weight: var(--w-bold);
+  letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin: 0;
+}
+/* dark variant — for forest-toned screens */
+.ds-appbar--dark {
+  background: color-mix(in srgb, var(--shell-bg) 88%, transparent);
+  border-bottom-color: var(--shell-line);
+}
+.ds-appbar--dark .ds-appbar__title,
+.ds-appbar--dark .ds-appbar__h1 { color: var(--on-dark); }
+.ds-appbar--dark .ds-appbar__action { color: var(--on-dark-2); }
+.ds-appbar--dark .ds-appbar__action:hover { background: var(--shell-hover); color: var(--on-dark); }
+.ds-appbar--dark .ds-appbar__eyebrow { color: var(--status-badge); }
+
+/* ============================================================
+   2 — BOTTOM TAB BAR
+   Primary navigation for up to 5 destinations. Icon + short label,
+   active item in brand accent. Two themes: light (default surface)
+   and dark (forest rail, echoing the desktop sidebar). Honours the
+   home-indicator safe area.
+   ============================================================ */
+.ds-tabbar {
+  display: flex; align-items: stretch;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding-bottom: var(--safe-bottom);
+  box-shadow: 0 -1px 3px rgba(18,33,33,0.04);
+}
+.ds-tab {
+  flex: 1; min-width: 0; min-height: var(--tabbar-h);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 8px 4px; border: none; background: transparent; cursor: pointer;
+  color: var(--ink-3); -webkit-tap-highlight-color: transparent;
+  transition: color var(--gaia-transition-hover);
+}
+.ds-tab svg { width: 24px; height: 24px; stroke-width: 1.85; }
+.ds-tab__label {
+  font-family: var(--font-ui); font-size: var(--t-micro); font-weight: var(--w-medium);
+  letter-spacing: 0.01em; line-height: 1; max-width: 100%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ds-tab.is-active { color: var(--signature); }
+.ds-tab.is-active svg { stroke-width: 2.1; }
+.ds-tab.is-active .ds-tab__label { font-weight: var(--w-semibold); }
+/* count badge on a tab icon */
+.ds-tab__icon { position: relative; display: inline-flex; }
+.ds-tab__badge {
+  position: absolute; top: -5px; right: -10px; min-width: 17px; height: 17px; padding: 0 5px;
+  border-radius: var(--r-pill); background: var(--green); color: var(--ground);
+  font-size: 10px; font-weight: var(--w-bold); line-height: 17px; text-align: center;
+  border: 2px solid var(--surface); box-sizing: border-box;
+}
+/* dark theme — forest rail */
+.ds-tabbar--dark { background: var(--shell-bg); border-top-color: transparent; position: relative; }
+.ds-tabbar--dark::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(97,188,143,0.35), transparent);
+}
+.ds-tabbar--dark .ds-tab { color: var(--shell-ink-2); }
+.ds-tabbar--dark .ds-tab.is-active { color: var(--shell-cta); }
+.ds-tabbar--dark .ds-tab__badge { border-color: var(--shell-bg); }
+
+/* ============================================================
+   3 — LIST ROWS
+   The workhorse of a mobile app. .ds-list is a full-bleed list with
+   left-inset hairline dividers; .ds-list--inset is a rounded grouped
+   card (iOS-style) you place inside the screen gutter. Rows hold a
+   leading media slot, a title + optional subtitle, and a trailing
+   slot (value, chevron, switch, badge).
+   ============================================================ */
+.ds-list {
+  list-style: none; margin: 0; padding: 0;
+  background: var(--surface); width: 100%;
+}
+.ds-list--inset {
+  border: 1px solid var(--line); border-radius: var(--r-panel);
+  margin: 0 var(--screen-gutter); overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.ds-list__header {
+  font-size: var(--t-caption); font-weight: var(--w-semibold); color: var(--ink-3);
+  letter-spacing: 0.005em; text-transform: none;
+  padding: var(--space-05) var(--screen-gutter) var(--space-02);
+}
+.ds-row {
+  display: flex; align-items: center; gap: var(--space-04);
+  min-height: 60px; padding: 12px var(--screen-gutter);
+  position: relative; text-align: left; width: 100%;
+  font-family: var(--font-ui); color: var(--ink); box-sizing: border-box;
+}
+/* hairline divider, inset to align with the title (past the leading media) */
+.ds-row + .ds-row::before,
+.ds-row--divider::after {
+  content: ''; position: absolute; top: 0; left: calc(var(--screen-gutter) + 40px + var(--space-04));
+  right: 0; height: 1px; background: var(--line-2);
+}
+.ds-row--divider::after { top: auto; bottom: 0; }
+.ds-row--full + .ds-row--full::before { left: var(--screen-gutter); }
+/* pressable row */
+button.ds-row, a.ds-row, .ds-row--tap {
+  border: none; background: var(--surface); cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--gaia-transition-hover);
+}
+button.ds-row:active, a.ds-row:active, .ds-row--tap:active { background: var(--surface-2); }
+/* leading media — icon tile or avatar fits a 40px square */
+.ds-row__lead {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 11px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--green-soft); color: var(--green-deep);
+}
+.ds-row__lead svg { width: 21px; height: 21px; }
+.ds-row__lead--muted { background: var(--surface-2); color: var(--ink-3); }
+.ds-row__lead--forest { background: var(--forest); color: #fff; }
+/* body */
+.ds-row__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ds-row__title {
+  font-size: var(--t-title); font-weight: var(--w-semibold); color: var(--ink); line-height: 1.3;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ds-row__sub {
+  font-size: var(--t-body-sm); color: var(--ink-3); line-height: 1.35;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* trailing slot */
+.ds-row__trail {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: var(--space-02);
+  font-size: var(--t-body-sm); color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+.ds-row__value { font-size: var(--t-title); font-weight: var(--w-semibold); color: var(--ink); }
+.ds-row__chev { color: var(--ink-4); display: inline-flex; }
+.ds-row__chev svg { width: 20px; height: 20px; }
+
+/* ============================================================
+   4 — BOTTOM SHEET / ACTION SHEET
+   Slides up from the bottom edge over a dimmed scrim. Grab handle,
+   optional title, then content. The action-sheet variant stacks
+   full-width choices. Toggle .is-open on the scrim to reveal.
+   ============================================================ */
+.ds-scrim {
+  position: absolute; inset: 0; z-index: 40;
+  background: rgba(5,18,18,0.42);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--gaia-transition-backdrop);
+}
+.ds-scrim.is-open { opacity: 1; pointer-events: auto; }
+.ds-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 41;
+  background: var(--surface);
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  box-shadow: 0 -12px 40px rgba(5,34,37,0.22);
+  padding: 10px var(--screen-gutter) calc(var(--space-06) + var(--safe-bottom));
+  transform: translateY(110%);
+  transition: transform var(--gaia-transition-overlay-in);
+  max-height: 88%; overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.ds-scrim.is-open + .ds-sheet,
+.ds-sheet.is-open { transform: translateY(0); }
+.ds-sheet__grip {
+  width: 40px; height: 5px; border-radius: var(--r-pill);
+  background: var(--line); margin: 0 auto var(--space-04);
+}
+.ds-sheet__title {
+  font-family: var(--font-display); font-size: var(--t-h3); font-weight: var(--w-bold);
+  letter-spacing: -0.01em; color: var(--ink); margin: 0 0 var(--space-01);
+}
+.ds-sheet__sub {
+  font-size: var(--t-body-sm); color: var(--ink-3); margin: 0 0 var(--space-04); line-height: 1.45;
+}
+/* action sheet — stacked choices */
+.ds-actionsheet { display: flex; flex-direction: column; gap: var(--space-02); }
+.ds-actionsheet__item {
+  display: flex; align-items: center; gap: var(--space-04); width: 100%;
+  min-height: var(--tap-min); padding: 14px var(--space-04); text-align: left;
+  border: none; background: var(--surface-2); border-radius: var(--r-input);
+  font-family: var(--font-ui); font-size: var(--t-body); font-weight: var(--w-medium); color: var(--ink);
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background var(--gaia-transition-hover);
+}
+.ds-actionsheet__item:active { background: var(--line-2); }
+.ds-actionsheet__item svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--signature); }
+.ds-actionsheet__item--danger { color: var(--danger); }
+.ds-actionsheet__item--danger svg { color: var(--danger); }
+
+/* ============================================================
+   5 — FLOATING ACTION BUTTON (FAB)
+   The one persistent create action (Ny lönekörning, Ny anställd).
+   Circular by default; extended carries a label. Accent-green CTA
+   fill with the brand glow. Position with a wrapper in the app.
+   ============================================================ */
+.ds-fab {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; border-radius: 18px; gap: var(--space-02);
+  border: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  background: var(--shell-cta); color: var(--shell-cta-ink);
+  box-shadow: 0 8px 22px rgba(97,188,143,0.36), 0 2px 6px rgba(18,33,33,0.14);
+  font-family: var(--font-ui); font-size: var(--t-body); font-weight: var(--w-semibold);
+  transition: transform var(--gaia-transition-state), background var(--gaia-transition-hover), box-shadow var(--gaia-transition-hover);
+}
+.ds-fab svg { width: 26px; height: 26px; stroke-width: 2.1; }
+.ds-fab:hover { background: var(--shell-cta-hi); }
+.ds-fab:active { transform: scale(0.95); }
+.ds-fab--extended { width: auto; padding: 0 var(--space-06); border-radius: var(--r-pill); height: 56px; }
+.ds-fab--extended svg { width: 22px; height: 22px; }
+/* signature (teal) variant for secondary FAB contexts */
+.ds-fab--signature { background: var(--action); color: #fff; box-shadow: var(--shadow-cta); }
+.ds-fab--signature:hover { background: var(--action-hi); }
+
+/* ============================================================
+   6 — FEEDBACK: banner · snackbar · toast
+   banner   — inline, in-flow status block (info/ok/warn/danger)
+   snackbar — transient dark pill with an optional single action
+   toast    — compact centred confirmation pill
+   ============================================================ */
+.ds-banner {
+  display: flex; align-items: flex-start; gap: var(--space-03);
+  padding: 14px var(--space-04); border-radius: var(--r-card);
+  background: var(--info-soft); color: var(--info-text);
+  border: 1px solid color-mix(in srgb, var(--info-text) 18%, transparent);
+  font-family: var(--font-ui);
+}
+.ds-banner__icon { flex-shrink: 0; margin-top: 1px; }
+.ds-banner__icon svg { width: 21px; height: 21px; }
+.ds-banner__body { flex: 1; min-width: 0; }
+.ds-banner__title { font-size: var(--t-body-sm); font-weight: var(--w-semibold); line-height: 1.35; }
+.ds-banner__text { font-size: var(--t-caption); line-height: 1.45; margin-top: 2px; opacity: 0.92; }
+.ds-banner__close {
+  flex-shrink: 0; width: 28px; height: 28px; margin: -4px -6px 0 0; border: none; background: transparent;
+  border-radius: var(--r-sm); color: inherit; opacity: 0.7; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.ds-banner__close:hover { opacity: 1; }
+.ds-banner__close svg { width: 18px; height: 18px; }
+.ds-banner--ok     { background: var(--ok-soft);     color: var(--ok-text);     border-color: color-mix(in srgb, var(--ok-text) 20%, transparent); }
+.ds-banner--warn   { background: var(--warn-soft);   color: var(--warn-text);   border-color: color-mix(in srgb, var(--warn-text) 20%, transparent); }
+.ds-banner--danger { background: var(--danger-soft); color: var(--danger-text); border-color: color-mix(in srgb, var(--danger-text) 20%, transparent); }
+
+.ds-snackbar {
+  display: flex; align-items: center; gap: var(--space-04);
+  min-height: var(--tap-min); padding: 10px 10px 10px var(--space-04);
+  border-radius: var(--r-input); background: var(--ground); color: var(--on-dark);
+  box-shadow: var(--elev-pop); font-family: var(--font-ui);
+}
+.ds-snackbar__text { flex: 1; min-width: 0; font-size: var(--t-body-sm); line-height: 1.4; }
+.ds-snackbar__action {
+  flex-shrink: 0; border: none; background: transparent; cursor: pointer;
+  padding: 0 var(--space-03); height: 36px; border-radius: var(--r-sm);
+  font-family: var(--font-ui); font-size: var(--t-body-sm); font-weight: var(--w-semibold);
+  color: var(--shell-cta); -webkit-tap-highlight-color: transparent;
+}
+.ds-snackbar__action:active { background: rgba(255,255,255,0.08); }
+
+.ds-toast {
+  display: inline-flex; align-items: center; gap: var(--space-02);
+  padding: 10px var(--space-04); border-radius: var(--r-pill);
+  background: var(--ground); color: var(--on-dark);
+  box-shadow: var(--elev-pop); font-family: var(--font-ui);
+  font-size: var(--t-body-sm); font-weight: var(--w-medium);
+}
+.ds-toast svg { width: 18px; height: 18px; color: var(--green); }
+
+/* ============================================================
+   7 — DIALOG / ALERT
+   Centred modal for confirmations. Scrim + card. Actions stack
+   full-width on mobile (primary on top); destructive uses the
+   danger button. Use --row to place two short actions side by side.
+   ============================================================ */
+.ds-dialog-scrim {
+  position: absolute; inset: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center; padding: var(--space-06);
+  background: rgba(5,18,18,0.5);
+  opacity: 0; pointer-events: none; transition: opacity var(--gaia-transition-backdrop);
+}
+.ds-dialog-scrim.is-open { opacity: 1; pointer-events: auto; }
+.ds-dialog {
+  width: 100%; max-width: 360px; background: var(--surface);
+  border-radius: var(--r-sheet); padding: var(--space-06);
+  box-shadow: var(--elev-float); font-family: var(--font-ui);
+  transform: scale(0.94); transition: transform var(--gaia-transition-overlay-in);
+}
+.ds-dialog-scrim.is-open .ds-dialog { transform: scale(1); }
+.ds-dialog__icon {
+  width: 48px; height: 48px; border-radius: var(--r-pill); margin-bottom: var(--space-04);
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--green-soft); color: var(--green-deep);
+}
+.ds-dialog__icon svg { width: 24px; height: 24px; }
+.ds-dialog__icon--danger { background: var(--danger-soft); color: var(--danger-text); }
+.ds-dialog__title {
+  font-family: var(--font-display); font-size: var(--t-h3); font-weight: var(--w-bold);
+  letter-spacing: -0.01em; color: var(--ink); margin: 0 0 var(--space-02);
+}
+.ds-dialog__text { font-size: var(--t-body); color: var(--ink-2); line-height: 1.5; margin: 0; }
+.ds-dialog__actions { display: flex; flex-direction: column; gap: var(--space-03); margin-top: var(--space-06); }
+.ds-dialog__actions--row { flex-direction: row; }
+.ds-dialog__actions--row > .ds-btn { flex: 1; }
+
+/* ============================================================
+   8 — LOADING: skeleton · spinner · pull-to-refresh
+   ============================================================ */
+.ds-skeleton {
+  background: var(--surface-2);
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+  background-size: 200% 100%; background-repeat: no-repeat;
+  border-radius: var(--r-sm); animation: ds-shimmer 1.4s ease-in-out infinite;
+}
+.ds-skeleton--text { height: 13px; border-radius: 6px; }
+.ds-skeleton--title { height: 20px; border-radius: 7px; }
+.ds-skeleton--circle { border-radius: var(--r-pill); }
+.ds-skeleton--block { height: 80px; border-radius: var(--r-card); }
+@keyframes ds-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.ds-spinner {
+  width: 28px; height: 28px; border-radius: var(--r-pill);
+  border: 3px solid var(--green-line); border-top-color: var(--green-deep);
+  animation: ds-spin 0.8s linear infinite;
+}
+.ds-spinner--sm { width: 20px; height: 20px; border-width: 2.5px; }
+.ds-spinner--lg { width: 40px; height: 40px; border-width: 3.5px; }
+.ds-spinner--on-dark { border-color: rgba(255,255,255,0.25); border-top-color: var(--shell-cta); }
+@keyframes ds-spin { to { transform: rotate(360deg); } }
+
+/* pull-to-refresh affordance — the spinner sits in a track that the list
+   reveals as it's dragged down. Use .ds-ptr as the fixed top strip. */
+.ds-ptr {
+  display: flex; align-items: center; justify-content: center; gap: var(--space-02);
+  height: 56px; color: var(--ink-3);
+  font-family: var(--font-ui); font-size: var(--t-caption); font-weight: var(--w-medium);
+}
+
+/* reduced motion — freeze shimmer & spin to a calm static state */
+@media (prefers-reduced-motion: reduce) {
+  .ds-skeleton { animation: none; background-image: none; }
+  .ds-spinner { animation: none; }
+}
+
+/* ============================================================
+   9 — MOBILE LAYOUT HELPERS
+   ============================================================ */
+/* a phone screen column: header (sticky) + scroll body + optional bottom nav */
+.ds-screen {
+  display: flex; flex-direction: column; height: 100%;
+  background: var(--canvas); overflow: hidden;
+}
+.ds-screen__scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.ds-screen__body { padding: var(--space-04) var(--screen-gutter) var(--space-08); }
+/* sticky bottom CTA bar — a primary action pinned above the safe area */
+.ds-cta-bar {
+  position: sticky; bottom: 0; z-index: 20;
+  padding: var(--space-03) var(--screen-gutter) calc(var(--space-03) + var(--safe-bottom));
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line-2);
+}
+/* a content card sized for the gutter */
+.ds-mcard {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card);
+  padding: var(--space-05); box-shadow: var(--shadow-sm);
+}
+
+
+/* === colors_and_type.css === */
+/* ============================================================
+   KONTEK NEXT — Colors & Type
+   Single source of truth for foundational + semantic tokens.
+   Fonts: Open Sans (UI + display)
+   ============================================================ */
+
+
+/* Mobile-native components (app bar, tab bar, list rows, bottom sheet, FAB,
+   toasts/snackbar/banner, dialog, loading). Tokens above are the source of
+   truth; mobile.css only composes them into phone patterns. */
+
+
+:root {
+  /* ---------- BRAND CORE (new palette) ---------- */
+  --forest:        #183E24; /* Forest — top nav bar + sidebar backgrounds */
+  --ground:        #122121; /* Deepest Ground — pressed/active button state */
+  --signature:     #203B3C; /* Brand Signature — primary CTAs, active tab text (12:1 AAA) */
+  --guide:         #395F61; /* The Guide — sub-menu items, inactive tabs (7.0:1 AAA) */
+  --muted-surface: #B8C9CA; /* Muted Surface — card borders, matte accents, secondary text on dark */
+  --green:         #61BC8F; /* Interaction — toggle/checkbox fill (pair w/ Brand Signature border) */
+  --status-badge:  #9DDFB5; /* Status Badge — status pill bg, nav resting text (7.8:1 on Forest) */
+  --kontek-green:  #053F22; /* Kontek Green — secondary CTA buttons, pressed secondary (12.1:1 AAA) */
+  --red:           #E1462E; /* Primary CTA red — destructive only */
+
+  /* ---------- BRAND SUPPORT (derived, harmonized) ---------- */
+  --signature-hi:  #2A4B4C; /* hover/raised state on signature */
+  --guide-hi:      #5C8082; /* lighter guide — hairlines on dark */
+  --green-deep:    #0C4D33; /* Success Text — "Paid", "Balanced", "Matched" (9.9:1 AAA) */
+  --green-soft:    #E6F7ED; /* Celebration — row highlight for processed payroll */
+  --green-line:    #BFE3CF; /* green tint — borders on light */
+  /* secondary-scale semantic aliases (Kontek Green) */
+  --success-text:  #0C4D33; /* Success Text — "Paid" / "Balanced" / "Matched" labels */
+  --celebration:   #E6F7ED; /* Celebration — processed-payroll row highlight */
+
+  /* ---------- PRIMARY ACTION (teal-green, per button spec) ----------
+     The default primary button is mid-tone teal-green that deepens to a
+     near-black teal on hover/press. Green = positive/approve. Red = destructive. */
+  --action:              #203B3C; /* primary button fill (rest) — Brand Signature */
+  --action-hi:           #122121; /* primary button hover — Deepest Ground */
+  --action-press:        #122121; /* primary button active/pressed — Deepest Ground */
+  --action-ring:         #203B3C; /* focus ring (2px solid, 2px offset) */
+  --action-disabled:     #E6EAEE; /* disabled fill — cool light gray */
+  --action-disabled-ink: #A3B4B6; /* Silver Mist — disabled label */
+  --action-2:            #053F22; /* secondary CTA fill — Kontek Green */
+  --action-2-hi:         #03311A; /* secondary CTA hover — deeper */
+
+  /* ---------- NEUTRALS (cool near-white, faint teal tint) ----------
+     Reconciled to the shipping prototypes (Hub / Sphere). */
+  --canvas:        #ECEFF3; /* Cloud — default page background, softer than white */
+  --surface:       #FFFFFF; /* Pure White — data tables, forms, modals, dropdowns */
+  --surface-2:     #E6EAEE; /* inset / secondary surface */
+  --ink:           #0F1112; /* Obsidian — body text, payroll numbers (18.9:1 AAA) */
+  --ink-2:         #445C5E; /* Charcoal Teal — table headers, subtitles (7.2:1 AAA) */
+  --ink-3:         #475669; /* Slate Grey — breadcrumbs, inactive icons (7.5:1 AAA) */
+  --ink-4:         #66777A; /* Soft Steel — search bar borders, disabled labels */
+  --on-dark:       #FFFFFF; /* primary text on dark */
+  --on-dark-2:     #B8C9CA; /* Muted Surface — secondary text on dark */
+  --on-dark-3:     #7E9A93; /* muted text on dark */
+
+  /* ---------- HAIRLINES & DIVIDERS ---------- */
+  --line:          #DDE5E6; /* Stone — table row dividers, panel borders */
+  --line-2:        #E8EDEE;
+  --silver-mist:   #A3B4B6; /* Silver Mist — disabled UI states (non-text, WCAG exempt) */
+  --line-on-dark:  rgba(255, 255, 255, 0.12);
+
+  /* ---------- SEMANTIC STATUS ----------
+     Each status: text/icon colour + soft alert background. */
+  --ok:            #0C4D33; /* success text & icons */
+  --ok-text:       #0C4D33;
+  --ok-soft:       #E6F7ED; /* success notification background */
+  --ok-accent:     #61BC8F; /* success brand accent (progress, dots) */
+  --warn:          #7A4A0E; /* warning text & icons */
+  --warn-text:     #7A4A0E;
+  --warn-soft:     #FEF4E7; /* warning alert background */
+  --danger:        #9C3232; /* error text & icons */
+  --danger-text:   #9C3232;
+  --danger-soft:   #FDEEED; /* error message background */
+  --info:          #1A5298; /* informational text & icons */
+  --info-text:     #1A5298;
+  --info-soft:     #EBF2FB; /* information alert background */
+
+  /* ---------- TYPE FAMILIES ---------- */
+  --font-display:  'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-ui:       'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:     'JetBrains Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
+
+  /* ---------- TYPE SCALE (px) — MOBILE-FIRST ----------
+     Retuned for phone screens (iOS + Android), calm & generous register.
+     Body sits at 16px so iOS Safari never zooms a focused field, and so
+     line lengths stay comfortable at a phone's reading distance. Display
+     is the large greeting / hero figure, h1 the screen large-title.
+     (Previous desktop scale was 56/40/30/22/18/15/14 — see git history.) */
+  --t-display:     36px; /* hero greeting / large hero figure */
+  --t-h1:          28px; /* screen large-title */
+  --t-h2:          22px; /* section header */
+  --t-h3:          19px; /* sub-section / strong card heading */
+  --t-title:       17px; /* card titles · list-row primary text */
+  --t-body:        16px; /* default body & UI text (no iOS focus-zoom) */
+  --t-body-sm:     15px; /* secondary body, dense rows */
+  --t-caption:     13px; /* captions, helper text, labels */
+  --t-eyebrow:     12px; /* uppercase eyebrows */
+  --t-micro:       11px; /* badges, tab labels, fine print */
+
+  /* ---------- WEIGHTS ---------- */
+  --w-regular:     400; /* @kind font */
+  --w-medium:      500; /* @kind font */
+  --w-semibold:    600; /* @kind font */
+  --w-bold:        700; /* @kind font */
+
+  /* ---------- RADII — MOBILE-FIRST ----------
+     Slightly softer than the desktop kit: larger tap surfaces read friendlier
+     with rounder corners, and sheets/cards that span the full width want a
+     generous top radius. Brand stays "gentle, never sharp". */
+  --r-button:      12px; /* buttons & primary controls */
+  --r-input:       12px; /* text fields, selects, search */
+  --r-card:        16px; /* content cards */
+  --r-panel:       20px; /* hero panels, grouped list blocks */
+  --r-sheet:       24px; /* bottom sheets, dialogs (top corners) */
+  --r-pill:        999px;
+  --r-sm:          8px;
+
+  /* ---------- MOBILE / TOUCH ----------
+     One cross-platform sizing language for iOS + Android. 48px is the shared
+     safe minimum (iOS HIG 44pt · Android Material 48dp) — we standardise on
+     48 everywhere so nothing is ever a borderline tap target. */
+  --tap-min:        48px; /* minimum hit target — every interactive element */
+  --control-h:      48px; /* default control height (button, input, row CTA) */
+  --control-h-lg:   56px; /* prominent / full-width primary actions */
+  --control-h-sm:   40px; /* compact controls inside dense rows */
+  --screen-gutter:  16px; /* default screen side padding */
+  --screen-gutter-lg: 20px; /* roomier gutter for hero content */
+  --appbar-h:       56px; /* compact app-bar height (title + actions row) */
+  --tabbar-h:       58px; /* bottom tab-bar content height (excl. safe area) */
+  --safe-top:       env(safe-area-inset-top, 0px);
+  --safe-bottom:    env(safe-area-inset-bottom, 0px);
+
+  /* ---------- SPACING (4px base) ---------- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px;
+
+  /* ---------- ELEVATION ---------- */
+  --shadow-xs:  0 1px 2px rgba(18, 33, 33, 0.05);
+  --shadow-sm:  0 1px 3px rgba(18, 33, 33, 0.06), 0 1px 2px rgba(18, 33, 33, 0.04);
+  --shadow-md:  0 4px 14px rgba(18, 33, 33, 0.08), 0 1px 3px rgba(18, 33, 33, 0.05);
+  --shadow-lg:  0 12px 32px rgba(18, 33, 33, 0.12), 0 2px 8px rgba(18, 33, 33, 0.06);
+  --shadow-cta: 0 6px 18px rgba(18, 33, 33, 0.18);
+
+  /* ---------- APP SHELL / LAYOUT (Dashboard layout spec) ----------
+     The new application frame: a near-black teal sidebar with a soft glow,
+     a mint call-to-action, and a floating white content panel. */
+  --shell-bg:        #183E24; /* Forest — sidebar + top nav background */
+  --shell-bg-2:      #1E4A2C; /* glow / raised tone inside sidebar */
+  --shell-active:    #0F2A18; /* active nav pill — deeper forest */
+  --shell-hover:     rgba(255,255,255,0.07); /* nav item hover wash */
+  --shell-ink:       #FFFFFF; /* nav label + icon (active/primary) */
+  --shell-ink-2:     #9DDFB5; /* Status Badge — resting nav label */
+  --shell-line:      rgba(255,255,255,0.08); /* dividers on shell */
+  --shell-cta:       #A9E3BE; /* mint CTA fill */
+  --shell-cta-hi:    #97D9AE; /* mint CTA hover */
+  --shell-cta-ink:   #122121; /* CTA label + icon */
+
+  /* shell dimensions */
+  --sidebar-w:           280px;
+  --sidebar-w-collapsed: 84px;
+  --topbar-h:            80px;
+  --shell-gap:           10px;  /* float margin of content panel (right/bottom) */
+  --r-shell-panel:       18px;  /* content-panel corner radius */
+
+  /* content-panel background — faint green glow top-left → white */
+  --panel-grad: radial-gradient(135% 105% at 0% 0%, #E4EAEF 0%, #F4F7FA 40%, #FFFFFF 78%); /* @kind color */
+
+  /* elevation measured from the layout */
+  --elev-panel: 0 1px 2px rgba(5, 34, 37, 0.04);
+  --elev-menu:  0 14px 38px rgba(5, 34, 37, 0.20), 0 3px 10px rgba(5, 34, 37, 0.12); /* fly-out / dropdown */
+  --elev-pop:   0 8px 24px rgba(5, 34, 37, 0.14), 0 2px 6px rgba(5, 34, 37, 0.08);  /* company / user popover */
+  --elev-float: 0 18px 48px rgba(0, 0, 0, 0.34), 0 4px 12px rgba(0, 0, 0, 0.20);    /* white panel floating on dark */
+
+  /* ============================================================
+     GAIA FOUNDATION SCALES (Atoms) — canonical primitive tokens.
+     Spacing · Sizing · Radius · Shadows · Motion.
+     ============================================================ */
+
+  /* ---------- SPACING SCALE (spacing-00 … spacing-13) ----------
+     Layout gaps, padding and margins. Base unit 4px. */
+  --space-00: 0;      /* 0rem    */
+  --space-01: 2px;    /* 0.125rem */
+  --space-02: 4px;    /* 0.25rem */
+  --space-03: 8px;    /* 0.5rem  */
+  --space-04: 12px;   /* 0.75rem */
+  --space-05: 16px;   /* 1rem    */
+  --space-06: 24px;   /* 1.5rem  */
+  --space-07: 32px;   /* 2rem    */
+  --space-08: 40px;   /* 2.5rem  */
+  --space-09: 48px;   /* 3rem    */
+  --space-10: 64px;   /* 4rem    */
+  --space-11: 80px;   /* 5rem    */
+  --space-12: 96px;   /* 6rem    */
+  --space-13: 160px;  /* 10rem   */
+
+  /* ---------- SIZING SCALE (size-N) — Major Second (1.125) ----------
+     Widths / heights of elements. Token number == px value. */
+  --size-0: 0;     --size-1: 1px;    --size-2: 2px;    --size-4: 4px;
+  --size-6: 6px;   --size-8: 8px;    --size-10: 10px;  --size-12: 12px;
+  --size-14: 14px; --size-16: 16px;  --size-18: 18px;  --size-20: 20px;
+  --size-24: 24px; --size-28: 28px;  --size-32: 32px;  --size-36: 36px;
+  --size-40: 40px; --size-44: 44px;  --size-48: 48px;  --size-56: 56px;
+  --size-64: 64px; --size-80: 80px;  --size-96: 96px;  --size-112: 112px;
+  --size-128: 128px; --size-144: 144px; --size-160: 160px; --size-192: 192px;
+  --size-224: 224px; --size-256: 256px; --size-288: 288px; --size-320: 320px;
+  --size-352: 352px; --size-384: 384px; --size-416: 416px;
+
+  /* ---------- RADIUS PRIMITIVES (minimal — 3 values) ---------- */
+  --radius-default: 4px;     /* standard corner */
+  --radius-sharp:   0.02em;  /* near-square */
+  --radius-round:   999px;   /* pills / circles */
+
+  /* ---------- SHADOWS — directional elevation (base rgb 1,53,71) ----------
+     Named by light direction; the shadow falls on the opposite side.
+     4 stacked layers per token for a soft, realistic falloff. */
+  --shadow-north:
+      0 61px 24px rgba(1,53,71,0.01),
+      0 34px 21px rgba(1,53,71,0.05),
+      0 15px 15px rgba(1,53,71,0.09),
+      0 4px  8px  rgba(1,53,71,0.10);
+  --shadow-south:
+      0 -10px 4px rgba(1,53,71,0.01),
+      0 -6px  3px rgba(1,53,71,0.04),
+      0 -2px  2px rgba(1,53,71,0.07),
+      0 -1px  1px rgba(1,53,71,0.08);
+  --shadow-east:
+      -34px 0 14px rgba(1,53,71,0.01),
+      -19px 0 11px rgba(1,53,71,0.05),
+      -8px  0 8px  rgba(1,53,71,0.09),
+      -2px  0 5px  rgba(1,53,71,0.10);
+  --shadow-west:
+      21px 0 8px rgba(1,53,71,0.01),
+      12px 0 7px rgba(1,53,71,0.05),
+      5px  0 5px rgba(1,53,71,0.09),
+      1px  0 3px rgba(1,53,71,0.10);
+
+  /* ---------- MOTION ---------- */
+  /* legacy aliases (kept for existing components) */
+  --ease:        cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --dur-fast:    120ms; /* @kind other */
+  --dur:         200ms; /* @kind other */
+  --dur-slow:    320ms; /* @kind other */
+
+  /* duration tokens — entire range fits within 400ms.
+     Scaled by --gaia-duration-scalar so reduced-motion collapses to 0ms. */
+  --gaia-duration-scalar: 1; /* @kind other */
+  --gaia-duration-0:        calc(0ms   * var(--gaia-duration-scalar)); /* instant swaps, disabled */
+  --gaia-duration-instant:  calc(50ms  * var(--gaia-duration-scalar)); /* hover tints, border shifts */
+  --gaia-duration-fast:     calc(100ms * var(--gaia-duration-scalar)); /* checkbox, toggle, button press */
+  --gaia-duration-moderate: calc(150ms * var(--gaia-duration-scalar)); /* dropdown, tooltip, accordion */
+  --gaia-duration-slow:     calc(250ms * var(--gaia-duration-scalar)); /* modal fade, drawer, notification */
+  --gaia-duration-slower:   calc(400ms * var(--gaia-duration-scalar)); /* scrim / overlay backdrop fade */
+
+  /* easing tokens */
+  --gaia-easing-standard: cubic-bezier(0.2, 0, 0.38, 0.9); /* @kind other */
+  --gaia-easing-entrance: cubic-bezier(0, 0, 0.38, 0.9);   /* @kind other */
+  --gaia-easing-exit:     cubic-bezier(0.2, 0, 1, 0.9);    /* @kind other */
+  --gaia-easing-linear:   linear;                          /* @kind other */
+
+  /* transition tokens — composite (duration + easing). Primary API:
+     use as `transition: <property> var(--gaia-transition-hover);` */
+  --gaia-transition-hover:       var(--gaia-duration-instant)  var(--gaia-easing-standard); /* @kind other */
+  --gaia-transition-state:       var(--gaia-duration-fast)     var(--gaia-easing-standard); /* @kind other */
+  --gaia-transition-reveal:      var(--gaia-duration-moderate) var(--gaia-easing-entrance); /* @kind other */
+  --gaia-transition-dismiss:     var(--gaia-duration-moderate) var(--gaia-easing-exit); /* @kind other */
+  --gaia-transition-overlay-in:  var(--gaia-duration-slow)     var(--gaia-easing-entrance); /* @kind other */
+  --gaia-transition-overlay-out: var(--gaia-duration-slow)     var(--gaia-easing-exit); /* @kind other */
+  --gaia-transition-backdrop:    var(--gaia-duration-slower)   var(--gaia-easing-standard); /* @kind other */
+}
+
+/* Reduced motion — collapse all scaled durations to 0ms. Continuous
+   animations (loaders) should swap to a static variant in markup. */
+@media (prefers-reduced-motion: reduce) {
+  :root { --gaia-duration-scalar: 0; /* @kind other */ }
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES
+   Apply directly or mirror these in component CSS.
+   ============================================================ */
+
+.ds-display {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  font-weight: var(--w-bold);
+  color: var(--ink);
+}
+.ds-h1 {
+  font-family: var(--font-display);
+  font-size: var(--t-h1);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: var(--w-bold);
+  color: var(--ink);
+}
+.ds-h2 {
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-h3 {
+  font-family: var(--font-ui);
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-title {
+  font-family: var(--font-ui);
+  font-size: var(--t-title);
+  line-height: 1.3;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-body {
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  font-weight: var(--w-regular);
+  color: var(--ink-2);
+}
+.ds-body-sm {
+  font-family: var(--font-ui);
+  font-size: var(--t-body-sm);
+  line-height: 1.5;
+  font-weight: var(--w-regular);
+  color: var(--ink-2);
+}
+.ds-caption {
+  font-family: var(--font-ui);
+  font-size: var(--t-caption);
+  line-height: 1.45;
+  font-weight: var(--w-regular);
+  color: var(--ink-3);
+}
+.ds-eyebrow {
+  font-family: var(--font-ui);
+  font-size: var(--t-eyebrow);
+  line-height: 1;
+  font-weight: var(--w-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4); /* muted by default, as shipping apps */
+}
+.ds-eyebrow--green { color: var(--green-deep); } /* accent variant */
+.ds-mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-body-sm);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   BUTTONS — MOBILE. 4 types (primary · secondary · ghost · transparent)
+   + danger + approve + secondary-cta + icon. Height 48px (tap-safe on
+   iOS & Android) · radius 12px · 8px gap. A --block modifier makes a
+   full-width thumb button; --lg gives a 56px prominent action.
+   States: default · hover · pressed · focus-visible · disabled.
+   ============================================================ */
+.ds-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-03);            /* 8px */
+  height: var(--control-h);        /* 48px — tap-safe */
+  padding: 0 var(--space-06);      /* 24px */
+  font-family: var(--font-ui);
+  font-size: var(--t-body);        /* 16px */
+  font-weight: var(--w-semibold);
+  line-height: 1;
+  border-radius: var(--r-button);  /* 12px */
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background var(--gaia-transition-hover),
+              color var(--gaia-transition-hover),
+              border-color var(--gaia-transition-hover),
+              transform var(--gaia-transition-state),
+              box-shadow var(--gaia-transition-hover);
+}
+.ds-btn:focus { outline: none; }
+.ds-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+.ds-btn:active { transform: scale(0.97); }            /* tactile press feedback */
+.ds-btn:disabled, .ds-btn[disabled], .ds-btn[aria-disabled="true"] { cursor: not-allowed; transform: none; }
+
+/* focus ring — shared */
+.ds-btn:focus-visible { outline: 2px solid var(--action-ring); outline-offset: 2px; }
+
+/* 1 — Primary (filled teal) */
+.ds-btn--primary { background: var(--action); color: #FFFFFF; }
+.ds-btn--primary:hover { background: var(--action-hi); }
+.ds-btn--primary:active { background: var(--action-press); }
+.ds-btn--primary:disabled, .ds-btn--primary[disabled] {
+  background: var(--action-disabled); color: var(--action-disabled-ink);
+}
+
+/* 2 — Secondary (outline) */
+.ds-btn--secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.ds-btn--secondary:hover { background: var(--surface-2); border-color: var(--ink-3); }
+.ds-btn--secondary:active { background: var(--surface-2); border-color: var(--ink-2); }
+.ds-btn--secondary:disabled, .ds-btn--secondary[disabled] {
+  background: var(--surface); color: var(--action-disabled-ink); border-color: var(--line);
+}
+
+/* 3 — Ghost (no border, fills on hover) */
+.ds-btn--ghost { background: transparent; color: var(--ink); }
+.ds-btn--ghost:hover { background: var(--surface-2); }
+.ds-btn--ghost:active { background: var(--line-2); }
+.ds-btn--ghost:disabled, .ds-btn--ghost[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* 4 — Transparent (text / link-like) */
+.ds-btn--transparent { background: transparent; color: var(--action); padding: 0 var(--space-03); }
+.ds-btn--transparent:hover { background: var(--green-soft); color: var(--action-hi); }
+.ds-btn--transparent:active { color: var(--action-press); }
+.ds-btn--transparent:disabled, .ds-btn--transparent[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* Approve / positive — accent green (distinct semantic) */
+.ds-btn--approve { background: var(--green); color: #ffffff; }
+.ds-btn--approve:hover { background: #4FA77B; }
+.ds-btn--approve:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* Secondary CTA — filled Kontek Green (secondary tier under the Brand-Signature primary) */
+.ds-btn--secondary-cta { background: var(--action-2); color: #FFFFFF; }
+.ds-btn--secondary-cta:hover { background: var(--action-2-hi); }
+.ds-btn--secondary-cta:active { background: var(--action-2-hi); }
+.ds-btn--secondary-cta:focus-visible { outline: 2px solid var(--action-2); outline-offset: 2px; }
+.ds-btn--secondary-cta:disabled, .ds-btn--secondary-cta[disabled] { background: var(--action-disabled); color: var(--action-disabled-ink); }
+
+/* Destructive — red, ghost/transparent treatment */
+.ds-btn--danger { background: transparent; color: var(--danger); }
+.ds-btn--danger:hover { background: var(--danger-soft); }
+.ds-btn--danger:active { background: var(--danger-soft); }
+.ds-btn--danger:focus-visible { outline: 2px solid var(--danger); outline-offset: 2px; }
+.ds-btn--danger:disabled, .ds-btn--danger[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* Icon-only — square; combine with a type, e.g. "ds-btn ds-btn--secondary ds-btn--icon" */
+.ds-btn--icon { width: var(--tap-min); height: var(--tap-min); padding: 0; }
+.ds-btn--icon.ds-btn--transparent { width: var(--tap-min); padding: 0; }
+
+/* Block — full-width thumb button (primary mobile action shape) */
+.ds-btn--block { display: flex; width: 100%; }
+
+/* Large — prominent 56px action (sticky bottom CTAs, hero approve) */
+.ds-btn--lg { height: var(--control-h-lg); font-size: var(--t-title); border-radius: var(--r-button); }
+.ds-btn--lg svg { width: 22px; height: 22px; }
+
+/* Small size modifier — compact controls inside dense rows (still ≥ tap-min via padding context) */
+.ds-btn--sm { height: var(--control-h-sm); padding: 0 var(--space-04); font-size: var(--t-body-sm); }
+.ds-btn--sm.ds-btn--icon { width: var(--control-h-sm); padding: 0; }
+.ds-btn--sm svg { width: 18px; height: 18px; }
+
+/* ============================================================
+   FORM CONTROLS — text input · textarea · select · search ·
+   checkbox · radio · switch · segmented control.
+   Height 40px · radius 8px (--r-input). States: default · hover ·
+   focus · disabled · error. Every state is reachable via real
+   pseudo-classes AND via .is-* modifier classes (for spec grids).
+   Accent fill = Interaction green (#61BC8F) paired with a
+   Brand-Signature border; focus ring = 3px signature @ 16% alpha.
+   ============================================================ */
+
+/* --- field scaffolding --- */
+.ds-field { display: flex; flex-direction: column; gap: var(--space-02); width: 100%; max-width: 100%; }
+.ds-label { font-family: var(--font-ui); font-size: var(--t-caption); font-weight: var(--w-semibold); color: var(--ink-2); }
+.ds-label .req { color: var(--danger); margin-left: 2px; }
+.ds-label .opt { color: var(--ink-4); font-weight: var(--w-regular); margin-left: 4px; }
+.ds-hint { font-size: var(--t-micro); color: var(--ink-3); line-height: 1.45; }
+.ds-hint--error { color: var(--danger); }
+.ds-hint--error svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px; }
+
+/* --- text input · textarea · select (shared shell) --- */
+.ds-input, .ds-textarea, .ds-select {
+  box-sizing: border-box; width: 100%; height: var(--control-h); padding: 0 16px;
+  font-family: var(--font-ui); font-size: var(--t-body); color: var(--ink);
+  -webkit-appearance: none; -webkit-tap-highlight-color: transparent;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-input);
+  outline: none; transition: border-color var(--gaia-transition-state), box-shadow var(--gaia-transition-state);
+}
+.ds-textarea { height: auto; min-height: 104px; padding: 12px 16px; line-height: 1.5; resize: vertical; }
+.ds-input::placeholder, .ds-textarea::placeholder { color: var(--ink-4); }
+.ds-input:hover, .ds-textarea:hover, .ds-select:hover,
+.ds-input.is-hover, .ds-textarea.is-hover, .ds-select.is-hover { border-color: var(--ink-4); }
+.ds-input:focus, .ds-textarea:focus, .ds-select:focus,
+.ds-input.is-focus, .ds-textarea.is-focus, .ds-select.is-focus {
+  border-color: var(--signature); box-shadow: 0 0 0 3px rgba(32, 59, 60, 0.16);
+}
+.ds-input:disabled, .ds-textarea:disabled, .ds-select:disabled,
+.ds-input.is-disabled, .ds-textarea.is-disabled, .ds-select.is-disabled {
+  background: var(--surface-2); color: var(--silver-mist); border-color: var(--line);
+  cursor: not-allowed; box-shadow: none;
+}
+.ds-input.is-error, .ds-textarea.is-error, .ds-select.is-error { border-color: var(--danger); }
+.ds-input.is-error:focus, .ds-input.is-error.is-focus,
+.ds-textarea.is-error:focus, .ds-textarea.is-error.is-focus { box-shadow: 0 0 0 3px rgba(156, 50, 50, 0.16); }
+
+/* select chevron */
+.ds-select {
+  appearance: none; -webkit-appearance: none; padding-right: 42px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%23475669' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+
+/* --- search field --- */
+.ds-search { position: relative; display: inline-flex; align-items: center; width: 100%; max-width: 100%; }
+.ds-search > svg.lead { position: absolute; left: 14px; width: 20px; height: 20px; stroke: var(--ink-3); pointer-events: none; }
+.ds-search .ds-input { padding-left: 44px; padding-right: 44px; }
+.ds-search .clear {
+  position: absolute; right: 6px; width: 36px; height: 36px; border: none; background: transparent;
+  border-radius: var(--radius-round); display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--ink-3);
+}
+.ds-search .clear:hover { background: var(--surface-2); color: var(--ink); }
+.ds-search .clear svg { width: 16px; height: 16px; }
+
+/* --- checkbox --- */
+.ds-checkbox, .ds-radio, .ds-switch {
+  display: inline-flex; align-items: center; gap: 12px; cursor: pointer; user-select: none;
+  min-height: var(--tap-min); -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-ui); font-size: var(--t-body); color: var(--ink); line-height: 1.3;
+}
+.ds-checkbox > input, .ds-radio > input, .ds-switch > input {
+  position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none;
+}
+.ds-cbx {
+  width: 24px; height: 24px; flex-shrink: 0; border-radius: 7px; border: 2px solid var(--ink-3);
+  background: var(--surface); display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--gaia-transition-state), border-color var(--gaia-transition-state);
+}
+.ds-cbx svg { width: 15px; height: 15px; stroke: #fff; stroke-width: 3; opacity: 0; transition: opacity var(--gaia-transition-state); }
+.ds-checkbox > input:checked + .ds-cbx, .ds-cbx.is-checked { background: var(--green); border-color: var(--signature); }
+.ds-checkbox > input:checked + .ds-cbx svg, .ds-cbx.is-checked svg { opacity: 1; }
+.ds-cbx.is-indeterminate { background: var(--green); border-color: var(--signature); }
+.ds-cbx.is-indeterminate::after { content: ''; width: 11px; height: 2.5px; border-radius: 2px; background: #fff; }
+
+/* --- radio --- */
+.ds-rdo {
+  width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--ink-3);
+  background: var(--surface); display: inline-flex; align-items: center; justify-content: center;
+  transition: border-color var(--gaia-transition-state);
+}
+.ds-rdo::after {
+  content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--green);
+  transform: scale(0); transition: transform var(--gaia-transition-state);
+}
+.ds-radio > input:checked + .ds-rdo, .ds-rdo.is-checked { border-color: var(--signature); }
+.ds-radio > input:checked + .ds-rdo::after, .ds-rdo.is-checked::after { transform: scale(1); }
+
+/* --- switch --- */
+.ds-swt {
+  width: 52px; height: 32px; flex-shrink: 0; border-radius: var(--radius-round); background: var(--silver-mist);
+  position: relative; transition: background var(--gaia-transition-state); display: inline-block;
+}
+.ds-swt::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 28px; height: 28px; border-radius: 50%;
+  background: #fff; box-shadow: var(--shadow-sm); transition: transform var(--gaia-transition-state);
+}
+.ds-switch > input:checked + .ds-swt, .ds-swt.is-on { background: var(--green); }
+.ds-switch > input:checked + .ds-swt::after, .ds-swt.is-on::after { transform: translateX(20px); }
+
+/* shared focus ring for checkbox/radio/switch */
+.ds-checkbox > input:focus-visible + .ds-cbx, .ds-cbx.is-focus,
+.ds-radio > input:focus-visible + .ds-rdo, .ds-rdo.is-focus,
+.ds-switch > input:focus-visible + .ds-swt, .ds-swt.is-focus {
+  box-shadow: 0 0 0 3px rgba(32, 59, 60, 0.16); border-color: var(--signature);
+}
+/* hover */
+.ds-checkbox:hover .ds-cbx, .ds-cbx.is-hover,
+.ds-radio:hover .ds-rdo, .ds-rdo.is-hover { border-color: var(--signature); }
+/* disabled */
+.ds-checkbox.is-disabled, .ds-radio.is-disabled, .ds-switch.is-disabled { cursor: not-allowed; color: var(--silver-mist); }
+.ds-cbx.is-disabled, .ds-rdo.is-disabled, .ds-checkbox.is-disabled .ds-cbx, .ds-radio.is-disabled .ds-rdo { border-color: var(--silver-mist); background: var(--surface-2); }
+.ds-swt.is-disabled, .ds-switch.is-disabled .ds-swt { background: var(--surface-2); }
+/* error (checkbox/radio) */
+.ds-cbx.is-error, .ds-rdo.is-error { border-color: var(--danger); }
+
+/* --- segmented control --- */
+.ds-segmented {
+  display: inline-flex; padding: 4px; gap: 3px; background: var(--surface-2);
+  border-radius: var(--r-input); border: 1px solid var(--line); width: 100%;
+}
+.ds-segmented .seg {
+  border: none; background: transparent; cursor: pointer; padding: 0 16px; height: 40px; flex: 1;
+  border-radius: 9px; font-family: var(--font-ui); font-size: var(--t-body-sm); font-weight: var(--w-medium);
+  color: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--gaia-transition-state), color var(--gaia-transition-state), box-shadow var(--gaia-transition-state);
+}
+.ds-segmented .seg svg { width: 17px; height: 17px; }
+.ds-segmented .seg:hover { color: var(--ink); }
+.ds-segmented .seg.is-active { background: var(--surface); color: var(--ink); font-weight: var(--w-semibold); box-shadow: var(--shadow-xs); }
+.ds-segmented .seg:disabled, .ds-segmented .seg.is-disabled { color: var(--silver-mist); cursor: not-allowed; }
+
+/* ============================================================
+   UTILITIES — single-purpose helper classes. Compose, don't fork.
+   ============================================================ */
+.u-visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.u-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.u-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.u-nowrap { white-space: nowrap; }
+.u-tabular { font-variant-numeric: tabular-nums; }
+.u-balance { text-wrap: balance; }
+.u-pretty { text-wrap: pretty; }
+.u-full { width: 100%; }
+.u-center { display: flex; align-items: center; justify-content: center; }
+.u-between { display: flex; align-items: center; justify-content: space-between; }
+.u-muted { color: var(--ink-3); }
+.u-strong { font-weight: var(--w-semibold); }
+.u-divider { height: 1px; background: var(--line); border: 0; margin: 0; }
+.u-elevate { box-shadow: var(--shadow-md); }
+.u-round { border-radius: var(--radius-round); }
+
+/* ============================================================
+   AVATAR — circular identity token. Photo · initials · icon fallback.
+   Size scale 24/32/40/48/64. Optional presence dot + status ring.
+   Initials sit on The Guide; never invent rainbow palettes.
+   ============================================================ */
+.ds-avatar {
+  position: relative; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: var(--radius-round); overflow: hidden;
+  background: var(--guide); color: #fff; font-family: var(--font-ui); font-weight: var(--w-semibold);
+  font-size: 14px; line-height: 1; letter-spacing: 0.01em; user-select: none;
+}
+.ds-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ds-avatar svg { width: 55%; height: 55%; stroke: #fff; }
+/* size modifiers */
+.ds-avatar--xs { width: 24px; height: 24px; font-size: 9.5px; }
+.ds-avatar--sm { width: 32px; height: 32px; font-size: 12px; }
+.ds-avatar--md { width: 40px; height: 40px; font-size: 14px; }
+.ds-avatar--lg { width: 48px; height: 48px; font-size: 16px; }
+.ds-avatar--xl { width: 64px; height: 64px; font-size: 22px; }
+/* tone variants for initials (kept within brand) */
+.ds-avatar--soft   { background: var(--green-soft); color: var(--green-deep); }
+.ds-avatar--forest { background: var(--forest); color: #fff; }
+.ds-avatar--muted  { background: var(--surface-2); color: var(--ink-3); }
+/* presence dot — sits bottom-right, ringed against the host surface */
+.ds-avatar .ds-presence {
+  position: absolute; right: -1px; bottom: -1px; width: 30%; height: 30%; min-width: 8px; min-height: 8px;
+  border-radius: var(--radius-round); border: 2px solid var(--surface); background: var(--silver-mist); box-sizing: border-box;
+}
+.ds-avatar .ds-presence--online  { background: var(--green); }
+.ds-avatar .ds-presence--away    { background: #C98A2B; }
+.ds-avatar .ds-presence--offline { background: var(--silver-mist); }
+.ds-avatar .ds-presence--busy    { background: var(--danger); }
+/* ring (e.g. when overlapping or on a colored ground) */
+.ds-avatar--ring { box-shadow: 0 0 0 2px var(--surface); }
+
+/* avatar group — overlapping stack + overflow count */
+.ds-avatar-group { display: inline-flex; align-items: center; }
+.ds-avatar-group .ds-avatar { box-shadow: 0 0 0 2px var(--surface); margin-left: -10px; }
+.ds-avatar-group .ds-avatar:first-child { margin-left: 0; }
+.ds-avatar-group .ds-avatar--sm { margin-left: -8px; }
+.ds-avatar-group .ds-avatar--more { background: var(--surface-2); color: var(--ink-2); font-size: 12px; }
+
+/* ============================================================
+   FEEDBACK PANEL (organism) — captures a thumbs rating + optional
+   comment. Fixed 320px width; grows vertically with content.
+   Reuses .ds-textarea and .ds-btn. Brand: Brand-Signature fill on
+   the selected thumb and the Submit button.
+   ============================================================ */
+.ds-feedback {
+  box-sizing: border-box; width: 320px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--r-card); padding: 16px;
+  box-shadow: var(--shadow-md); font-family: var(--font-ui); color: var(--ink);
+}
+.ds-feedback__head { display: flex; align-items: flex-start; gap: 12px; }
+.ds-feedback__title { flex: 1; font-size: 15px; font-weight: var(--w-semibold); line-height: 1.33; color: var(--ink); margin: 0; }
+.ds-feedback__close {
+  flex-shrink: 0; width: 24px; height: 24px; margin: -2px -2px 0 0; padding: 0; border: none; background: transparent;
+  border-radius: 6px; color: var(--ink-3); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--gaia-transition-state), color var(--gaia-transition-state);
+}
+.ds-feedback__close:hover { background: var(--surface-2); color: var(--ink); }
+.ds-feedback__close svg { width: 18px; height: 18px; }
+
+/* rating row — 16px below the title */
+.ds-feedback__rating { display: flex; gap: 8px; margin-top: 16px; }
+.ds-thumb {
+  width: 40px; height: 40px; flex-shrink: 0; border: 1px solid var(--line); border-radius: var(--r-button);
+  background: var(--surface); color: var(--signature); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--gaia-transition-state), border-color var(--gaia-transition-state), color var(--gaia-transition-state);
+}
+.ds-thumb svg { width: 20px; height: 20px; }
+.ds-thumb:hover { border-color: var(--signature); background: var(--green-soft); }
+.ds-thumb.is-selected { background: var(--signature); border-color: var(--signature); color: #fff; }
+.ds-thumb:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(32, 59, 60, 0.16); border-color: var(--signature); }
+
+/* comment block — 24px below rating, 8px between prompt and field */
+.ds-feedback__prompt { font-size: 13px; font-weight: var(--w-medium); color: var(--ink-2); margin: 24px 0 8px; }
+.ds-feedback .ds-textarea { min-height: 96px; }
+
+/* action row — 16px above, right-aligned, 8px gap */
+.ds-feedback__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+/* confirmation state — replaces the whole body */
+.ds-feedback--confirm { display: flex; align-items: center; }
+.ds-feedback__thanks { font-size: 14px; font-weight: var(--w-medium); color: var(--ink); margin: 0; }
+
+
+/* === styles.css === */
+/* ============================================================
+   KONTEK NEXT — Design System entry point
+   Single stylesheet for consumers. Mobile-first: this pulls in the
+   source-of-truth tokens + semantic classes, which in turn import the
+   mobile-native components.
+
+       <link rel="stylesheet" href="styles.css">
+
+   (The desktop UI kit keeps its own frozen ui_kits/kontek-next/tokens.css,
+   and preview/_card.css is spec-card chrome — neither is part of this entry.)
+   ============================================================ */
+

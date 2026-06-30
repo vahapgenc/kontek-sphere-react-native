@@ -1,0 +1,81 @@
+<!-- @dsCard group="Molecules" name="Checkbox" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Checkbox — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+</head>
+<body>
+
+  <h1 class="dg-h1">Checkbox</h1>
+  <div class="dg-intro"><p>Välj noll, en eller flera. Fyllning i <b>--green</b> med signaturkant; hela raden är tryckbar på minst 48px.</p></div>
+
+  <div class="sec">
+    <h2>Usage</h2>
+    <p>För att välja noll, en eller flera oberoende alternativ. 24px ruta, radie 7px. Ikryssad fylls med Interaction-grön och Brand-Signature-kant. Använd radioknappar i stället när bara ett alternativ får väljas.</p>
+    <div class="frame col">
+      <label class="ds-checkbox"><input type="checkbox" checked><span class="ds-cbx"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5"/></svg></span> Skicka lönebesked via e-post</label>
+      <label class="ds-checkbox"><input type="checkbox"><span class="ds-cbx"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5"/></svg></span> Inkludera semesterersättning</label>
+      <label class="ds-checkbox"><input type="checkbox" checked><span class="ds-cbx"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5"/></svg></span> Bokför automatiskt efter godkännande</label>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States</h2>
+    <p>Oikryssad &amp; ikryssad i default · hover · fokus · inaktiverad, samt obestämt (för ”markera alla” när bara vissa är valda).</p>
+    <div class="frame center">
+      <div class="state cc"><span class="ds-cbx"></span><span class="lbl">Av</span></div>
+      <div class="state cc"><span class="ds-cbx is-hover"></span><span class="lbl">Av · hover</span></div>
+      <div class="state cc"><span class="ds-cbx is-focus"></span><span class="lbl">Av · fokus</span></div>
+      <div class="divider"></div>
+      <div class="state cc"><span class="ds-cbx is-checked"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5"/></svg></span><span class="lbl">På</span></div>
+      <div class="state cc"><span class="ds-cbx is-checked is-focus"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5"/></svg></span><span class="lbl">På · fokus</span></div>
+      <div class="state cc"><span class="ds-cbx is-indeterminate"></span><span class="lbl">Obestämd</span></div>
+      <div class="divider"></div>
+      <div class="state cc"><span class="ds-cbx" style="border-color:var(--silver-mist);background:var(--surface-2);"></span><span class="lbl">Inaktiv av</span></div>
+      <div class="state cc"><span class="ds-cbx is-checked" style="background:var(--silver-mist);border-color:var(--silver-mist);"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5"/></svg></span><span class="lbl">Inaktiv på</span></div>
+      <div class="state cc"><span class="ds-cbx is-error"></span><span class="lbl">Fel</span></div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Grupp med ”markera alla”</h2>
+    <p>En överordnad kryssruta styr gruppen och visar obestämt läge när bara vissa underval är ikryssade.</p>
+    <div class="frame col">
+      <label class="ds-checkbox" style="font-weight:var(--w-semibold);"><input type="checkbox"><span class="ds-cbx is-indeterminate"></span> Alla anställda (2 av 3 valda)</label>
+      <div style="display:flex;flex-direction:column;gap:14px;padding-left:28px;">
+        <label class="ds-checkbox"><input type="checkbox" checked><span class="ds-cbx is-checked"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5"/></svg></span> Erik Holm</label>
+        <label class="ds-checkbox"><input type="checkbox" checked><span class="ds-cbx is-checked"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5"/></svg></span> Sara Nilsson</label>
+        <label class="ds-checkbox"><input type="checkbox"><span class="ds-cbx"></span> Johan Lund</label>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use a checkbox when zero, one or several options can be selected.</li>
+          <li>Fill with <code>--green</code> paired with a <code>--signature</code> border.</li>
+          <li>Keep the whole label tappable at ≥ 48px.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use a checkbox for mutually-exclusive choices &mdash; that is a radio.</li>
+          <li>Recolour the check fill away from <code>--green</code>.</li>
+          <li>Make only the tiny box tappable.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

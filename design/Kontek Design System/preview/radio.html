@@ -1,0 +1,82 @@
+<!-- @dsCard group="Molecules" name="Radio button" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Radio button — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+</head>
+<body>
+
+  <h1 class="dg-h1">Radio button</h1>
+  <div class="dg-intro"><p>Välj <b>exakt ett</b> alternativ. Förvälj ett vettigt standardval; vid många val, byt till en rullgardin.</p></div>
+
+  <div class="sec">
+    <h2>Usage</h2>
+    <p>För att välja exakt ett alternativ ur en kort, ömsesidigt uteslutande lista. 24px cirkel med grön punkt och Brand-Signature-kant vid val. Har listan fler än 5–6 alternativ — använd en dropdown.</p>
+    <div class="frame col">
+      <label class="ds-radio"><input type="radio" name="period" checked><span class="ds-rdo"></span> Månadsvis utbetalning</label>
+      <label class="ds-radio"><input type="radio" name="period"><span class="ds-rdo"></span> Varannan vecka</label>
+      <label class="ds-radio"><input type="radio" name="period"><span class="ds-rdo"></span> Veckovis</label>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States</h2>
+    <p>Ovald &amp; vald i default · hover · fokus · inaktiverad · fel.</p>
+    <div class="frame center">
+      <div class="state cc"><span class="ds-rdo"></span><span class="lbl">Ovald</span></div>
+      <div class="state cc"><span class="ds-rdo is-hover"></span><span class="lbl">Hover</span></div>
+      <div class="state cc"><span class="ds-rdo is-focus"></span><span class="lbl">Fokus</span></div>
+      <div class="divider"></div>
+      <div class="state cc"><span class="ds-rdo is-checked"></span><span class="lbl">Vald</span></div>
+      <div class="state cc"><span class="ds-rdo is-checked is-focus"></span><span class="lbl">Vald · fokus</span></div>
+      <div class="divider"></div>
+      <div class="state cc"><span class="ds-rdo" style="border-color:var(--silver-mist);background:var(--surface-2);"></span><span class="lbl">Inaktiv ovald</span></div>
+      <div class="state cc"><span class="ds-rdo is-checked" style="border-color:var(--silver-mist);"></span><span class="lbl">Inaktiv vald</span></div>
+      <div class="state cc"><span class="ds-rdo is-error"></span><span class="lbl">Fel</span></div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>As a selection card</h2>
+    <p>För tyngre beslut kan radioknappen bäddas in i ett kort med beskrivning. Hela kortet är klickbart; det valda kortet får signaturkant och svag grön ton.</p>
+    <div class="frame">
+      <label class="ds-radio" style="align-items:flex-start;border:1.5px solid var(--signature);background:var(--green-soft);border-radius:var(--r-card);padding:16px 18px;max-width:260px;gap:12px;">
+        <input type="radio" name="metod" checked><span class="ds-rdo is-checked" style="margin-top:1px;"></span>
+        <span><span style="display:block;font-weight:var(--w-semibold);">Automatisk bokföring</span><span style="display:block;font-size:13px;color:var(--ink-3);margin-top:3px;line-height:1.45;">Vi bokför körningen direkt efter godkännande.</span></span>
+      </label>
+      <label class="ds-radio" style="align-items:flex-start;border:1px solid var(--line);border-radius:var(--r-card);padding:16px 18px;max-width:260px;gap:12px;">
+        <input type="radio" name="metod"><span class="ds-rdo" style="margin-top:1px;"></span>
+        <span><span style="display:block;font-weight:var(--w-semibold);">Manuell bokföring</span><span style="display:block;font-size:13px;color:var(--ink-3);margin-top:3px;line-height:1.45;">Du exporterar och bokför själv i ditt system.</span></span>
+      </label>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use a radio when exactly one option must be chosen.</li>
+          <li>Pre-select a sensible default.</li>
+          <li>Keep the full row tappable at ≥ 48px.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use radios where several selections are valid &mdash; that is a checkbox.</li>
+          <li>List more than ~5 options &mdash; switch to a select.</li>
+          <li>Leave a required group with no default.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

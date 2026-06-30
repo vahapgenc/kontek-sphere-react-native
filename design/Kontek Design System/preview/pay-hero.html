@@ -1,0 +1,98 @@
+<!-- @dsCard group="Molecules" viewport="940x680" name="Pay / hero card" subtitle="Soft-mint hero — never a dark fill" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay / hero card — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { background:var(--app-bg); }
+  .sec > h2 { color:var(--ink); } .sec > p { color:var(--ink-2); }
+  .stage { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start; }
+  .hero { width:320px; background:var(--mint-grad); color:var(--signature); border:1px solid var(--mint-line); box-shadow:var(--mint-shadow); padding:22px 24px; }
+  .hero--home { border-radius:var(--r-sheet); }
+  .hero--detail { border-radius:var(--r-panel); }
+  .hero .eb { font-size:var(--t-eyebrow); font-weight:var(--w-semibold); letter-spacing:.08em;  color:var(--green-deep); }
+  .hero .fig { font-size:var(--t-display); font-weight:var(--w-bold); letter-spacing:-.02em; margin-top:8px; font-variant-numeric:tabular-nums; line-height:1; }
+  .hero .sub { font-size:var(--t-body-sm); color:var(--ink-3); margin-top:10px; }
+  .hero .meta { display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
+  .pill { font-size:var(--t-micro); font-weight:var(--w-semibold); padding:5px 11px; border-radius:var(--r-pill); background:rgba(255,255,255,.6); color:var(--green-deep); }
+  .anatomy { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); padding:20px 22px; display:flex; gap:28px; flex-wrap:wrap; font-size:var(--t-caption); color:var(--ink-3); }
+  .anatomy b { color:var(--ink-2); font-weight:600; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Pay / hero card</h1>
+  <div class="dg-intro"><p>Löne- och hjältekort använder den <b>mjuka mint-behandlingen</b>, aldrig en mörk fyllning. Mörk skogstext, talet i .tnum.</p></div>
+
+  <div class="sec">
+    <h2>The pay / hero card</h2>
+    <p>Pay heroes — the Home upcoming-pay, the Upcoming screen, the payslip detail — use the <b>soft-mint</b> treatment, never a dark fill. Dark forest text sits on a gentle mint gradient; the figure is <code>.tnum</code> at display size. Home uses a 24px top radius, detail panels 20px.</p>
+    <div class="stage">
+      <div class="hero hero--home">
+        <div class="eb">Nästa lön</div>
+        <div class="fig">28 450 kr</div>
+        <div class="sub">Utbetalas 25 juni · Swedbank ·••• 8842</div>
+        <div class="meta"><span class="pill">Klar för utbetalning</span><span class="pill">Inga avvikelser</span></div>
+      </div>
+      <div class="hero hero--detail" style="width:280px;">
+        <div class="eb">Lönespecifikation · maj</div>
+        <div class="fig" style="font-size:30px;">26 980 kr</div>
+        <div class="sub">Betald 25 maj</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="anatomy">
+      <div><b>Fill</b>&nbsp; --mint-grad (145°)</div>
+      <div><b>Text</b>&nbsp; --signature (forest)</div>
+      <div><b>Eyebrow</b>&nbsp; --green-deep</div>
+      <div><b>Subtitle</b>&nbsp; --ink-3</div>
+      <div><b>Figure</b>&nbsp; .tnum --t-display</div>
+      <div><b>Border</b>&nbsp; --mint-line</div>
+      <div><b>Shadow</b>&nbsp; --mint-shadow</div>
+      <div><b>Radius</b>&nbsp; 24 home · 20 detail</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__examples">
+      <figure class="kdd__ex kdd__ex--do">
+        <div class="kdd__ex__stage"><div style="width:170px;background:var(--mint-grad);border:1px solid var(--mint-line);border-radius:18px;box-shadow:var(--mint-shadow);padding:14px 16px;color:var(--signature);"><div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--green-deep);">Nästa lön</div><div style="font-size:24px;font-weight:700;margin-top:5px;font-variant-numeric:tabular-nums;">28 450 kr</div></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Soft mint, forest text, tabular figure — calm and legible.</figcaption>
+      </figure>
+      <figure class="kdd__ex kdd__ex--dont">
+        <div class="kdd__ex__stage"><div style="width:170px;background:var(--signature);border-radius:18px;padding:14px 16px;color:#fff;"><div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--status-badge);">Nästa lön</div><div style="font-size:24px;font-weight:700;margin-top:5px;">28 450 kr</div></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>A dark forest fill makes the pay figure shout — too heavy for the hero.</figcaption>
+      </figure>
+    </div>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use <code>--mint-grad</code> for every pay/hero surface; pair forest text with a <code>--green-deep</code> eyebrow.</li>
+          <li>Set the figure in <code>.tnum</code> so amounts align column to column.</li>
+          <li>Make the Home hero sticky and let it dock into the frosted bar on scroll.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Fill the hero with dark forest or any solid brand colour.</li>
+          <li>Use proportional figures for money — they jitter as digits change.</li>
+          <li>Stack two heroes on one screen; there is one lead figure per view.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

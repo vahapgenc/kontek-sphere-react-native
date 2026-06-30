@@ -1,0 +1,109 @@
+<!-- @dsCard group="Organisms" viewport="980x640" name="Bottom sheet" subtitle="Content sheet & action sheet" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Bottom sheet — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .stage { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start; }
+  .phone { width:300px; height:400px; border-radius:30px; overflow:hidden; border:1px solid var(--line); background:var(--canvas); box-shadow:var(--shadow-md); position:relative; }
+  .dim { position:absolute; inset:0; padding:18px var(--screen-gutter); color:var(--ink-4); font-size:14px; }
+  .dim h3 { font-family:var(--font-display); font-size:22px; color:var(--ink); margin:6px 0 0; }
+  /* statically open for the spec */
+  .open-scrim { position:absolute; inset:0; background:rgba(5,18,18,0.42); }
+  svg.i { fill:none; stroke:currentColor; stroke-width:1.85; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Bottom sheet</h1>
+  <div class="dg-intro"><p>Glider upp över en dimmad scrim med grepphandtag. Åtgärdsarket staplar helbredds-val — t.ex. Register-navet.</p></div>
+
+  <div class="sec">
+    <h2>Bottom sheet</h2>
+    <p>Slides up from the bottom edge over a dimmed scrim — the mobile substitute for a popover or dropdown. A grab handle signals it's draggable. Two patterns: a <b>content sheet</b> (title, copy and any controls — e.g. the “Mer” menu or a filter panel) and an <b>action sheet</b> (a stacked list of choices, with destructive actions in red). Shown here statically open.</p>
+    <div class="frame">
+      <div class="stage">
+
+        <!-- content sheet -->
+        <div>
+          <div class="phone">
+            <div class="dim"><div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--green-deep);">Marknadsplats</div><h3>Utöka Kontek</h3></div>
+            <div class="open-scrim"></div>
+            <div class="ds-sheet is-open" style="position:absolute;">
+              <div class="ds-sheet__grip"></div>
+              <h3 class="ds-sheet__title">Lägg till modul</h3>
+              <p class="ds-sheet__sub">Koppla på fler funktioner. De aktiveras direkt och faktureras per anställd.</p>
+              <div class="ds-actionsheet">
+                <button class="ds-actionsheet__item"><svg class="i" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/></svg> Pension &amp; försäkring</button>
+                <button class="ds-actionsheet__item"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Reseräkningar</button>
+              </div>
+              <button class="ds-btn ds-btn--primary ds-btn--block ds-btn--lg" style="margin-top:14px;">Utforska alla</button>
+            </div>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Content sheet</div>
+        </div>
+
+        <!-- action sheet -->
+        <div>
+          <div class="phone">
+            <div class="dim"><div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--green-deep);">Lönekörning · Maj</div><h3>Norrström AB</h3></div>
+            <div class="open-scrim"></div>
+            <div class="ds-sheet is-open" style="position:absolute;">
+              <div class="ds-sheet__grip"></div>
+              <h3 class="ds-sheet__title">Körning</h3>
+              <p class="ds-sheet__sub">Vad vill du göra med majkörningen?</p>
+              <div class="ds-actionsheet">
+                <button class="ds-actionsheet__item"><svg class="i" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Ladda ner underlag</button>
+                <button class="ds-actionsheet__item"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Redigera körning</button>
+                <button class="ds-actionsheet__item ds-actionsheet__item--danger"><svg class="i" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Avbryt körning</button>
+              </div>
+            </div>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Action sheet — destructive in red</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy">
+      <div><b>Top radius</b> &nbsp;24px (r-sheet)</div>
+      <div><b>Grip</b> &nbsp;40×5px, line colour</div>
+      <div><b>Scrim</b> &nbsp;ground @ 42%</div>
+      <div><b>Item</b> &nbsp;≥48px tap, 16px label</div>
+      <div><b>Max height</b> &nbsp;88% · scrolls</div>
+      <div><b>Safe area</b> &nbsp;pads --safe-bottom</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Slide the sheet over the <code>--scrim</code> with a grab handle and a 24px top radius.</li>
+          <li>Use the action-sheet variant for the Register hub's stacked choices.</li>
+          <li>Keep the sheet below the tab bar; semibold (600) titles.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Open a sheet with no scrim or no way to dismiss.</li>
+          <li>Overfill it &mdash; a sheet is a focused choice, not a full screen.</li>
+          <li>Bold (700) the sheet title; sheet headings are semibold.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

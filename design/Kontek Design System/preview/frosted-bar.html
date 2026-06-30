@@ -1,0 +1,87 @@
+<!-- @dsCard group="Organisms" viewport="940x720" name="Frosted app bar" subtitle="Transparent at rest, frosts in on scroll" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frosted app bar — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  .stage { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start; }
+  .phone { width:262px; border-radius:34px; padding:10px; background:#0F1112; box-shadow:var(--shadow-lg); flex:none; }
+  .phone__screen { border-radius:26px; overflow:hidden; height:300px; position:relative; background:var(--app-bg); }
+  .lbl { font-size:var(--t-caption); font-weight:var(--w-semibold); color:var(--ink-3); margin-bottom:10px; }
+  /* bar at rest — transparent */
+  .bar { position:absolute; top:0; left:0; right:0; height:88px; display:flex; flex-direction:column; justify-content:flex-end; padding:0 16px 10px; z-index:2; }
+  .bar--rest { background:transparent; }
+  .bar--frost { background:var(--frost-bg); -webkit-backdrop-filter:var(--frost-blur); backdrop-filter:var(--frost-blur); border-bottom:1px solid var(--frost-line); }
+  .bar .eb { font-size:9px; font-weight:var(--w-semibold); letter-spacing:.1em;  color:var(--green-deep); }
+  .bar h1 { margin:2px 0 0; font-size:23px; font-weight:var(--w-bold); letter-spacing:-.02em; color:var(--ink); }
+  .scrollbody { position:absolute; inset:0; padding:96px 16px 0; display:flex; flex-direction:column; gap:12px; }
+  .scrollbody--up { padding-top:60px; }
+  .mcard { background:#fff; border:1px solid transparent; border-radius:var(--r-panel); box-shadow:var(--sh-1); padding:14px 16px; }
+  .mcard .e { font-size:9px; font-weight:700; letter-spacing:.08em;  color:var(--green-deep); }
+  .mcard .f { font-size:22px; font-weight:700; color:var(--signature); margin-top:4px; font-variant-numeric:tabular-nums; }
+  .mcard .l { height:11px; border-radius:6px; background:var(--surface-2); margin-top:10px; }
+  .mcard .l.s { width:60%; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Frosted app bar</h1>
+  <div class="dg-intro"><p>Appfältet är <b>transparent i vila</b> och frostar in vid skroll. På Home dockar lönehjälten in i samma tonade yta.</p></div>
+
+  <div class="sec">
+    <h2>Transparent app bar + scroll-frost</h2>
+    <p>The app bar is <b>transparent at rest</b> so the gradient runs to the top edge. On scroll it <b>frosts in</b>: the bar — and, on Home, the sticky pay hero — cross-fades to <code>--frost-bg</code> with <code>--frost-blur</code> and grows a 1px <code>--frost-line</code> bottom hairline. The docked tint matches the bar exactly, so they read as one surface.</p>
+    <div class="stage">
+      <div>
+        <div class="lbl">At rest — top of screen</div>
+        <div class="phone"><div class="phone__screen">
+          <div class="bar bar--rest"><div class="eb">Översikt</div><h1>God morgon, Anna</h1></div>
+          <div class="scrollbody">
+            <div class="mcard"><div class="e">Nästa lön</div><div class="f">28 450 kr</div></div>
+            <div class="mcard"><div class="l"></div><div class="l s"></div></div>
+          </div>
+        </div></div>
+      </div>
+      <div>
+        <div class="lbl">Scrolled — frosted in</div>
+        <div class="phone"><div class="phone__screen">
+          <div class="scrollbody scrollbody--up">
+            <div class="mcard"><div class="l"></div><div class="l s"></div></div>
+            <div class="mcard"><div class="l"></div><div class="l s"></div></div>
+          </div>
+          <div class="bar bar--frost"><div class="eb">Översikt</div><h1>God morgon, Anna</h1></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Keep the bar transparent at rest so the gradient reaches the top edge.</li>
+          <li>Cross-fade to <code>--frost-bg</code> + <code>--frost-blur</code> and add the 1px <code>--frost-line</code> hairline only once content scrolls under it.</li>
+          <li>Match the docked Home hero tint to the frosted bar exactly so they read as one surface.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Give the resting bar a solid fill or a divider — it should be invisible until scrolled.</li>
+          <li>Snap the frost on abruptly; cross-fade it with the scroll.</li>
+          <li>Let the docked hero use a different tint from the bar — the seam will show.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

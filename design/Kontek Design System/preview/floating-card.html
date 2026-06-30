@@ -1,0 +1,105 @@
+<!-- @dsCard group="Molecules" viewport="940x720" name="Floating card" subtitle="One recipe for every card-like surface" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Floating card — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { background:var(--app-bg); }
+  .stage { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start; }
+  .fcard { width:300px; background:var(--surface); border:1px solid transparent; border-radius:var(--r-panel); box-shadow:var(--sh-1); overflow:hidden; }
+  .fcard__pad { padding:18px 20px; }
+  .eb { font-size:var(--t-eyebrow); font-weight:var(--w-semibold); letter-spacing:.08em;  color:var(--green-deep); }
+  .fig { font-size:32px; font-weight:var(--w-bold); color:var(--signature); letter-spacing:-.02em; margin-top:6px; font-variant-numeric:tabular-nums; }
+  .frow { display:flex; align-items:center; gap:13px; padding:14px 20px; position:relative; }
+  .frow + .frow::before { content:''; position:absolute; top:0; left:20px; right:0; height:1px; background:var(--line-2); }
+  .ftile { width:38px;height:38px;border-radius:11px;background:var(--chip-fill);color:var(--chip-ink);display:flex;align-items:center;justify-content:center;flex:none; }
+  .ftile svg{width:20px;height:20px;}
+  .frow .t { flex:1;min-width:0; } .frow .t b { font-size:var(--t-title); font-weight:var(--w-semibold); color:var(--ink); display:block; } .frow .t span { font-size:var(--t-body-sm); color:var(--ink-3); }
+  .frow .chev { color:var(--ink-4); } .frow .chev svg { width:20px;height:20px; }
+  .anatomy { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); }
+  .recipe { font-family:var(--font-mono); font-size:12px; line-height:1.7; color:var(--ink-2); background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); padding:16px 18px; white-space:pre-wrap; flex:1; min-width:300px; }
+  .recipe .c { color:var(--ink-4); }
+  .sec > h2, .sec > p { color:var(--ink); }
+  .sec > p { color:var(--ink-2); }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Floating card</h1>
+  <div class="dg-intro"><p>Ett recept för varje kortyta: <b>--sh-1</b>, 20px radie, transparent ram. Lyftet — inte en ram — gör separationen.</p></div>
+
+  <div class="sec">
+    <h2>The floating card</h2>
+    <p>Every card-like surface in the app — grouped lists, content cards, register options, notification items, approval cards, detail panels — uses <b>one</b> recipe. No visible border: the lift does the separation. Inside the card, rows are split by a hairline in <code>--line-2</code>, never a real border.</p>
+    <div class="stage">
+      <div class="fcard">
+        <div class="fcard__pad"><div class="eb">Nästa lön</div><div class="fig">28 450 kr</div></div>
+        <div class="frow"><span class="ftile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg></span><span class="t"><b>Ledighet</b><span>2 dagar i juli</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></div>
+        <div class="frow"><span class="ftile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></span><span class="t"><b>Utlägg</b><span>1 väntar på godkännande</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></div>
+      </div>
+      <div class="recipe"><span class="c">/* --sh-1 — opt in with box-shadow: var(--sh-1) */</span>
+background: var(--surface);      <span class="c">/* #FFFFFF */</span>
+border: 1px solid transparent;   <span class="c">/* no visible border */</span>
+border-radius: var(--r-panel);   <span class="c">/* 20px */</span>
+box-shadow:
+  0 10px 28px -12px rgba(18,33,33,.18),  <span class="c">/* lift */</span>
+  0 2px  8px  -3px rgba(18,33,33,.07);   <span class="c">/* contact */</span>
+
+<span class="c">/* in-card row divider — pseudo line, not a border */</span>
+.row + .row::before { background: var(--line-2); }</div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="anatomy" style="padding:20px 22px;">
+      <div class="anatomy" style="border:none;display:flex;gap:28px;flex-wrap:wrap;font-size:var(--t-caption);color:var(--ink-3);">
+        <div><b style="color:var(--ink-2);font-weight:600;">Radius</b>&nbsp; 20px (--r-panel)</div>
+        <div><b style="color:var(--ink-2);font-weight:600;">Border</b>&nbsp; 1px transparent</div>
+        <div><b style="color:var(--ink-2);font-weight:600;">Shadow</b>&nbsp; --sh-1 (2-layer)</div>
+        <div><b style="color:var(--ink-2);font-weight:600;">Divider</b>&nbsp; --line-2 hairline</div>
+        <div><b style="color:var(--ink-2);font-weight:600;">Shadow ink</b>&nbsp; rgba(18,33,33, …)</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__examples">
+      <figure class="kdd__ex kdd__ex--do">
+        <div class="kdd__ex__stage"><div style="width:150px;background:#fff;border:1px solid transparent;border-radius:20px;box-shadow:var(--sh-1);padding:14px 16px;"><div style="font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--green-deep);">Lön</div><div style="font-size:20px;font-weight:700;color:var(--signature);margin-top:4px;">28 450 kr</div></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Transparent border + the soft <code>--sh-1</code> lift, 20px radius.</figcaption>
+      </figure>
+      <figure class="kdd__ex kdd__ex--dont">
+        <div class="kdd__ex__stage"><div style="width:150px;background:#fff;border:1px solid #C9D2D3;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,.3);padding:14px 16px;"><div style="font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--green-deep);">Lön</div><div style="font-size:20px;font-weight:700;color:var(--signature);margin-top:4px;">28 450 kr</div></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>A visible 1px border, sharp radius and a hard drop shadow.</figcaption>
+      </figure>
+    </div>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Reuse the exact <code>--sh-1</code> recipe for every new card so the whole app stays consistent.</li>
+          <li>Separate in-card rows with a <code>--line-2</code> hairline pseudo-element.</li>
+          <li>Keep the shadow colour a low-alpha deep ink, <code>rgba(18,33,33, …)</code>.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Give cards a visible 1px border — the lift is what separates them.</li>
+          <li>Mix radii: 20px is the card standard, full stop.</li>
+          <li>Use a hard, dark or coloured drop shadow, or a real border for in-card dividers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,458 @@
+/* ============================================================
+   KONTEK NEXT — MOBILE COMPONENTS
+   Phone-native patterns for the payroll app (iOS + Android, one
+   brand-led visual language — not native-flavoured). Built entirely
+   on the tokens in colors_and_type.css. Every interactive element is
+   tap-safe (>= --tap-min, 48px). Loaded via @import from the
+   source-of-truth stylesheet.
+
+   Sections:
+     1. App bar (compact + large-title)
+     2. Bottom tab bar (light + dark)
+     3. List rows (full-bleed + inset groups)
+     4. Bottom sheet / action sheet
+     5. Floating action button (FAB)
+     6. Feedback — banner, snackbar, toast
+     7. Dialog / alert
+     8. Loading — skeleton, spinner, pull-to-refresh
+     9. Mobile layout helpers (screen, scroll, sticky CTA)
+   ============================================================ */
+
+/* ============================================================
+   1 — APP BAR
+   Sticky top chrome. Compact row (56px) holds a leading action, a
+   centred or leading title, and trailing actions. The large-title
+   variant stacks a 28px screen title beneath the compact row — the
+   standard "Översikt / Lön / Time" header. Translucent + blur so
+   content scrolls under it.
+   ============================================================ */
+.ds-appbar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; flex-direction: column;
+  padding-top: var(--safe-top);
+  background: color-mix(in srgb, var(--canvas) 82%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  border-bottom: 1px solid var(--line-2);
+}
+.ds-appbar__bar {
+  display: flex; align-items: center; gap: var(--space-02);
+  height: var(--appbar-h); padding: 0 var(--space-02);
+}
+.ds-appbar__title {
+  flex: 1; min-width: 0; font-family: var(--font-ui);
+  font-size: var(--t-title); font-weight: var(--w-semibold); color: var(--ink);
+  text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ds-appbar--leading .ds-appbar__title { text-align: left; padding-left: var(--space-02); }
+/* icon action — tap-safe, ghost wash on press */
+.ds-appbar__action {
+  flex-shrink: 0; width: var(--tap-min); height: var(--tap-min); padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; background: transparent; border-radius: var(--r-pill);
+  color: var(--ink-2); cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background var(--gaia-transition-hover), color var(--gaia-transition-hover);
+}
+.ds-appbar__action:hover { background: rgba(18,33,33,0.05); color: var(--ink); }
+.ds-appbar__action:active { background: rgba(18,33,33,0.09); }
+.ds-appbar__action svg { width: 24px; height: 24px; }
+/* notification dot on an action */
+.ds-appbar__action { position: relative; }
+.ds-appbar__action .ds-dot {
+  position: absolute; top: 11px; right: 12px; width: 8px; height: 8px; border-radius: var(--r-pill);
+  background: var(--red); border: 1.5px solid var(--canvas);
+}
+/* large title row */
+.ds-appbar__large {
+  padding: var(--space-01) var(--screen-gutter) var(--space-04);
+}
+.ds-appbar__eyebrow {
+  font-size: var(--t-eyebrow); font-weight: var(--w-semibold); letter-spacing: 0.01em;
+  color: var(--green-deep); margin-bottom: 6px;
+}
+.ds-appbar__h1 {
+  font-family: var(--font-display); font-size: var(--t-h1); font-weight: var(--w-bold);
+  letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin: 0;
+}
+/* dark variant — for branded (Brand Signature) screens */
+.ds-appbar--dark {
+  background: color-mix(in srgb, var(--shell-bg) 88%, transparent);
+  border-bottom-color: var(--shell-line);
+}
+.ds-appbar--dark .ds-appbar__title,
+.ds-appbar--dark .ds-appbar__h1 { color: var(--on-dark); }
+.ds-appbar--dark .ds-appbar__action { color: var(--on-dark-2); }
+.ds-appbar--dark .ds-appbar__action:hover { background: var(--shell-hover); color: var(--on-dark); }
+.ds-appbar--dark .ds-appbar__eyebrow { color: var(--status-badge); }
+
+/* ============================================================
+   2 — BOTTOM TAB BAR
+   Primary navigation for up to 5 destinations. Icon + short label,
+   active item in brand accent. Two themes: light (default surface)
+   and dark (forest rail, echoing the desktop sidebar). Honours the
+   home-indicator safe area.
+   ============================================================ */
+.ds-tabbar {
+  display: flex; align-items: stretch;
+  background: var(--surface);
+  border-top: 1px solid var(--line-2);
+  padding-bottom: var(--safe-bottom);
+  box-shadow: 0 -1px 3px rgba(18,33,33,0.04);
+}
+.ds-tab {
+  flex: 1; min-width: 0; min-height: var(--tabbar-h);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 8px 4px; border: none; background: transparent; cursor: pointer;
+  color: var(--ink-3); -webkit-tap-highlight-color: transparent;
+  transition: color var(--gaia-transition-hover);
+}
+.ds-tab svg { width: 24px; height: 24px; stroke-width: 1.9; }
+.ds-tab__label {
+  font-family: var(--font-ui); font-size: var(--t-micro); font-weight: var(--w-semibold);
+  letter-spacing: 0.01em; line-height: 1; max-width: 100%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* Selection is carried by COLOR ALONE — no pill, underline, or background fill. */
+.ds-tab.is-active { color: var(--signature); }
+.ds-tab:active { color: rgba(32, 59, 60, 0.7); } /* pressed — Brand Signature @ 70% */
+
+/* count badge on a tab icon — perfect 18px circle, green fill, white number,
+   sits at the top-right of the ICON (never the label). Cap display at 9+. */
+.ds-tab__icon { position: relative; display: inline-flex; }
+.ds-tab__badge {
+  position: absolute; top: -6px; right: -11px; min-width: 18px; height: 18px; padding: 0 4px;
+  border-radius: var(--r-pill); background: var(--green); color: #FFFFFF;
+  font-size: 11px; font-weight: var(--w-bold); line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 2px solid var(--surface); box-sizing: border-box;
+}
+/* Green is the BOTTOM-NAV tab count only. Everywhere else a count rides an icon
+   (app-bar bell) or sits by a heading (section header), use the neutral variant:
+   dark-grey --ink-3 fill, same white number + ring. */
+.ds-tab__badge--neutral { background: var(--ink-3); }
+
+/* CENTER ACTION ("+") — a raised circular button that breaks above the bar.
+   It is NOT a tab: it carries no label and never shows a selected/destination
+   state. Tapping toggles the Register action sheet (set aria-expanded / .is-open
+   to swap the resting mint fill for the open green state). */
+.ds-tabbar__center {
+  flex: 1; min-width: 0; display: flex; align-items: flex-start; justify-content: center;
+}
+.ds-tab-fab {
+  margin-top: -24px; width: 56px; height: 56px; flex-shrink: 0; padding: 0; border: none;
+  border-radius: var(--r-pill); background: var(--status-badge); color: var(--shell-cta-ink);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 8px 18px rgba(18,33,33,0.18), 0 2px 6px rgba(18,33,33,0.12);
+  transition: background var(--gaia-transition-state), box-shadow var(--gaia-transition-hover), transform var(--gaia-transition-state);
+}
+.ds-tab-fab svg { width: 26px; height: 26px; stroke-width: 2.2; }
+.ds-tab-fab:active { transform: scale(0.95); }
+.ds-tab-fab.is-open, .ds-tab-fab[aria-expanded="true"] { background: var(--green); color: #FFFFFF; }
+
+/* dark theme — Brand Signature rail (optional) */
+.ds-tabbar--dark { background: var(--shell-bg); border-top-color: transparent; position: relative; }
+.ds-tabbar--dark::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(97,188,143,0.35), transparent);
+}
+.ds-tabbar--dark .ds-tab { color: rgba(255,255,255,0.62); }
+.ds-tabbar--dark .ds-tab.is-active { color: #FFFFFF; }
+.ds-tabbar--dark .ds-tab__badge { border-color: var(--shell-bg); }
+
+/* ============================================================
+   3 — LIST ROWS
+   The workhorse of a mobile app. .ds-list is a full-bleed list with
+   left-inset hairline dividers; .ds-list--inset is a rounded grouped
+   card (iOS-style) you place inside the screen gutter. Rows hold a
+   leading media slot, a title + optional subtitle, and a trailing
+   slot (value, chevron, switch, badge).
+   ============================================================ */
+.ds-list {
+  list-style: none; margin: 0; padding: 0;
+  background: var(--surface); width: 100%;
+}
+.ds-list--inset {
+  border: 1px solid var(--line); border-radius: var(--r-panel);
+  margin: 0 var(--screen-gutter); overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.ds-list__header {
+  font-size: var(--t-caption); font-weight: var(--w-semibold); color: var(--ink-3);
+  letter-spacing: 0.01em;
+  padding: var(--space-05) var(--screen-gutter) var(--space-02);
+}
+.ds-row {
+  display: flex; align-items: center; gap: var(--space-04);
+  min-height: 60px; padding: 12px var(--screen-gutter);
+  position: relative; text-align: left; width: 100%;
+  font-family: var(--font-ui); color: var(--ink); box-sizing: border-box;
+}
+/* hairline divider, inset to align with the title (past the leading media) */
+.ds-row + .ds-row::before,
+.ds-row--divider::after {
+  content: ''; position: absolute; top: 0; left: calc(var(--screen-gutter) + 40px + var(--space-04));
+  right: 0; height: 1px; background: var(--line-2);
+}
+.ds-row--divider::after { top: auto; bottom: 0; }
+.ds-row--full + .ds-row--full::before { left: var(--screen-gutter); }
+/* pressable row */
+button.ds-row, a.ds-row, .ds-row--tap {
+  border: none; background: var(--surface); cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--gaia-transition-hover);
+}
+button.ds-row:active, a.ds-row:active, .ds-row--tap:active { background: var(--surface-2); }
+/* leading media — icon tile or avatar fits a 40px square */
+.ds-row__lead {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 11px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--green-soft); color: var(--green-deep);
+}
+.ds-row__lead svg { width: 21px; height: 21px; }
+.ds-row__lead--muted { background: var(--surface-2); color: var(--ink-3); }
+.ds-row__lead--forest { background: var(--kontek-green); color: #fff; }
+/* body */
+.ds-row__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ds-row__title {
+  font-size: var(--t-title); font-weight: var(--w-semibold); color: var(--ink); line-height: 1.3;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ds-row__sub {
+  font-size: var(--t-body-sm); color: var(--ink-3); line-height: 1.35;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* trailing slot */
+.ds-row__trail {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: var(--space-02);
+  font-size: var(--t-body-sm); color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+.ds-row__value { font-size: var(--t-title); font-weight: var(--w-semibold); color: var(--ink); }
+.ds-row__chev { color: var(--ink-4); display: inline-flex; }
+.ds-row__chev svg { width: 20px; height: 20px; }
+
+/* ============================================================
+   4 — BOTTOM SHEET / ACTION SHEET
+   Slides up from the bottom edge over a dimmed scrim. Grab handle,
+   optional title, then content. The action-sheet variant stacks
+   full-width choices. Toggle .is-open on the scrim to reveal.
+   ============================================================ */
+.ds-scrim {
+  position: absolute; inset: 0; z-index: 40;
+  background: rgba(5,18,18,0.42);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--gaia-transition-backdrop);
+}
+.ds-scrim.is-open { opacity: 1; pointer-events: auto; }
+.ds-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 41;
+  background: var(--surface);
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  box-shadow: 0 -12px 40px rgba(5,34,37,0.22);
+  padding: 10px var(--screen-gutter) calc(var(--space-06) + var(--safe-bottom));
+  transform: translateY(110%);
+  transition: transform var(--gaia-transition-overlay-in);
+  max-height: 88%; overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.ds-scrim.is-open + .ds-sheet,
+.ds-sheet.is-open { transform: translateY(0); }
+.ds-sheet__grip {
+  width: 40px; height: 5px; border-radius: var(--r-pill);
+  background: var(--line); margin: 0 auto var(--space-04);
+}
+.ds-sheet__title {
+  font-family: var(--font-display); font-size: var(--t-h3); font-weight: var(--w-bold);
+  letter-spacing: -0.01em; color: var(--ink); margin: 0 0 var(--space-01);
+}
+.ds-sheet__sub {
+  font-size: var(--t-body-sm); color: var(--ink-3); margin: 0 0 var(--space-04); line-height: 1.45;
+}
+/* action sheet — stacked choices */
+.ds-actionsheet { display: flex; flex-direction: column; gap: var(--space-02); }
+.ds-actionsheet__item {
+  display: flex; align-items: center; gap: var(--space-04); width: 100%;
+  min-height: var(--tap-min); padding: 14px var(--space-04); text-align: left;
+  border: none; background: var(--surface-2); border-radius: var(--r-input);
+  font-family: var(--font-ui); font-size: var(--t-body); font-weight: var(--w-medium); color: var(--ink);
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background var(--gaia-transition-hover);
+}
+.ds-actionsheet__item:active { background: var(--line-2); }
+.ds-actionsheet__item svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--signature); }
+.ds-actionsheet__item--danger { color: var(--danger); }
+.ds-actionsheet__item--danger svg { color: var(--danger); }
+
+/* ============================================================
+   5 — FLOATING ACTION BUTTON (FAB)
+   The one persistent create action (Ny lönekörning, Ny anställd).
+   Circular by default; extended carries a label. Accent-green CTA
+   fill with the brand glow. Position with a wrapper in the app.
+   ============================================================ */
+.ds-fab {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; border-radius: var(--r-pill); gap: var(--space-02);
+  border: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  background: var(--shell-cta); color: var(--shell-cta-ink);
+  box-shadow: 0 8px 22px rgba(97,188,143,0.36), 0 2px 6px rgba(18,33,33,0.14);
+  font-family: var(--font-ui); font-size: var(--t-body); font-weight: var(--w-semibold);
+  transition: transform var(--gaia-transition-state), background var(--gaia-transition-hover), box-shadow var(--gaia-transition-hover);
+}
+.ds-fab svg { width: 26px; height: 26px; stroke-width: 2.1; }
+.ds-fab:hover { background: var(--shell-cta-hi); }
+.ds-fab:active { transform: scale(0.95); }
+.ds-fab--extended { width: auto; padding: 0 var(--space-06); border-radius: var(--r-pill); height: 56px; }
+.ds-fab--extended svg { width: 22px; height: 22px; }
+/* signature (teal) variant for secondary FAB contexts */
+.ds-fab--signature { background: var(--action); color: #fff; box-shadow: var(--shadow-cta); }
+.ds-fab--signature:hover { background: var(--action-hi); }
+
+/* ============================================================
+   6 — FEEDBACK: banner · snackbar · toast
+   banner   — inline, in-flow status block (info/ok/warn/danger)
+   snackbar — transient dark pill with an optional single action
+   toast    — compact centred confirmation pill
+   ============================================================ */
+.ds-banner {
+  display: flex; align-items: flex-start; gap: var(--space-03);
+  padding: 14px var(--space-04); border-radius: var(--r-card);
+  background: var(--info-soft); color: var(--info-text);
+  border: 1px solid color-mix(in srgb, var(--info-text) 18%, transparent);
+  font-family: var(--font-ui);
+}
+.ds-banner__icon { flex-shrink: 0; margin-top: 1px; }
+.ds-banner__icon svg { width: 21px; height: 21px; }
+.ds-banner__body { flex: 1; min-width: 0; }
+.ds-banner__title { font-size: var(--t-body-sm); font-weight: var(--w-semibold); line-height: 1.35; }
+.ds-banner__text { font-size: var(--t-caption); line-height: 1.45; margin-top: 2px; opacity: 0.92; }
+.ds-banner__close {
+  flex-shrink: 0; width: 28px; height: 28px; margin: -4px -6px 0 0; border: none; background: transparent;
+  border-radius: var(--r-sm); color: inherit; opacity: 0.7; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.ds-banner__close:hover { opacity: 1; }
+.ds-banner__close svg { width: 18px; height: 18px; }
+.ds-banner--ok     { background: var(--ok-soft);     color: var(--ok-text);     border-color: color-mix(in srgb, var(--ok-text) 20%, transparent); }
+.ds-banner--warn   { background: var(--warn-soft);   color: var(--warn-text);   border-color: color-mix(in srgb, var(--warn-text) 20%, transparent); }
+.ds-banner--danger { background: var(--danger-soft); color: var(--danger-text); border-color: color-mix(in srgb, var(--danger-text) 20%, transparent); }
+
+.ds-snackbar {
+  display: flex; align-items: center; gap: var(--space-04);
+  min-height: var(--tap-min); padding: 10px 10px 10px var(--space-04);
+  border-radius: var(--r-input); background: var(--ground); color: var(--on-dark);
+  box-shadow: var(--elev-pop); font-family: var(--font-ui);
+}
+.ds-snackbar__text { flex: 1; min-width: 0; font-size: var(--t-body-sm); line-height: 1.4; }
+.ds-snackbar__action {
+  flex-shrink: 0; border: none; background: transparent; cursor: pointer;
+  padding: 0 var(--space-03); height: 36px; border-radius: var(--r-sm);
+  font-family: var(--font-ui); font-size: var(--t-body-sm); font-weight: var(--w-semibold);
+  color: var(--shell-cta); -webkit-tap-highlight-color: transparent;
+}
+.ds-snackbar__action:active { background: rgba(255,255,255,0.08); }
+
+.ds-toast {
+  display: inline-flex; align-items: center; gap: var(--space-02);
+  padding: 10px var(--space-04); border-radius: var(--r-pill);
+  background: var(--ground); color: var(--on-dark);
+  box-shadow: var(--elev-pop); font-family: var(--font-ui);
+  font-size: var(--t-body-sm); font-weight: var(--w-medium);
+}
+.ds-toast svg { width: 18px; height: 18px; color: var(--green); }
+
+/* ============================================================
+   7 — DIALOG / ALERT
+   Centred modal for confirmations. Scrim + card. Actions stack
+   full-width on mobile (primary on top); destructive uses the
+   danger button. Use --row to place two short actions side by side.
+   ============================================================ */
+.ds-dialog-scrim {
+  position: absolute; inset: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center; padding: var(--space-06);
+  background: rgba(5,18,18,0.5);
+  opacity: 0; pointer-events: none; transition: opacity var(--gaia-transition-backdrop);
+}
+.ds-dialog-scrim.is-open { opacity: 1; pointer-events: auto; }
+.ds-dialog {
+  width: 100%; max-width: 360px; background: var(--surface);
+  border-radius: var(--r-sheet); padding: var(--space-06);
+  box-shadow: var(--elev-float); font-family: var(--font-ui);
+  transform: scale(0.94); transition: transform var(--gaia-transition-overlay-in);
+}
+.ds-dialog-scrim.is-open .ds-dialog { transform: scale(1); }
+.ds-dialog__icon {
+  width: 48px; height: 48px; border-radius: var(--r-pill); margin-bottom: var(--space-04);
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--green-soft); color: var(--green-deep);
+}
+.ds-dialog__icon svg { width: 24px; height: 24px; }
+.ds-dialog__icon--danger { background: var(--danger-soft); color: var(--danger-text); }
+.ds-dialog__title {
+  font-family: var(--font-display); font-size: var(--t-h3); font-weight: var(--w-bold);
+  letter-spacing: -0.01em; color: var(--ink); margin: 0 0 var(--space-02);
+}
+.ds-dialog__text { font-size: var(--t-body); color: var(--ink-2); line-height: 1.5; margin: 0; }
+.ds-dialog__actions { display: flex; flex-direction: column; gap: var(--space-03); margin-top: var(--space-06); }
+.ds-dialog__actions--row { flex-direction: row; }
+.ds-dialog__actions--row > .ds-btn { flex: 1; }
+
+/* ============================================================
+   8 — LOADING: skeleton · spinner · pull-to-refresh
+   ============================================================ */
+.ds-skeleton {
+  background: var(--surface-2);
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+  background-size: 200% 100%; background-repeat: no-repeat;
+  border-radius: var(--r-sm); animation: ds-shimmer 1.4s ease-in-out infinite;
+}
+.ds-skeleton--text { height: 13px; border-radius: 6px; }
+.ds-skeleton--title { height: 20px; border-radius: 7px; }
+.ds-skeleton--circle { border-radius: var(--r-pill); }
+.ds-skeleton--block { height: 80px; border-radius: var(--r-card); }
+@keyframes ds-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.ds-spinner {
+  width: 28px; height: 28px; border-radius: var(--r-pill);
+  border: 3px solid var(--green-line); border-top-color: var(--green-deep);
+  animation: ds-spin 0.8s linear infinite;
+}
+.ds-spinner--sm { width: 20px; height: 20px; border-width: 2.5px; }
+.ds-spinner--lg { width: 40px; height: 40px; border-width: 3.5px; }
+.ds-spinner--on-dark { border-color: rgba(255,255,255,0.25); border-top-color: var(--shell-cta); }
+@keyframes ds-spin { to { transform: rotate(360deg); } }
+
+/* pull-to-refresh affordance — the spinner sits in a track that the list
+   reveals as it's dragged down. Use .ds-ptr as the fixed top strip. */
+.ds-ptr {
+  display: flex; align-items: center; justify-content: center; gap: var(--space-02);
+  height: 56px; color: var(--ink-3);
+  font-family: var(--font-ui); font-size: var(--t-caption); font-weight: var(--w-medium);
+}
+
+/* reduced motion — freeze shimmer & spin to a calm static state */
+@media (prefers-reduced-motion: reduce) {
+  .ds-skeleton { animation: none; background-image: none; }
+  .ds-spinner { animation: none; }
+}
+
+/* ============================================================
+   9 — MOBILE LAYOUT HELPERS
+   ============================================================ */
+/* a phone screen column: header (sticky) + scroll body + optional bottom nav */
+.ds-screen {
+  display: flex; flex-direction: column; height: 100%;
+  background: var(--canvas); overflow: hidden;
+}
+.ds-screen__scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.ds-screen__body { padding: var(--space-04) var(--screen-gutter) var(--space-08); }
+/* sticky bottom CTA bar — a primary action pinned above the safe area */
+.ds-cta-bar {
+  position: sticky; bottom: 0; z-index: 20;
+  padding: var(--space-03) var(--screen-gutter) calc(var(--space-03) + var(--safe-bottom));
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line-2);
+}
+/* a content card sized for the gutter */
+.ds-mcard {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card);
+  padding: var(--space-05); box-shadow: var(--shadow-sm);
+}

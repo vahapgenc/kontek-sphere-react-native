@@ -1,0 +1,205 @@
+<!-- @dsCard group="Atoms" name="Icons" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Icons — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { margin:0; padding:32px 36px 64px; background:var(--canvas); font-family:var(--font-ui); color:var(--ink); }
+  .head { max-width:760px; margin-bottom:8px; }
+
+  .toolbar { position:sticky; top:0; z-index:5; display:flex; align-items:center; gap:14px;
+             padding:16px 0; margin-top:18px; background:linear-gradient(var(--canvas) 72%, transparent); flex-wrap:wrap; }
+  .search { display:flex; align-items:center; gap:9px; background:var(--surface); border:1px solid var(--line);
+            border-radius:var(--r-button); padding:9px 13px; min-width:280px; flex:0 1 360px; }
+  .search:focus-within { border-color:var(--guide); }
+  .search input { border:none; outline:none; flex:1; font-family:var(--font-ui); font-size:var(--t-body-sm); color:var(--ink); background:transparent; }
+  .search svg { width:17px; height:17px; color:var(--ink-3); flex-shrink:0; }
+  .count { font-size:var(--t-caption); color:var(--ink-3); }
+  .count b { color:var(--ink-2); font-weight:var(--w-semibold); }
+
+  section { margin-top:30px; }
+  .sec-head { display:flex; align-items:baseline; gap:10px; margin-bottom:4px; }
+  .sec-head h2 { font-family:var(--font-ui); font-size:var(--t-title); font-weight:var(--w-semibold); margin:0; }
+  .sec-head .n { font-family:var(--font-mono); font-size:var(--t-caption); color:var(--ink-4); }
+  .sec-desc { font-size:var(--t-caption); color:var(--ink-3); margin:0 0 16px; max-width:680px; line-height:1.5; }
+
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(132px, 1fr)); gap:12px; }
+  .cell { display:flex; flex-direction:column; align-items:center; gap:10px; padding:18px 10px 12px;
+          background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card);
+          transition:border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); cursor:default; }
+  .cell:hover { border-color:var(--green-line); box-shadow:var(--shadow-sm); }
+  .tile { width:100%; height:60px; display:flex; align-items:center; justify-content:center;
+          background:var(--surface-2); border-radius:var(--r-sm); }
+  .tile svg { width:24px; height:24px; color:#203B3C; }   /* brand signature on light */
+  .name { font-family:var(--font-mono); font-size:11px; color:var(--ink-2); text-align:center; word-break:break-word; line-height:1.35; }
+  .cell.miss .tile { background:#FBEAE6; }
+  .cell.miss .name { color:var(--danger); }
+  .empty { display:none; color:var(--ink-3); font-size:var(--t-body-sm); padding:8px 0; }
+  section.hidden { display:none; }
+</style>
+</head>
+<body>
+  <h1 class="dg-h1">Icons</h1>
+  <div class="dg-intro"><p>Systemet använder <b>Lucide</b>-linjeikoner — 24×24px, 1,75px streck, rundade hörn. På ljusa ytor tar ikonerna varumärkesgrönt via <code style="font-family:var(--font-mono);font-size:.92em;">currentColor</code>, så de färgas med texten.</p></div>
+
+  <div class="toolbar">
+    <label class="search">
+      <i data-lucide="search"></i>
+      <input id="q" type="text" placeholder="Filter by name…" autocomplete="off">
+    </label>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+  <script>
+    const SETS = [
+      { id:'alert', title:'Alert', desc:'Accompany statuses and information (success, error, warning, information). Always paired with colour and text in context.',
+        icons:['circle-check','octagon-alert','triangle-alert','info','circle-question-mark'] },
+      { id:'assistive', title:'Assistive', desc:'Support navigation and interaction — paging, expanding/collapsing, opening menus, adding/removing. Not standalone buttons or content explainers.',
+        icons:['check','chevron-down','chevron-first','chevron-last','chevron-left','chevron-right','chevron-up','chevrons-down','chevrons-up','chevrons-right','x','menu','square-plus','square-minus','user-round','users-round'] },
+      { id:'aggrid', title:'AG Grid', desc:'Data-grid and table controls — sorting, sizing, filtering, column and cell actions.',
+        icons:['arrow-up','arrow-down','arrow-left','arrow-down-to-line','chevrons-up-down','minus','circle','circle-plus','circle-minus','table-properties','table-2','file-spreadsheet','list-filter-plus','list-start','sigma','chart-no-axes-column','pin','clipboard-paste','copy','scissors','pipette','move','grip-horizontal','link-2','unlink','loader','ban','minimize-2','maximize-2'] },
+      { id:'reserved', title:'Reserved', desc:'Icons reserved for a specific meaning across the product — use them only for the action they denote.',
+        icons:['arrow-right','arrow-up-to-line','arrow-left-to-line','arrow-right-to-line','arrow-down-narrow-wide','arrow-up-wide-narrow','undo-2','redo-2','history','refresh-cw','search','search-x','text-search','filter','filter-x','zoom-in','zoom-out','eye','eye-off','file','file-check','file-input','files','folder','folder-open','calendar-days','clock','download','upload','save','printer','trash-2','copy','paperclip','pencil','pencil-off','pin-off','share-2','send','mail','phone','mic','messages-square','message-square-more','bell','bell-dot','star','star-off','thumbs-up','thumbs-down','sparkles','settings','house','log-in','log-out','layout-grid','book-open-text','ellipsis','building-2','square-arrow-out-up-right'] },
+    ];
+
+    const root = document.getElementById('root');
+    const all = [];
+    for (const set of SETS) {
+      const sec = document.createElement('section');
+      sec.dataset.set = set.id;
+      sec.innerHTML = `<div class="sec-head"><h2>${set.title}</h2><span class="n">${set.icons.length}</span></div>
+        <p class="sec-desc">${set.desc}</p><div class="grid"></div><div class="empty">No matches in this set.</div>`;
+      const grid = sec.querySelector('.grid');
+      for (const name of set.icons) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.name = name;
+        cell.innerHTML = `<div class="tile"><i data-lucide="${name}"></i></div><div class="name">${name}</div>`;
+        grid.appendChild(cell);
+        all.push({ name, cell, sec });
+      }
+      root.appendChild(sec);
+    }
+
+    lucide.createIcons({ attrs: { 'stroke-width': 1.75, width: 24, height: 24 } });
+
+    // flag any names Lucide didn't resolve (left as <i>)
+    const missing = [];
+    for (const { name, cell } of all) {
+      if (cell.querySelector('i[data-lucide]')) { cell.classList.add('miss'); missing.push(name); }
+    }
+    if (missing.length) console.warn('Unresolved icon names:', missing);
+
+    /* ---- Full Lucide library: render EVERY icon the system ships ---- */
+    const NS = 'http://www.w3.org/2000/svg';
+    function toKebab(s) {
+      return s.replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+              .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+              .replace(/([a-zA-Z])([0-9])/g, '$1-$2')
+              .toLowerCase();
+    }
+    function buildSvg(nodes) {
+      const svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor'); svg.setAttribute('stroke-width', '1.75');
+      svg.setAttribute('stroke-linecap', 'round'); svg.setAttribute('stroke-linejoin', 'round');
+      svg.setAttribute('width', '24'); svg.setAttribute('height', '24');
+      for (const node of nodes) {
+        if (!Array.isArray(node)) continue;
+        const [tag, attrs] = node;
+        const el = document.createElementNS(NS, tag);
+        for (const a in (attrs || {})) { if (a !== 'key') el.setAttribute(a, attrs[a]); }
+        svg.appendChild(el);
+      }
+      return svg;
+    }
+    // discover the icon map across lucide build variants
+    let iconMap = {};
+    if (lucide.icons && typeof lucide.icons === 'object') {
+      iconMap = lucide.icons;
+    } else {
+      for (const k of Object.keys(lucide)) {
+        const v = lucide[k];
+        if (/^[A-Z]/.test(k) && Array.isArray(v) && !/^Lucide/.test(k)) iconMap[k] = v;
+      }
+    }
+    const libNames = Object.keys(iconMap).map(k => ({ key: k, name: toKebab(k) }))
+      .filter((v, i, a) => a.findIndex(x => x.name === v.name) === i)
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    const libSec = document.createElement('section');
+    libSec.dataset.set = 'library';
+    libSec.innerHTML = `<div class="sec-head"><h2>Full Lucide library</h2><span class="n">${libNames.length}</span></div>
+      <p class="sec-desc">Every icon available in the system, rendered in Brand Signature <code style="font-family:var(--font-mono);font-size:.85em;">#203B3C</code>. Any icon in the reference sheets is included here — use the filter to confirm a specific name.</p>
+      <div class="grid"></div><div class="empty">No matches in the library.</div>`;
+    const libGrid = libSec.querySelector('.grid');
+    for (const { key, name } of libNames) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.name = name;
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.appendChild(buildSvg(iconMap[key]));
+      const label = document.createElement('div');
+      label.className = 'name';
+      label.textContent = name;
+      cell.appendChild(tile); cell.appendChild(label);
+      libGrid.appendChild(cell);
+      all.push({ name, cell, sec: libSec });
+    }
+    root.appendChild(libSec);
+
+    const total = all.length;
+    const SETN = SETS.length + 1;
+    const countEl = document.getElementById('count');
+    const setEmpty = () => {
+      document.querySelectorAll('section').forEach(sec => {
+        const vis = [...sec.querySelectorAll('.cell')].some(c => c.style.display !== 'none');
+        sec.classList.toggle('hidden', !vis);
+      });
+    };
+    const q = document.getElementById('q');
+    q.addEventListener('input', () => {
+      const v = q.value.trim().toLowerCase();
+      let shown = 0;
+      for (const { name, cell } of all) {
+        const hit = !v || name.includes(v);
+        cell.style.display = hit ? '' : 'none';
+        if (hit) shown++;
+      }
+      setEmpty();
+      countEl.innerHTML = v ? `<b>${shown}</b> of ${total}` : `<b>${total}</b> icons · ${SETN} sets`;
+    });
+    countEl.innerHTML = `<b>${total}</b> icons · ${SETN} sets`;
+  </script>
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use the curated stroke set &mdash; 24px geometry, ~1.7px stroke, rounded caps.</li>
+          <li>Recolour via <code>currentColor</code>; brand green on light surfaces.</li>
+          <li>Keep one icon per concept across the app.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use emoji, icon fonts or multi-colour icons.</li>
+          <li>Rescale stroke weight per icon.</li>
+          <li>Mix filled and outline styles in one set.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!-- @dsCard group="Molecules" name="Text input" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Text input — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+</head>
+<body>
+
+  <h1 class="dg-h1">Text input</h1>
+  <div class="dg-intro"><p>48px högt fält med <b>16px text</b> så iOS aldrig zoomar. Tydlig etikett och hjälptext; fokus = signaturkant och 3px ring.</p></div>
+
+  <div class="sec">
+    <h2>Anatomy &amp; usage</h2>
+    <p>Etikett ovanför fältet, hjälptext under. Höjd 48px (tap-säker), radie 12px, 1px kantlinje, 16px text (ingen iOS-zoom vid fokus). Fokus ger en 3px signaturring. Använd för korta, enradiga inmatningar — namn, belopp, organisationsnummer.</p>
+    <div class="frame col">
+      <label class="ds-field">
+        <span class="ds-label">Organisationsnummer<span class="req">*</span></span>
+        <input class="ds-input" type="text" placeholder="556677-8899">
+        <span class="ds-hint">Tio siffror, med eller utan bindestreck.</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States</h2>
+    <p>Default · hover · fokus · ifylld · inaktiverad. Varje fält behåller etikett och hjälptext oförändrade mellan tillstånd.</p>
+    <div class="frame">
+      <div class="state"><label class="ds-field"><span class="ds-label">Default</span><input class="ds-input" type="text" placeholder="Anna Lindqvist"></label></div>
+      <div class="state"><label class="ds-field"><span class="ds-label">Hover</span><input class="ds-input is-hover" type="text" placeholder="Anna Lindqvist"></label></div>
+      <div class="state"><label class="ds-field"><span class="ds-label">Fokus</span><input class="ds-input is-focus" type="text" value="Anna"></label></div>
+      <div class="state"><label class="ds-field"><span class="ds-label">Ifylld</span><input class="ds-input" type="text" value="Anna Lindqvist"></label></div>
+      <div class="state"><label class="ds-field"><span class="ds-label">Inaktiverad</span><input class="ds-input is-disabled" type="text" value="Låst värde" disabled></label></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Error &amp; validation</h2>
+    <p>Feltillstånd byter kantlinje och ring till rött och visar ett konkret felmeddelande med ikon. Skriv vad som är fel och hur det rättas — aldrig bara ”Ogiltigt värde”.</p>
+    <div class="frame">
+      <label class="ds-field">
+        <span class="ds-label">E-postadress<span class="req">*</span></span>
+        <input class="ds-input is-error" type="text" value="anna@">
+        <span class="ds-hint ds-hint--error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          Adressen saknar domän — t.ex. anna@kontek.se
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>With unit &amp; optional field</h2>
+    <p>Visa enhet (kr, %, h) som suffix när det förtydligar. Markera valfria fält med ”valfritt” i etiketten i stället för att markera alla obligatoriska.</p>
+    <div class="frame">
+      <label class="ds-field" style="max-width:220px;">
+        <span class="ds-label">Månadslön</span>
+        <span style="position:relative;display:flex;align-items:center;">
+          <input class="ds-input" type="text" value="42 000" style="padding-right:42px;">
+          <span style="position:absolute;right:12px;font-size:14px;color:var(--ink-3);pointer-events:none;">kr</span>
+        </span>
+      </label>
+      <label class="ds-field" style="max-width:240px;">
+        <span class="ds-label">Kostnadsställe<span class="opt">valfritt</span></span>
+        <input class="ds-input" type="text" placeholder="t.ex. Försäljning Nord">
+      </label>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Keep inputs 48px tall with body text at 16px so iOS never zoom-focuses.</li>
+          <li>Pair a clear label with helper text; reserve real borders for fields.</li>
+          <li>Focus = <code>--signature</code> border + a 3px signature ring.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Set input text below 16px &mdash; it triggers focus-zoom on iOS.</li>
+          <li>Use a placeholder as the only label.</li>
+          <li>Colour the error state anything but <code>--danger</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

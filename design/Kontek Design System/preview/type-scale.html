@@ -1,0 +1,56 @@
+<!-- @dsCard group="Atoms" name="Type scale" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { margin:0; padding:20px 26px; background:var(--surface); font-family:var(--font-ui); }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:7px 0; border-bottom:1px solid var(--line); vertical-align:baseline; }
+  .tok { font-size:12px; color:var(--ink-3); width:120px; font-variant-numeric:tabular-nums; }
+  .px { font-size:11px; color:var(--ink-3); text-align:right; width:96px; }
+  .samp { color:var(--ink); }
+  tr:last-child td { border-bottom:none; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Type scale</h1>
+  <div class="dg-intro"><p>Storleksstegen för text, finjusterade för telefon. <b>Brödtext på 16px</b> så iOS aldrig zoomar ett fokuserat fält.</p></div>
+  <table>
+    <tr><td class="tok">display</td><td class="samp" style="font-family:var(--font-display);font-size:32px;line-height:1;font-weight:700;letter-spacing:-0.02em;">Aa Open Sans</td><td class="px">36 / 700</td></tr>
+    <tr><td class="tok">h1</td><td class="samp" style="font-family:var(--font-display);font-size:27px;line-height:1;font-weight:700;letter-spacing:-0.02em;">Aa Open Sans</td><td class="px">28 / 700</td></tr>
+    <tr><td class="tok">h2 · h3</td><td class="samp" style="font-family:var(--font-display);font-size:22px;line-height:1;font-weight:600;">Aa Open Sans</td><td class="px">22 · 19</td></tr>
+    <tr><td class="tok">title</td><td class="samp" style="font-weight:600;font-size:17px;">Aa Open Sans</td><td class="px">17 / 600</td></tr>
+    <tr><td class="tok">body</td><td class="samp" style="font-size:16px;">Aa Open Sans regular</td><td class="px">16 / 400</td></tr>
+    <tr><td class="tok">body-sm</td><td class="samp" style="font-size:15px;color:var(--ink-2);">Aa Open Sans small</td><td class="px">15 / 400</td></tr>
+    <tr><td class="tok">caption</td><td class="samp" style="font-size:13px;color:var(--ink-3);">Aa Open Sans caption</td><td class="px">13 / 400</td></tr>
+    <tr><td class="tok">eyebrow</td><td class="samp" style="font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--green-deep);">Eyebrow</td><td class="px">12 / 600</td></tr>
+  </table>
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Pull every size from the mobile scale token (<code>--t-display</code> &hellip; <code>--t-micro</code>).</li>
+          <li>Keep body at 16px so iOS never zoom-focuses a field.</li>
+          <li>Reserve <code>--t-micro</code> (11px) for badges and tab labels only.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Hard-code px sizes outside the scale.</li>
+          <li>Drop below 11px anywhere.</li>
+          <li>Invent a size between steps &mdash; pick the nearest token.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!-- @dsCard group="Molecules" name="Switch" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Switch — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+</head>
+<body>
+
+  <h1 class="dg-h1">Switch</h1>
+  <div class="dg-intro"><p>Slår en inställning på/av <b>direkt</b>. På-läget fylls med --green; ingen separat spara-bekräftelse.</p></div>
+
+  <div class="sec">
+    <h2>Usage</h2>
+    <p>För att slå på eller av en inställning som träder i kraft direkt — ingen Spara-knapp behövs. 52×32px spår, vit knopp, Interaction-grön när påslagen. Behövs ett uttryckligt val som sparas senare, använd kryssruta.</p>
+    <div class="frame col">
+      <label class="ds-switch"><input type="checkbox" checked><span class="ds-swt is-on"></span> Skicka påminnelse innan utbetalning</label>
+      <label class="ds-switch"><input type="checkbox"><span class="ds-swt"></span> Tillåt självrapportering av tid</label>
+      <label class="ds-switch"><input type="checkbox" checked><span class="ds-swt is-on"></span> Visa nettobelopp i listan</label>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States</h2>
+    <p>Av &amp; på i default · fokus · inaktiverad. Övergången mellan lägena är 100ms.</p>
+    <div class="frame center">
+      <div class="state cc"><span class="ds-swt"></span><span class="lbl">Av</span></div>
+      <div class="state cc"><span class="ds-swt is-focus"></span><span class="lbl">Av · fokus</span></div>
+      <div class="state cc"><span class="ds-swt is-disabled"></span><span class="lbl">Av · inaktiv</span></div>
+      <div class="divider"></div>
+      <div class="state cc"><span class="ds-swt is-on"></span><span class="lbl">På</span></div>
+      <div class="state cc"><span class="ds-swt is-on is-focus"></span><span class="lbl">På · fokus</span></div>
+      <div class="state cc"><span class="ds-swt is-on" style="background:var(--silver-mist);"></span><span class="lbl">På · inaktiv</span></div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>In a settings row</h2>
+    <p>Placera reglaget till höger i raden med etikett och förklaring till vänster. Hela raden beskriver vad som ändras.</p>
+    <div class="frame col">
+      <label class="ds-switch" style="justify-content:space-between;width:100%;max-width:460px;">
+        <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-weight:var(--w-semibold);">Tvåstegsverifiering</span><span style="font-size:13px;color:var(--ink-3);">Kräver engångskod vid inloggning.</span></span>
+        <input type="checkbox" checked><span class="ds-swt is-on"></span>
+      </label>
+      <label class="ds-switch" style="justify-content:space-between;width:100%;max-width:460px;">
+        <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-weight:var(--w-semibold);">Veckosammanfattning</span><span style="font-size:13px;color:var(--ink-3);">Ett mejl varje måndag med status.</span></span>
+        <input type="checkbox"><span class="ds-swt"></span>
+      </label>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use a switch for an instant on/off setting that applies immediately.</li>
+          <li>Fill the on state with <code>--green</code>.</li>
+          <li>Pair it with a clear, single-line label.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use a switch where the change only takes effect after Save &mdash; use a checkbox.</li>
+          <li>Require a separate confirm tap for a switch.</li>
+          <li>Recolour the on state away from <code>--green</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

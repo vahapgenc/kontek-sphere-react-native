@@ -1,0 +1,103 @@
+<!-- @dsCard group="Atoms" name="Utilities" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Utilities — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .ut { width:100%; border-collapse:collapse; font-size:13px; }
+  .ut td { padding:14px 12px; border-bottom:1px solid var(--line-2); vertical-align:middle; }
+  .ut tr:last-child td { border-bottom:0; }
+  .ut .cls { width:170px; font-family:var(--font-mono); font-size:12.5px; color:var(--green-deep); white-space:nowrap; }
+  .ut .demo { width:230px; }
+  .ut .desc { color:var(--ink-3); }
+  .box { background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:9px 12px; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Utilities</h1>
+  <div class="dg-intro"><p>Enkla, komponerbara hjälpklasser. Komponera dem i stället för att grena en komponent för att styla om.</p></div>
+
+  <div class="sec">
+    <h2>Utility classes</h2>
+    <p>Enkla, enskilt syftande klasser som komponeras ihop — i stället för att skapa nya varianter. Prefix <code>u-</code> skiljer dem från komponent- och typografiklasser.</p>
+    <div class="frame">
+      <table class="ut">
+        <tr>
+          <td class="cls">.u-truncate</td>
+          <td class="demo"><div class="box u-truncate" style="width:200px;">Norrström Industrier AB · maj­körning 2025</div></td>
+          <td class="desc">Klipper en rad text med ellips.</td>
+        </tr>
+        <tr>
+          <td class="cls">.u-clamp-2</td>
+          <td class="demo"><div class="box u-clamp-2" style="width:200px;">En längre beskrivning som tillåts ta två rader innan den klipps av med ellips på slutet.</div></td>
+          <td class="desc">Begränsar till två rader.</td>
+        </tr>
+        <tr>
+          <td class="cls">.u-tabular</td>
+          <td class="demo"><div class="box u-tabular">1 240 506,00 kr</div></td>
+          <td class="desc">Siffror med fast bredd — för belopp i tabeller.</td>
+        </tr>
+        <tr>
+          <td class="cls">.u-between</td>
+          <td class="demo"><div class="box u-between"><span>Netto</span><span class="u-strong">38 200 kr</span></div></td>
+          <td class="desc">Flex med innehåll i var sin ände.</td>
+        </tr>
+        <tr>
+          <td class="cls">.u-center</td>
+          <td class="demo"><div class="box u-center" style="height:44px;"><span class="u-muted">Centrerat</span></div></td>
+          <td class="desc">Centrerar i båda led.</td>
+        </tr>
+        <tr>
+          <td class="cls">.u-round</td>
+          <td class="demo"><span class="u-center u-round" style="width:40px;height:40px;background:var(--guide);color:#fff;font-weight:600;">AL</span></td>
+          <td class="desc">Full radie — cirklar och pillerformer.</td>
+        </tr>
+        <tr>
+          <td class="cls">.u-elevate</td>
+          <td class="demo"><div class="box u-elevate" style="border:0;background:var(--surface);">Upphöjd yta</div></td>
+          <td class="desc">Lägger på shadow-md (hover/raised).</td>
+        </tr>
+        <tr>
+          <td class="cls">.u-divider</td>
+          <td class="demo"><div style="width:200px;"><hr class="u-divider"></div></td>
+          <td class="desc">Hårfin avdelare i Stone-färg.</td>
+        </tr>
+        <tr>
+          <td class="cls">.u-visually-hidden</td>
+          <td class="demo"><span class="u-muted" style="font-style:italic;">döljs visuellt</span></td>
+          <td class="desc">Gömd för ögat, kvar för skärmläsare.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Compose single-purpose utilities rather than forking a component to restyle it.</li>
+          <li>Use <code>.u-tabular</code> / <code>.tnum</code> for money and aligned figures.</li>
+          <li>Reach for a utility before writing one-off CSS.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Override component internals with utilities.</li>
+          <li>Recreate a utility's effect with an inline style.</li>
+          <li>Stack many utilities where a component variant belongs.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!-- @dsCard group="Molecules" viewport="940x640" name="Icon tiles & chips" subtitle="Action tiles, soft chips & avatars" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icon tiles &amp; chips — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  .specimens { display:flex; gap:26px; flex-wrap:wrap; }
+  .spec { display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .spec .cap { font-size:var(--t-micro); color:var(--ink-3); font-weight:var(--w-medium); text-align:center; max-width:120px; }
+  .tile { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; }
+  .tile svg { width:23px; height:23px; }
+  .tile--action { background:var(--tile-fill); color:var(--tile-ink); }
+  .tile--warn { background:var(--warn-soft); color:var(--warn); }
+  .chip { width:44px; height:44px; border-radius:12px; background:var(--chip-fill); color:var(--chip-ink); display:flex; align-items:center; justify-content:center; }
+  .chip svg { width:23px; height:23px; }
+  .ava { width:44px; height:44px; border-radius:50%; background:var(--avatar-fill); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:var(--w-semibold); font-size:15px; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Icon tiles &amp; chips</h1>
+  <div class="dg-intro"><p>Åtgärdsbrickor är fyllda <b>--tile-fill</b> med vit ikon; mjuka chips är --green-soft; avatarer sitter på --guide.</p></div>
+
+  <div class="sec">
+    <h2>Action / navigational tiles</h2>
+    <p>Tiles that front a row action use a solid <code>--tile-fill</code> (Kontek Green) square with a <b>white</b> icon — no border, 11–12px radius. Action-required tiles flip to the warn palette so they read as "needs you".</p>
+    <div class="frame">
+      <div class="specimens">
+        <div class="spec"><span class="tile tile--action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg></span><span class="cap">Action tile<br>#053F22 · white</span></div>
+        <div class="spec"><span class="tile tile--action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></span><span class="cap">Action tile</span></div>
+        <div class="spec"><span class="tile tile--warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span><span class="cap">Action required<br>warn palette</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Soft chips &amp; people avatars</h2>
+    <p>Soft chips (register cards, expense/leave glyphs) use a <code>--green-soft</code> background with a <code>--green-deep</code> icon. People avatars are initials on <code>--guide</code> (The Guide), white text, circular — never multi-colour.</p>
+    <div class="frame">
+      <div class="specimens">
+        <div class="spec"><span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v13H3zM3 7l2-3h14l2 3M12 11v5M9 13h6"/></svg></span><span class="cap">Soft chip<br>--green-soft</span></div>
+        <div class="spec"><span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="cap">Soft chip</span></div>
+        <div class="spec"><span class="ava">AL</span><span class="cap">Avatar<br>--guide</span></div>
+        <div class="spec"><span class="ava">MK</span><span class="cap">Avatar</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__examples">
+      <figure class="kdd__ex kdd__ex--do">
+        <div class="kdd__ex__stage"><span class="tile tile--action" style="width:46px;height:46px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg></span><span class="ava" style="width:46px;height:46px;">AL</span></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Single-colour tile + initials avatar on The Guide.</figcaption>
+      </figure>
+      <figure class="kdd__ex kdd__ex--dont">
+        <div class="kdd__ex__stage"><span class="tile" style="width:46px;height:46px;background:linear-gradient(135deg,#F59E0B,#EC4899);color:#fff;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg></span><span class="ava" style="width:46px;height:46px;background:#EC4899;">AL</span></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Multi-colour tiles and rainbow avatars break brand discipline.</figcaption>
+      </figure>
+    </div>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use a solid <code>--tile-fill</code> square with a white icon for action/nav tiles.</li>
+          <li>Flip action-required tiles to the <code>--warn</code> palette so they signal "needs you".</li>
+          <li>Sit people avatars on <code>--guide</code> with white initials, always circular.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Multi-colour icons or give avatars per-person rainbow fills.</li>
+          <li>Add a border to tiles, or mix tile and chip radii.</li>
+          <li>Use the warn palette for anything other than action-required.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

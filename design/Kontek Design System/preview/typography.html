@@ -1,0 +1,352 @@
+<!-- @dsCard group="Atoms" name="Typography" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Typography — Kontek</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  /* ---- per-request color rules ----
+     text on light surfaces = #203B3C (Brand Signature)
+     text on dark surfaces  = #FFFFFF                       */
+  :root {
+    --on-light:  #203B3C;
+    --on-dark:   #FFFFFF;
+    --muted:     #6E8788;   /* lighter teal — specs, captions */
+    --hair:      #E4E8E8;
+    --band:      #F1F3F1;   /* header band */
+    --chip:      #122121;   /* dark feature chip */
+    --doc-w:     1080px;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body {
+    margin: 0;
+    background: var(--surface);
+    font-family: var(--font-ui);
+    color: var(--on-light);
+  }
+  .doc { max-width: var(--doc-w); margin: 0 auto; }
+
+  /* ============ HEADER BAND ============ */
+  .head {
+    background: var(--band);
+    border-bottom: 1px solid var(--hair);
+    padding: 22px 56px 36px;
+  }
+  .crumbs {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .crumb-left { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+  .crumb-left .sep { opacity: .5; }
+  .crumb-left .cur { color: var(--on-light); font-weight: 600; }
+  .logo-dot {
+    width: 18px; height: 18px; border-radius: 5px;
+    background: var(--on-light); position: relative; flex: none;
+  }
+  .logo-dot::after {
+    content:""; position:absolute; right:-3px; bottom:-3px;
+    width:7px; height:7px; border-radius:50%; background: var(--green);
+    border: 1.5px solid var(--band);
+  }
+  .crumb-links { display: flex; gap: 22px; font-size: 13px; }
+  .crumb-links a {
+    color: var(--on-light); text-decoration: none; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .crumb-links a:hover { color: var(--green-deep); }
+  .crumb-links svg { width: 14px; height: 14px; }
+
+  .head-main {
+    display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start;
+    margin-top: 30px;
+  }
+  .head h1 {
+    margin: 0 0 12px; font-size: 34px; line-height: 1.05;
+    font-weight: 700; letter-spacing: -0.02em; color: var(--on-light);
+  }
+  .head p {
+    margin: 0; max-width: 560px; font-size: 14px; line-height: 1.6;
+    color: var(--muted);
+  }
+  .meta { font-size: 13px; min-width: 260px; }
+  .meta .row { display: flex; justify-content: space-between; gap: 24px; padding: 3px 0; white-space: nowrap; }
+  .meta .k { color: var(--muted); }
+  .meta .v { color: var(--on-light); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ============ SECTIONS ============ */
+  .body { padding: 44px 56px 64px; }
+  section + section { margin-top: 52px; }
+  .sec-label {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.01em;
+    color: var(--on-light); margin: 0 0 22px;
+  }
+
+  /* ---- font showcase ---- */
+  .family-name { font-size: 22px; font-weight: 600; color: var(--on-light); margin-bottom: 6px; }
+  .showcase { display: grid; grid-template-columns: 1fr 280px; gap: 40px; align-items: center; }
+  .ag {
+    font-size: 230px; line-height: .82; font-weight: 700;
+    letter-spacing: -0.04em; color: var(--on-light); margin: 4px 0 0;
+  }
+  .ag em { font-style: normal; font-weight: 400; color: var(--guide); }
+  .weights { display: flex; flex-direction: column; gap: 6px; }
+  .wrow { display: grid; grid-template-columns: 56px 1fr; align-items: center; gap: 18px; padding: 10px 0; border-top: 1px solid var(--hair); }
+  .wrow:first-child { border-top: none; }
+  .wrow .aa { font-size: 34px; line-height: 1; color: var(--on-light); }
+  .wrow .wname { font-size: 14px; font-weight: 600; color: var(--on-light); }
+  .wrow .wnum { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ---- glyph specimen ---- */
+  .glyphs { margin-top: 40px; }
+  .glyphs div {
+    font-size: 30px; line-height: 1.42; letter-spacing: .004em;
+    color: var(--on-light); font-weight: 400; word-spacing: .04em;
+  }
+  .glyphs .lc { font-weight: 400; }
+  .glyphs .nums { font-variant-numeric: tabular-nums; }
+
+  /* ---- about ---- */
+  .about { display: grid; grid-template-columns: minmax(0,640px); gap: 0; }
+  .about p { margin: 0 0 16px; font-size: 14px; line-height: 1.65; color: var(--on-light); max-width: 640px; }
+  .about a { color: var(--green-deep); text-decoration: none; border-bottom: 1px solid var(--green-line); }
+
+  /* ---- font features ---- */
+  .features {
+    display: grid; grid-template-columns: 1fr 1fr;
+    column-gap: 64px; row-gap: 14px;
+  }
+  .feat { display: flex; align-items: center; gap: 14px; }
+  .feat .tag {
+    flex: none; min-width: 52px; height: 28px; padding: 0 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--chip); color: var(--on-dark);
+    border-radius: 7px; font-size: 12.5px; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .feat .desc { font-size: 14px; color: var(--on-light); }
+
+  /* ---- type scale ---- */
+  .scale-block { margin-top: 8px; }
+  .scale-spec {
+    font-size: 13px; color: var(--green-deep); font-weight: 600;
+    padding: 22px 0 18px; border-top: 1px solid var(--hair);
+    display: flex; flex-wrap: wrap; gap: 6px 0;
+  }
+  .scale-spec .pipe { color: var(--green-line); margin: 0 12px; }
+  .scale-block:first-child .scale-spec { border-top: none; padding-top: 0; }
+  .scale-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+  .scale-cell .samp { color: var(--on-light); letter-spacing: var(--ls, -0.01em); line-height: var(--lh, 1.2); }
+  .scale-cell .digits { color: var(--on-light); font-variant-numeric: tabular-nums; }
+  .scale-cell .wname { font-size: 14px; font-weight: 600; color: var(--on-light); margin-top: 18px; }
+
+  /* the 4 weight columns */
+  .w400 { font-weight: 400; }
+  .w500 { font-weight: 500; }
+  .w600 { font-weight: 600; }
+  .w700 { font-weight: 700; }
+
+  /* ---- code typeface ---- */
+  .code-note {
+    font-family: var(--font-mono); font-size: 13px; line-height: 1.7;
+    color: var(--on-light); max-width: 600px; white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- ============ HEADER ============ -->
+  <header class="head" data-screen-label="Typography header">
+    <div class="head-main">
+      <div>
+        <h1>Typography</h1>
+        <p>Kontek uses one carefully tuned typeface across every surface. This page
+          documents the type family, the full scale, weights and OpenType features — tested
+          for versatility across payroll, time and people products while keeping accessibility
+          first for all users.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="body">
+
+    <!-- ============ FONT SHOWCASE ============ -->
+    <section data-screen-label="Open Sans showcase">
+      <div class="family-name">Open Sans</div>
+      <div class="showcase">
+        <div class="ag">A<em>g</em></div>
+        <div class="weights">
+          <div class="wrow"><span class="aa w400">Aa</span><span><div class="wname">Regular</div><div class="wnum">Font weight: 400</div></span></div>
+          <div class="wrow"><span class="aa w500">Aa</span><span><div class="wname">Medium</div><div class="wnum">Font weight: 500</div></span></div>
+          <div class="wrow"><span class="aa w600">Aa</span><span><div class="wname">Semibold</div><div class="wnum">Font weight: 600</div></span></div>
+          <div class="wrow"><span class="aa w700">Aa</span><span><div class="wname">Bold</div><div class="wnum">Font weight: 700</div></span></div>
+        </div>
+      </div>
+
+      <div class="glyphs">
+        <div class="uc">ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅÖÄ</div>
+        <div class="lc">abcdefghijklmnopqrstuvwxyzæøåöä</div>
+        <div class="nums">0123456789 !@#$%^&amp;*()</div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section data-screen-label="About Open Sans">
+      <h2 class="sec-label">About Open Sans</h2>
+      <div class="about">
+        <p>Open Sans is a humanist sans-serif typeface designed by Steve Matteson and
+          commissioned by Google. It was drawn for excellent legibility across print, web and
+          mobile interfaces, with an upright stress, open apertures and a neutral yet friendly
+          tone — which is exactly the calm, software-grade register Kontek aims for.</p>
+        <p>It carries a generous x-height and clearly differentiated letterforms, making dense
+          payroll tables and long form labels easy to scan. The family ships in a continuous
+          weight axis from Light to Extrabold plus matching italics, and includes tabular
+          figures and fractions for financial data.</p>
+        <p>Open Sans is released under the Apache License, Version 2.0, and is freely available
+          via <a href="https://fonts.google.com/specimen/Open+Sans">fonts.google.com/specimen/Open+Sans</a>.</p>
+      </div>
+    </section>
+
+    <!-- ============ FONT FEATURES ============ -->
+    <section data-screen-label="Font features">
+      <h2 class="sec-label">Font features</h2>
+      <div class="features">
+        <div class="feat"><span class="tag">liga</span><span class="desc">Standard Ligatures</span></div>
+        <div class="feat"><span class="tag">kern</span><span class="desc">Kerning</span></div>
+        <div class="feat"><span class="tag">tnum</span><span class="desc">Tabular Figures</span></div>
+        <div class="feat"><span class="tag">pnum</span><span class="desc">Proportional Figures</span></div>
+        <div class="feat"><span class="tag">lnum</span><span class="desc">Lining Figures</span></div>
+        <div class="feat"><span class="tag">onum</span><span class="desc">Oldstyle Figures</span></div>
+        <div class="feat"><span class="tag">frac</span><span class="desc">Fractions</span></div>
+        <div class="feat"><span class="tag">numr</span><span class="desc">Numerators</span></div>
+        <div class="feat"><span class="tag">dnom</span><span class="desc">Denominators</span></div>
+        <div class="feat"><span class="tag">sups</span><span class="desc">Superscript</span></div>
+        <div class="feat"><span class="tag">subs</span><span class="desc">Subscript</span></div>
+        <div class="feat"><span class="tag">sinf</span><span class="desc">Scientific Inferiors</span></div>
+        <div class="feat"><span class="tag">ordn</span><span class="desc">Ordinals</span></div>
+        <div class="feat"><span class="tag">case</span><span class="desc">Case-Sensitive Forms</span></div>
+        <div class="feat"><span class="tag">zero</span><span class="desc">Slashed Zero</span></div>
+        <div class="feat"><span class="tag">aalt</span><span class="desc">Access All Alternates</span></div>
+      </div>
+    </section>
+
+    <!-- ============ TYPE SCALE ============ -->
+    <section data-screen-label="Type scale">
+      <h2 class="sec-label">Type scale</h2>
+      <div class="scale-block">
+
+        <!-- Display 3xl -->
+        <div class="scale-spec">Font size: 36px / 2.25rem<span class="pipe">|</span>Line height: 56px / 3.5rem<span class="pipe">|</span>Letter spacing: −0.352px / −0.022em</div>
+        <div class="scale-grid" style="--lh:1.04;--ls:-0.022em;">
+          <div class="scale-cell"><div class="samp w400" style="font-size:34px;">Display 3xl</div><div class="digits w400" style="font-size:34px;">012345689</div><div class="wname">Regular</div></div>
+          <div class="scale-cell"><div class="samp w500" style="font-size:34px;">Display 3xl</div><div class="digits w500" style="font-size:34px;">012345689</div><div class="wname">Medium</div></div>
+          <div class="scale-cell"><div class="samp w600" style="font-size:34px;">Display 3xl</div><div class="digits w600" style="font-size:34px;">012345689</div><div class="wname">Semibold</div></div>
+          <div class="scale-cell"><div class="samp w700" style="font-size:34px;">Display 3xl</div><div class="digits w700" style="font-size:34px;">012345689</div><div class="wname">Bold</div></div>
+        </div>
+      </div>
+
+      <div class="scale-block">
+        <!-- Headline 2xl -->
+        <div class="scale-spec">Font size: 24px / 1.5rem<span class="pipe">|</span>Line height: 36px / 2.25rem<span class="pipe">|</span>Letter spacing: −0.304px / −0.019em</div>
+        <div class="scale-grid" style="--lh:1.5;--ls:-0.019em;">
+          <div class="scale-cell"><div class="samp w400" style="font-size:24px;">Headline 2xl</div><div class="digits w400" style="font-size:24px;">012345689</div><div class="wname">Regular</div></div>
+          <div class="scale-cell"><div class="samp w500" style="font-size:24px;">Headline 2xl</div><div class="digits w500" style="font-size:24px;">012345689</div><div class="wname">Medium</div></div>
+          <div class="scale-cell"><div class="samp w600" style="font-size:24px;">Headline 2xl</div><div class="digits w600" style="font-size:24px;">012345689</div><div class="wname">Semibold</div></div>
+          <div class="scale-cell"><div class="samp w700" style="font-size:24px;">Headline 2xl</div><div class="digits w700" style="font-size:24px;">012345689</div><div class="wname">Bold</div></div>
+        </div>
+      </div>
+
+      <div class="scale-block">
+        <!-- Title xl -->
+        <div class="scale-spec">Font size: 20px / 1.25rem<span class="pipe">|</span>Line height: 32px / 2rem<span class="pipe">|</span>Letter spacing: −0.272px / −0.017em</div>
+        <div class="scale-grid" style="--lh:1.6;--ls:-0.017em;">
+          <div class="scale-cell"><div class="samp w400" style="font-size:20px;">Title xl</div><div class="digits w400" style="font-size:20px;">012345689</div><div class="wname">Regular</div></div>
+          <div class="scale-cell"><div class="samp w500" style="font-size:20px;">Title xl</div><div class="digits w500" style="font-size:20px;">012345689</div><div class="wname">Medium</div></div>
+          <div class="scale-cell"><div class="samp w600" style="font-size:20px;">Title xl</div><div class="digits w600" style="font-size:20px;">012345689</div><div class="wname">Semibold</div></div>
+          <div class="scale-cell"><div class="samp w700" style="font-size:20px;">Title xl</div><div class="digits w700" style="font-size:20px;">012345689</div><div class="wname">Bold</div></div>
+        </div>
+      </div>
+
+      <div class="scale-block">
+        <!-- Heading lg -->
+        <div class="scale-spec">Font size: 16px / 1rem<span class="pipe">|</span>Line height: 24px / 1.5rem<span class="pipe">|</span>Letter spacing: −0.176px / −0.011em</div>
+        <div class="scale-grid" style="--lh:1.5;--ls:-0.011em;">
+          <div class="scale-cell"><div class="samp w400" style="font-size:16px;">Heading lg</div><div class="digits w400" style="font-size:16px;">012345689</div><div class="wname">Regular</div></div>
+          <div class="scale-cell"><div class="samp w500" style="font-size:16px;">Heading lg</div><div class="digits w500" style="font-size:16px;">012345689</div><div class="wname">Medium</div></div>
+          <div class="scale-cell"><div class="samp w600" style="font-size:16px;">Heading lg</div><div class="digits w600" style="font-size:16px;">012345689</div><div class="wname">Semibold</div></div>
+          <div class="scale-cell"><div class="samp w700" style="font-size:16px;">Heading lg</div><div class="digits w700" style="font-size:16px;">012345689</div><div class="wname">Bold</div></div>
+        </div>
+      </div>
+
+      <div class="scale-block">
+        <!-- Body md -->
+        <div class="scale-spec">Font size: 14px / 0.875rem<span class="pipe">|</span>Line height: 20px / 1.25rem<span class="pipe">|</span>Letter spacing: −0.096px / −0.006em</div>
+        <div class="scale-grid" style="--lh:1.43;--ls:-0.006em;">
+          <div class="scale-cell"><div class="samp w400" style="font-size:14px;">Body md</div><div class="digits w400" style="font-size:14px;">012345689</div><div class="wname">Regular</div></div>
+          <div class="scale-cell"><div class="samp w500" style="font-size:14px;">Body md</div><div class="digits w500" style="font-size:14px;">012345689</div><div class="wname">Medium</div></div>
+          <div class="scale-cell"><div class="samp w600" style="font-size:14px;">Body md</div><div class="digits w600" style="font-size:14px;">012345689</div><div class="wname">Semibold</div></div>
+          <div class="scale-cell"><div class="samp w700" style="font-size:14px;">Body md</div><div class="digits w700" style="font-size:14px;">012345689</div><div class="wname">Bold</div></div>
+        </div>
+      </div>
+
+      <div class="scale-block">
+        <!-- Caption sm -->
+        <div class="scale-spec">Font size: 12px / 0.75rem<span class="pipe">|</span>Line height: 20px / 1.25rem<span class="pipe">|</span>Letter spacing: 0px / 0em</div>
+        <div class="scale-grid" style="--lh:1.67;--ls:0;">
+          <div class="scale-cell"><div class="samp w400" style="font-size:12px;">Caption sm</div><div class="digits w400" style="font-size:12px;">012345689</div><div class="wname">Regular</div></div>
+          <div class="scale-cell"><div class="samp w500" style="font-size:12px;">Caption sm</div><div class="digits w500" style="font-size:12px;">012345689</div><div class="wname">Medium</div></div>
+          <div class="scale-cell"><div class="samp w600" style="font-size:12px;">Caption sm</div><div class="digits w600" style="font-size:12px;">012345689</div><div class="wname">Semibold</div></div>
+          <div class="scale-cell"><div class="samp w700" style="font-size:12px;">Caption sm</div><div class="digits w700" style="font-size:12px;">012345689</div><div class="wname">Bold</div></div>
+        </div>
+      </div>
+
+      <div class="scale-block">
+        <!-- Helper xs -->
+        <div class="scale-spec">Font size: 11px / 0.6875rem<span class="pipe">|</span>Line height: 16px / 1rem<span class="pipe">|</span>Letter spacing: 0.08px / 0.005em</div>
+        <div class="scale-grid" style="--lh:1.45;--ls:0.005em;">
+          <div class="scale-cell"><div class="samp w400" style="font-size:11px;">Helper xs</div><div class="digits w400" style="font-size:11px;">012345689</div><div class="wname">Regular</div></div>
+          <div class="scale-cell"><div class="samp w500" style="font-size:11px;">Helper xs</div><div class="digits w500" style="font-size:11px;">012345689</div><div class="wname">Medium</div></div>
+          <div class="scale-cell"><div class="samp w600" style="font-size:11px;">Helper xs</div><div class="digits w600" style="font-size:11px;">012345689</div><div class="wname">Semibold</div></div>
+          <div class="scale-cell"><div class="samp w700" style="font-size:11px;">Helper xs</div><div class="digits w700" style="font-size:11px;">012345689</div><div class="wname">Bold</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CODE TYPEFACE ============ -->
+    <section data-screen-label="Code typeface">
+      <h2 class="sec-label">The code typeface</h2>
+      <div class="code-note">For code, pre-formatted text and user input contexts, Kontek uses the system monospace stack: SFMono-Regular, ui-monospace, JetBrains Mono, Menlo, monospace. This avoids loading an additional web font while ensuring a high-quality monospaced experience across platforms.</div>
+    </section>
+
+    <section class="kdd">
+      <div class="kdd__eyebrow">Riktlinjer</div>
+      <h2 class="kdd__title">Dos &amp; don'ts</h2>
+      <div class="kdd__lists">
+        <div class="kdd__list kdd__list--do">
+          <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+          <ul>
+            <li>Build hierarchy from size and weight in the one typeface &mdash; Open Sans, weights 400/500/600/700.</li>
+            <li>Sentence case everywhere &mdash; a capital first letter, the rest lower-case (eyebrows and labels included).</li>
+            <li>Give money and aligned figures <code>.tnum</code> (tabular figures).</li>
+          </ul>
+        </div>
+        <div class="kdd__list kdd__list--dont">
+          <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+          <ul>
+            <li>Set any text in all-caps or Title Case &mdash; sentence case only (a person's initials are the one exception).</li>
+            <li>Add a second typeface, or go below the scale &mdash; 11px is the floor, micro labels only.</li>
+            <li>Set sheet / flow-step headings bold (700) &mdash; those are semibold (600).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!-- @dsCard group="Atoms" viewport="900x500" name="Touch targets" subtitle="48px minimum — iOS & Android" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Touch targets — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .tt { display:flex; gap:22px; flex-wrap:wrap; align-items:flex-end; }
+  .tcol { display:flex; flex-direction:column; align-items:center; gap:9px; }
+  .target { position:relative; border-radius:var(--r-button); background:var(--green-soft); border:1.5px solid var(--green-line); display:flex; align-items:center; justify-content:center; color:var(--green-deep); }
+  .target .hit { position:absolute; inset:0; border:1.5px dashed var(--green); border-radius:var(--r-button); opacity:.55; }
+  .n { font-size:12px; font-weight:600; color:var(--ink); }
+  .px { font-size:11px; color:var(--ink-3); }
+  svg.i { fill:none; stroke:currentColor; stroke-width:1.85; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Touch targets</h1>
+  <div class="dg-intro"><p>Allt interaktivt är minst <b>48px</b> — samma säkra minimum på iOS och Android. Utöka träffytan med padding, inte en större ikon.</p></div>
+
+  <div class="sec">
+    <h2>One safe minimum for both platforms</h2>
+    <p>iOS asks for ≥ 44pt and Android Material for ≥ 48dp — we standardise on <b>48</b> so nothing is ever borderline. A control may look smaller, but its hit area is padded out to 48; comfortable spacing between targets prevents mis-taps.</p>
+    <div class="frame center">
+      <div class="tt">
+        <div class="tcol"><div class="target" style="width:48px;height:48px;"><span class="hit"></span><svg class="i" width="22" height="22" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></div><span class="n">tap-min</span><span class="px">48 × 48</span></div>
+        <div class="tcol"><div class="target" style="width:48px;height:48px;background:var(--signature);border-color:var(--signature);color:#fff;"><span class="hit" style="border-color:rgba(255,255,255,.5);"></span>Aa</div><span class="n">control-h</span><span class="px">48</span></div>
+        <div class="tcol"><div class="target" style="width:56px;height:56px;background:var(--action);border-color:var(--action);color:#fff;"><span class="hit" style="border-color:rgba(255,255,255,.5);"></span>Aa</div><span class="n">control-h-lg</span><span class="px">56</span></div>
+        <div class="tcol"><div class="target" style="width:40px;height:40px;background:var(--surface-2);border-color:var(--line);color:var(--ink-3);"><span class="hit" style="border-color:var(--silver-mist);"></span>sm</div><span class="n">control-h-sm</span><span class="px">40 (in dense rows)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Tokens</h2>
+    <div class="frame anatomy">
+      <div><b>--tap-min</b> &nbsp;48px</div>
+      <div><b>--control-h</b> &nbsp;48px</div>
+      <div><b>--control-h-lg</b> &nbsp;56px</div>
+      <div><b>--control-h-sm</b> &nbsp;40px</div>
+      <div><b>--screen-gutter</b> &nbsp;16px</div>
+      <div><b>--appbar-h</b> &nbsp;56px</div>
+      <div><b>--tabbar-h</b> &nbsp;58px</div>
+      <div><b>--safe-top / --safe-bottom</b> &nbsp;env()</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Keep every interactive element at least 48px (<code>--tap-min</code>) on iOS and Android.</li>
+          <li>Expand a small glyph's hit area with padding, not a bigger icon.</li>
+          <li>Space adjacent targets so their hit areas never overlap.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Ship a sub-48px tap target, even for a tiny icon.</li>
+          <li>Crowd two targets so a thumb hits both.</li>
+          <li>Rely on the visible art size &mdash; size the hit area.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!-- @dsCard group="Atoms" name="Illustrations" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Illustrations — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; width:100%; }
+  .tile { border:1.5px dashed var(--green-line); background:var(--green-soft); border-radius:14px; aspect-ratio:4/3;
+          display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--green-deep); }
+  .tile svg { width:30px; height:30px; opacity:.7; }
+  .tile .cap { font-size:12px; font-weight:600; }
+  .tile .sz { font-size:10.5px; color:var(--ink-3); }
+  .princip { display:flex; flex-direction:column; gap:0; width:100%; }
+  .prow { display:flex; gap:12px; padding:11px 4px; border-bottom:1px solid var(--line-2); font-size:13px; color:var(--ink-2); align-items:flex-start; }
+  .prow:last-child { border-bottom:0; }
+  .prow b { color:var(--ink); font-weight:600; }
+  .sw { display:flex; gap:8px; }
+  .sw span { width:26px; height:26px; border-radius:6px; border:1px solid rgba(18,33,33,.1); }
+  .note { font-size:12.5px; color:var(--ink-3); line-height:1.55; background:var(--surface-2); border-radius:10px; padding:13px 15px; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Illustrations</h1>
+  <div class="dg-intro"><p>Sparsam, geometrisk och matt stil ur varumärkespaletten. Konst förankrar ett tomt läge — sedan träder den åt sidan.</p></div>
+
+  <div class="sec">
+    <h2>Style</h2>
+    <p>Fyra hållningar definierar stilen — i samma geometriska, matta uttryck som ikonerna.</p>
+    <div class="frame col">
+      <div class="princip">
+        <div class="prow"><span style="min-width:120px;"><b>Palett</b></span><span>Sval och avtonad — bygg på systemets gröna toner.</span></div>
+        <div class="prow"><span style="min-width:120px;"><b>Form</b></span><span>Geometrisk, ren linjeföring i samma 1,75px-stil som ikonerna.</span></div>
+        <div class="prow"><span style="min-width:120px;"><b>Yta</b></span><span>Matt och platt. Inga gradienter, skuggor eller fotorealism.</span></div>
+        <div class="prow"><span style="min-width:120px;"><b>Roll</b></span><span>Tomlägen, onboarding och bekräftelser — inte utfyllnad.</span></div>
+      </div>
+      <div class="sw">
+        <span style="background:var(--signature);"></span>
+        <span style="background:var(--guide);"></span>
+        <span style="background:var(--green);"></span>
+        <span style="background:var(--green-soft);"></span>
+        <span style="background:var(--muted-surface);"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Formats &amp; placements</h2>
+    <p>Tre återkommande format. Riktiga tillgångar (SVG) läggs in här när de finns — platshållarna nedan visar storlek och proportion.</p>
+    <div class="frame">
+      <div class="tiles">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg><span class="cap">Spot</span><span class="sz">120×120</span></div>
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3a2 2 0 0 0-2 2"/><path d="M19 3a2 2 0 0 1 2 2"/><path d="M21 19a2 2 0 0 1-2 2"/><path d="M5 21a2 2 0 0 1-2-2"/><path d="M9 3h1"/><path d="M9 21h1"/><path d="M14 3h1"/><path d="M14 21h1"/><path d="M3 9v1"/><path d="M21 9v1"/><path d="M3 14v1"/><path d="M21 14v1"/></svg><span class="cap">Tomläge</span><span class="sz">240×180</span></div>
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg><span class="cap">Onboarding</span><span class="sz">320×240</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <div class="note">Inga slutgiltiga illustrationer levererades. Lägg riktiga SVG-tillgångar i <b>assets/illustrations/</b> och ersätt platshållarna ovan — håll dem inom paletten och den matta, geometriska stilen.</div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Keep illustration sparse, geometric and matte.</li>
+          <li>Draw from the brand palette only.</li>
+          <li>Use art to anchor an empty state, then get out of the way.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use glossy gradients or rainbow fills.</li>
+          <li>Crowd a screen with decorative art &mdash; content first.</li>
+          <li>Mix illustration styles within one flow.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

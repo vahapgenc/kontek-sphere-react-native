@@ -1,0 +1,57 @@
+<!-- @dsCard group="Atoms" name="Spacing" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { margin:0; padding:24px; background:var(--surface); font-family:var(--font-ui); }
+  .scale { display:flex; align-items:flex-end; gap:10px; }
+  .unit { text-align:center; }
+  .bar { background:var(--guide); border-radius:3px; width:30px; }
+  .n { font-size:10px; color:var(--ink-3); margin-top:7px; }
+  .v { font-size:10px; color:var(--ink); font-weight:600; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Spacing</h1>
+  <div class="dg-intro"><p>4px-baserad skala för mellanrum och indrag. <b>16px skärmmarginal</b> på varje kant; låt luften bära lugnet.</p></div>
+  <div class="scale">
+    <div class="unit"><div class="bar" style="height:4px;"></div><div class="v">1</div><div class="n">4</div></div>
+    <div class="unit"><div class="bar" style="height:8px;"></div><div class="v">2</div><div class="n">8</div></div>
+    <div class="unit"><div class="bar" style="height:12px;"></div><div class="v">3</div><div class="n">12</div></div>
+    <div class="unit"><div class="bar" style="height:16px;"></div><div class="v">4</div><div class="n">16</div></div>
+    <div class="unit"><div class="bar" style="height:20px;"></div><div class="v">5</div><div class="n">20</div></div>
+    <div class="unit"><div class="bar" style="height:24px;"></div><div class="v">6</div><div class="n">24</div></div>
+    <div class="unit"><div class="bar" style="height:32px;"></div><div class="v">8</div><div class="n">32</div></div>
+    <div class="unit"><div class="bar" style="height:40px;"></div><div class="v">10</div><div class="n">40</div></div>
+    <div class="unit"><div class="bar" style="height:48px;"></div><div class="v">12</div><div class="n">48</div></div>
+    <div class="unit"><div class="bar" style="height:64px;"></div><div class="v">16</div><div class="n">64</div></div>
+  </div>
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use the 4px scale (<code>--space-01&hellip;13</code> / <code>--sp-*</code>) for all gaps and padding.</li>
+          <li>Keep the 16px screen gutter on every edge.</li>
+          <li>Let whitespace carry the calm &mdash; roomy, never cramped.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Invent off-scale px values like 13 or 27.</li>
+          <li>Tighten the gutter below 16px.</li>
+          <li>Pack a screen densely to avoid scrolling.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

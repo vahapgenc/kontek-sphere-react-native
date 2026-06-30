@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System Overview — Kontek Next</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--canvas);
+    font-family: var(--font-ui);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 64px 32px 120px; }
+
+  /* ---------- HEADER ---------- */
+  .eyebrow {
+    font-size: 13px; font-weight: var(--w-semibold); letter-spacing: 0.02em;
+     color: var(--green-deep); margin: 0 0 14px;
+  }
+  h1.title {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 56px; line-height: 1.0; letter-spacing: -0.02em;
+    color: var(--ink); margin: 0 0 18px;
+  }
+  .lede {
+    font-size: 18px; line-height: 1.55; color: var(--ink-3);
+    max-width: 620px; margin: 0; text-wrap: pretty;
+  }
+
+  /* ---------- INTRO PANEL ---------- */
+  .intro {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    background: var(--surface); border: 1px solid transparent; border-radius: var(--r-panel);
+    box-shadow: var(--sh-1); margin-top: 36px; overflow: hidden;
+  }
+  .intro__col { padding: 30px 30px 32px; border-left: 1px solid var(--line-2); }
+  .intro__col:first-child { border-left: 0; }
+  .intro__ic {
+    width: 36px; height: 36px; border-radius: 10px; background: var(--green-soft); color: var(--green-deep);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+  }
+  .intro__ic svg { width: 20px; height: 20px; }
+  .intro__h { font-size: 19px; font-weight: var(--w-semibold); letter-spacing: -0.01em; color: var(--ink); margin: 0 0 10px; }
+  .intro__p { font-size: 15px; line-height: 1.6; color: var(--ink-2); margin: 0; }
+  .intro__p b { color: var(--ink); font-weight: var(--w-semibold); }
+  .intro__p code, .intro__ol code {
+    font-family: var(--font-mono); font-size: 0.85em; background: var(--surface-2);
+    padding: 1px 6px; border-radius: 5px; color: var(--ink);
+  }
+  .intro__rows { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .irow { display: flex; gap: 13px; align-items: flex-start; background: var(--canvas); border-radius: var(--r-card); padding: 12px 14px; }
+  .irow__ic { width: 34px; height: 34px; border-radius: 9px; background: var(--kontek-green); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .irow__ic svg { width: 18px; height: 18px; }
+  .irow__t { font-size: 14px; font-weight: var(--w-semibold); color: var(--ink); }
+  .irow__d { font-size: 13px; color: var(--ink-3); line-height: 1.45; margin-top: 2px; }
+  .intro__ol { margin: 0; padding: 0 0 0 1.15em; display: flex; flex-direction: column; gap: 11px; }
+  .intro__ol li { font-size: 15px; line-height: 1.55; color: var(--ink-2); padding-left: 4px; }
+  .intro__ol li::marker { color: var(--green-deep); font-weight: 700; }
+  .intro__ol b { color: var(--ink); font-weight: var(--w-semibold); }
+  @media (max-width: 860px) {
+    .intro { grid-template-columns: 1fr; }
+    .intro__col { border-left: 0; border-top: 1px solid var(--line-2); }
+    .intro__col:first-child { border-top: 0; }
+  }
+
+  /* ---------- TOOLBAR ---------- */
+  .toolbar { display: flex; gap: 12px; align-items: center; margin: 40px 0 8px; flex-wrap: wrap; }
+  .filter {
+    flex: 1; min-width: 240px; position: relative; display: flex; align-items: center;
+  }
+  .filter svg { position: absolute; left: 16px; width: 18px; height: 18px; color: var(--ink-4); pointer-events: none; }
+  .filter input {
+    width: 100%; height: 52px; border: 1px solid var(--line); border-radius: var(--r-input);
+    background: var(--surface); padding: 0 18px 0 46px; font-family: var(--font-ui);
+    font-size: 16px; color: var(--ink); outline: none;
+    box-shadow: var(--shadow-xs);
+    transition: border-color var(--gaia-transition-state), box-shadow var(--gaia-transition-state);
+  }
+  .filter input::placeholder { color: var(--ink-4); }
+  .filter input:focus { border-color: var(--signature); box-shadow: 0 0 0 3px rgba(32,59,60,0.16); }
+  .tbtn {
+    height: 52px; padding: 0 20px; border: 1px solid var(--line); border-radius: var(--r-button);
+    background: var(--surface); color: var(--ink-2); font-family: var(--font-ui);
+    font-size: 15px; font-weight: var(--w-semibold); cursor: pointer; white-space: nowrap;
+    box-shadow: var(--shadow-xs);
+    transition: background var(--gaia-transition-state), border-color var(--gaia-transition-state), color var(--gaia-transition-state);
+  }
+  .tbtn:hover { background: var(--green-soft); border-color: var(--green-line); color: var(--action-hi); }
+
+  .tcount { margin-left: auto; font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tcount b { color: var(--ink-2); font-weight: var(--w-semibold); }
+
+  /* ---------- GROUP ---------- */
+  .group { margin-top: 40px; }
+  .group-head {
+    display: flex; align-items: center; gap: 12px; cursor: pointer;
+    padding: 14px 4px; user-select: none;
+  }
+  .group-chev { width: 18px; height: 18px; color: var(--ink-3); flex-shrink: 0; transition: transform var(--gaia-transition-state); transform: rotate(90deg); }
+  .group.collapsed .group-chev { transform: rotate(0deg); }
+  .group-name {
+    font-size: 14px; font-weight: 800; letter-spacing: 0.04em;  color: var(--ink-2);
+  }
+  .count {
+    font-size: 13px; font-weight: var(--w-semibold); color: var(--green-deep);
+    background: var(--green-soft); border-radius: 999px; padding: 2px 10px; line-height: 1.5;
+  }
+  .group-body { display: flex; flex-direction: column; gap: 12px; padding-top: 6px; }
+  .group.collapsed .group-body { display: none; }
+
+  /* ---------- SPEC ITEM (accordion) ---------- */
+  .item {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card);
+    overflow: hidden; box-shadow: var(--shadow-xs);
+    transition: border-color var(--gaia-transition-state), box-shadow var(--gaia-transition-state);
+  }
+  .item.open { border-color: var(--green-line); box-shadow: var(--shadow-sm); }
+  .item-head {
+    display: flex; align-items: center; gap: 16px; cursor: pointer;
+    padding: 20px 22px; user-select: none;
+  }
+  .item-chev { width: 20px; height: 20px; color: var(--ink-3); flex-shrink: 0; transition: transform .26s var(--gaia-easing-standard); }
+  .item.open .item-chev { transform: rotate(90deg); color: var(--signature); }
+  .item-text { min-width: 0; }
+  .item-name { font-size: 18px; font-weight: var(--w-semibold); color: var(--ink); letter-spacing: -0.01em; }
+  .item.open .item-name { color: var(--signature); }
+  .item-sub { font-size: 14px; color: var(--ink-3); margin-top: 2px; line-height: 1.4; }
+
+  .item-body { height: 0; overflow: hidden; transition: height .3s var(--gaia-easing-standard); }
+  .item-inner { border-top: 1px solid var(--line); background: var(--canvas); }
+  .item-body iframe { display: block; width: 100%; border: 0; background: var(--canvas); }
+
+  .empty { display: none; padding: 40px 4px; color: var(--ink-4); font-size: 16px; }
+  .empty.show { display: block; }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 40px 20px 90px; }
+    h1.title { font-size: 40px; }
+    .lede { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Kontek</p>
+    <h1 class="title">Design system — Mobile</h1>
+    <p class="lede">En överblick av hela systemet, ordnat i atomer, molekyler och organismer. Klicka på en rubrik för att fälla ut hela specifikationen — eller fäll ihop för att få överblick.</p>
+
+    <section class="intro">
+      <div class="intro__col">
+        <span class="intro__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+        <h2 class="intro__h">Struktur</h2>
+        <p class="intro__p">Systemet följer <b>atomär design</b> — små delar byggs ihop till större. Alla färger, typsnitt och avstånd kommer från en enda källa: <code>colors_and_type.css</code> och <code>mobile.css</code>.</p>
+        <div class="intro__rows">
+          <div class="irow"><span class="irow__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/></svg></span><div><div class="irow__t">Atoms</div><div class="irow__d">Färg, typografi, avstånd, ikoner — de minsta byggstenarna.</div></div></div>
+          <div class="irow"><span class="irow__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="2.2" fill="currentColor" stroke="none"/></svg></span><div><div class="irow__t">Molecules</div><div class="irow__d">Knappar, fält, listrader, brickor — atomer satta i funktion.</div></div></div>
+          <div class="irow"><span class="irow__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><div><div class="irow__t">Organisms</div><div class="irow__d">Appfält, flikfält, ark, navigering — färdiga mönster.</div></div></div>
+        </div>
+      </div>
+      <div class="intro__col">
+        <span class="intro__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></span>
+        <h2 class="intro__h">Varför använda det</h2>
+        <p class="intro__p">En gemensam källa gör att appen ser <b>likadan ut på iPhone och Android</b> — ett varumärke, inte två. Allt är tumvänligt med <b>48px tryckytor</b>, brödtext på 16px så iOS aldrig zoomar, och färgerna bär mening: grönt godkänner och sparar, rött bara för det oåterkalleliga. Resultatet är en lugn känsla av att lönen är omhändertagen.</p>
+      </div>
+      <div class="intro__col">
+        <span class="intro__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <h2 class="intro__h">Så använder du det</h2>
+        <ol class="intro__ol">
+          <li>Klicka på ett kort för att fälla ut hela specifikationen — <b>intro, anatomi, varianter, tillstånd och gör &amp; undvik</b>.</li>
+          <li>Sök på namn i fältet nedan för att hitta rätt del snabbt.</li>
+          <li>Återanvänd token och klasser ur <code>colors_and_type.css</code> och <code>mobile.css</code> — hitta aldrig på egna färger.</li>
+          <li>Följ varje dels <b>gör &amp; undvik</b> så håller gränssnittet ihop.</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <label class="filter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="filter" type="text" placeholder="Filtrera på namn…" autocomplete="off" spellcheck="false">
+      </label>
+      <button class="tbtn" id="expand-all">Fäll ut alla</button>
+      <button class="tbtn" id="collapse-all">Fäll ihop alla</button>
+      <span class="tcount" id="tcount"></span>
+    </div>
+
+    <div id="groups"></div>
+    <p class="empty" id="empty">Inga komponenter matchar ”<span id="empty-q"></span>”.</p>
+  </div>
+
+  <script src="ds-overview.js"></script>
+</body>
+</html>

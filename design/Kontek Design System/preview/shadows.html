@@ -1,0 +1,62 @@
+<!-- @dsCard group="Atoms" name="Shadows" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { margin:0; padding:28px 22px; background:var(--canvas); font-family:var(--font-ui); }
+  .row { display:flex; gap:22px; }
+  .item { text-align:center; flex:1; }
+  .box { height:70px; background:var(--surface); border-radius:12px; }
+  .name { font-size:11px; font-weight:600; color:var(--ink); margin-top:12px; }
+  .val { font-size:10px; color:var(--ink-3); margin-top:1px; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Shadows</h1>
+  <div class="dg-intro"><p>Lyft, inte ramar, separerar ytor. Använd <b>--sh-1</b> för flytande kort; skuggfärgen är alltid en låg-alpha djup teal.</p></div>
+  <div class="row">
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-xs);"></div><div class="name">xs</div><div class="val">hairline lift</div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-sm);"></div><div class="name">sm</div><div class="val">resting card</div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-md);"></div><div class="name">md</div><div class="val">raised / hover</div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-lg);"></div><div class="name">lg</div><div class="val">menu / modal</div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-cta);background:#E1462E;"></div><div class="name">cta</div><div class="val">red glow</div></div>
+  </div>
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__examples">
+      <figure class="kdd__ex kdd__ex--do">
+        <div class="kdd__ex__stage"><div style="width:150px;height:48px;background:#fff;border:1px solid transparent;border-radius:16px;box-shadow:var(--sh-1);"></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Soft two-layer lift, low-alpha deep-teal ink.</figcaption>
+      </figure>
+      <figure class="kdd__ex kdd__ex--dont">
+        <div class="kdd__ex__stage"><div style="width:150px;height:48px;background:#fff;border-radius:16px;box-shadow:0 6px 6px rgba(0,0,0,.4);"></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Hard, dark, single-layer drop shadow.</figcaption>
+      </figure>
+    </div>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use <code>--sh-1</code> for floating cards; <code>--shadow-sm/md/lg</code> for lighter elevation.</li>
+          <li>Keep shadow ink a low-alpha deep teal, <code>rgba(18,33,33, …)</code>.</li>
+          <li>Let elevation, not borders, separate stacked surfaces.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use a hard, dark or coloured drop shadow.</li>
+          <li>Add a shadow <b>and</b> a visible border to the same card.</li>
+          <li>Over-elevate &mdash; reserve the deepest shadows for overlays.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

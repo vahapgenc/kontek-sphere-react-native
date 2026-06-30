@@ -1,0 +1,105 @@
+<!-- @dsCard group="Organisms" viewport="900x560" name="Dialog" subtitle="Confirmations & destructive alerts" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Dialog — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .stage { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start; }
+  .phone { width:300px; height:400px; border-radius:30px; overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow-md); position:relative; background:var(--canvas); }
+  /* statically open dialog scrim */
+  .open { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(5,18,18,0.5); }
+  svg.i { fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Dialog</h1>
+  <div class="dg-intro"><p>Centrerad modal för bekräftelser. Reservera den för <b>irreversibla</b> steg; reversibla åtgärder använder optimistisk ångra.</p></div>
+
+  <div class="sec">
+    <h2>Dialog</h2>
+    <p>A centred modal for decisions that must happen before anything else — confirming an irreversible action or surfacing a blocking error. An optional icon sets the tone (green for confirm, red for destructive). Actions stack full-width with the primary on top; short either/or choices may sit side by side. Destructive confirmations use the danger button.</p>
+    <div class="frame">
+      <div class="stage">
+
+        <!-- confirm -->
+        <div>
+          <div class="phone">
+            <div class="open">
+              <div class="ds-dialog" style="position:static;transform:none;">
+                <div class="ds-dialog__icon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+                <h3 class="ds-dialog__title">Godkänn utbetalning?</h3>
+                <p class="ds-dialog__text">1,24 Mkr betalas ut till 32 anställda den 25 maj. Detta går inte att ångra efter kl. 12.00.</p>
+                <div class="ds-dialog__actions">
+                  <button class="ds-btn ds-btn--primary ds-btn--block ds-btn--lg">Godkänn &amp; betala ut</button>
+                  <button class="ds-btn ds-btn--ghost ds-btn--block">Inte än</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Confirm — stacked actions</div>
+        </div>
+
+        <!-- destructive -->
+        <div>
+          <div class="phone">
+            <div class="open">
+              <div class="ds-dialog" style="position:static;transform:none;">
+                <div class="ds-dialog__icon ds-dialog__icon--danger"><svg class="i" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+                <h3 class="ds-dialog__title">Avbryt körningen?</h3>
+                <p class="ds-dialog__text">All inmatning för maj raderas. Det går inte att återställa.</p>
+                <div class="ds-dialog__actions ds-dialog__actions--row">
+                  <button class="ds-btn ds-btn--secondary">Behåll</button>
+                  <button class="ds-btn ds-btn--danger" style="background:var(--danger-soft);">Avbryt körning</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Destructive — side-by-side</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy">
+      <div><b>Width</b> &nbsp;max 360px, gutter margin</div>
+      <div><b>Radius</b> &nbsp;24px (r-sheet)</div>
+      <div><b>Icon</b> &nbsp;48px tonal circle</div>
+      <div><b>Title</b> &nbsp;19px / 700</div>
+      <div><b>Actions</b> &nbsp;stacked (primary top) or --row</div>
+      <div><b>Scrim</b> &nbsp;ground @ 50%</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Reserve the dialog for irreversible or high-stakes confirmations.</li>
+          <li>Use the <code>--danger</code> button + danger icon for destructive confirms.</li>
+          <li>Stack actions full-width with the primary on top.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Pop a dialog to confirm a reversible action &mdash; use optimistic undo.</li>
+          <li>Colour a destructive confirm green, or a safe one red.</li>
+          <li>Offer more than two choices in a confirmation dialog.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!-- @dsCard group="Molecules" name="Avatar" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Avatar — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .row { display:flex; align-items:flex-end; gap:26px; flex-wrap:wrap; }
+  .au { display:flex; flex-direction:column; align-items:center; gap:9px; }
+  .au .n { font-size:11px; font-weight:600; color:var(--ink); }
+  .au .px { font-size:10.5px; color:var(--ink-3); }
+  .id { display:flex; align-items:center; gap:11px; }
+  .id .nm { display:block; font-size:14px; font-weight:600; color:var(--ink); line-height:1.2; }
+  .id .rl { display:block; font-size:12.5px; color:var(--ink-3); margin-top:1px; }
+  .darkbox { background:var(--signature); border-color:transparent; }
+  .dont { border:1px solid var(--line); border-radius:var(--r-card); background:var(--surface); padding:18px; display:flex; align-items:center; justify-content:center; gap:14px; min-height:96px; position:relative; }
+  .dont .tag { position:absolute; top:10px; left:12px; font-size:10.5px; font-weight:700; letter-spacing:.04em;  color:var(--danger); }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; width:100%; }
+  .ph { background:linear-gradient(135deg,#9DB8A6,#5C7E6C); }
+  .ph2 { background:linear-gradient(135deg,#B9A98C,#7E6C5C); }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Avatar</h1>
+  <div class="dg-intro"><p>Cirkulär identitetsmarkör. Initialer på <b>--guide</b> med vit text — aldrig flerfärgade paletter.</p></div>
+
+  <div class="sec">
+    <h2>Size scale</h2>
+    <p>Cirkulär identitetsmarkör i fem storlekar. 24px i täta listor och chips, 32px i tabellrader, 40px som standard, 48–64px i profilhuvuden. Talet motsvarar diametern i pixlar.</p>
+    <div class="frame">
+      <div class="row">
+        <div class="au"><span class="ds-avatar ds-avatar--xs">AL</span><span class="n">xs</span><span class="px">24px</span></div>
+        <div class="au"><span class="ds-avatar ds-avatar--sm">AL</span><span class="n">sm</span><span class="px">32px</span></div>
+        <div class="au"><span class="ds-avatar ds-avatar--md">AL</span><span class="n">md</span><span class="px">40px</span></div>
+        <div class="au"><span class="ds-avatar ds-avatar--lg">AL</span><span class="n">lg</span><span class="px">48px</span></div>
+        <div class="au"><span class="ds-avatar ds-avatar--xl">AL</span><span class="n">xl</span><span class="px">64px</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Types</h2>
+    <p>Foto när det finns, annars initialer (för-­och efternamnets första bokstav) på The Guide-grön. Generisk ikon endast när varken namn eller bild är känt — t.ex. en inbjuden men ej registrerad användare.</p>
+    <div class="frame">
+      <div class="row">
+        <div class="au"><span class="ds-avatar ds-avatar--lg ph"></span><span class="n">Foto</span></div>
+        <div class="au"><span class="ds-avatar ds-avatar--lg">SN</span><span class="n">Initialer</span></div>
+        <div class="au"><span class="ds-avatar ds-avatar--lg ds-avatar--muted"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink-3);"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></span><span class="n">Ikon</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Colour tones for initials</h2>
+    <p>Initialavatarer håller sig inom varumärket. The Guide är standard; soft och Kontek Green finns för kontrast mot olika ytor. Tilldela inte slumpmässiga regnbågsfärger per person.</p>
+    <div class="frame center">
+      <span class="ds-avatar ds-avatar--lg">AL</span>
+      <span class="ds-avatar ds-avatar--lg ds-avatar--soft">EH</span>
+      <span class="ds-avatar ds-avatar--lg ds-avatar--forest">SN</span>
+      <span class="ds-avatar ds-avatar--lg ds-avatar--muted">JL</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Presence</h2>
+    <p>En valfri statusprick visar närvaro. Pricken har en 2px ring i ytans färg så den läser tydligt även ovanpå fotot.</p>
+    <div class="frame center">
+      <div class="au"><span class="ds-avatar ds-avatar--lg ph"><span class="ds-presence ds-presence--online"></span></span><span class="n">Online</span></div>
+      <div class="au"><span class="ds-avatar ds-avatar--lg">AL<span class="ds-presence ds-presence--away"></span></span><span class="n">Frånvarande</span></div>
+      <div class="au"><span class="ds-avatar ds-avatar--lg ds-avatar--forest">SN<span class="ds-presence ds-presence--busy"></span></span><span class="n">Upptagen</span></div>
+      <div class="au"><span class="ds-avatar ds-avatar--lg ds-avatar--muted">JL<span class="ds-presence ds-presence--offline"></span></span><span class="n">Offline</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>With name &amp; group</h2>
+    <p>I rader paras avataren med namn och roll. Flera personer staplas med överlapp och en avslutande +N-bricka när antalet överstiger det som visas.</p>
+    <div class="frame col">
+      <div class="id"><span class="ds-avatar ds-avatar--md">AL</span><span><span class="nm">Anna Lindqvist</span><span class="rl">Lönechef</span></span></div>
+      <div class="id"><span class="ds-avatar ds-avatar--md ph2"></span><span><span class="nm">Erik Holm</span><span class="rl">Konsult · extern</span></span></div>
+      <div class="ds-avatar-group" style="margin-top:4px;">
+        <span class="ds-avatar ds-avatar--md ph"></span>
+        <span class="ds-avatar ds-avatar--md">SN</span>
+        <span class="ds-avatar ds-avatar--md ds-avatar--soft">JL</span>
+        <span class="ds-avatar ds-avatar--md ph2"></span>
+        <span class="ds-avatar ds-avatar--md ds-avatar--more">+5</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>On dark surface</h2>
+    <p>På Brand Signature och andra mörka varumärkesytor — t.ex. sidomenyns kontoblock — behåller avataren sin form. Lägg en ring runt foton så de skiljs från bakgrunden.</p>
+    <div class="frame darkbox center">
+      <span class="ds-avatar ds-avatar--lg ph ds-avatar--ring"></span>
+      <span class="ds-avatar ds-avatar--lg">AL</span>
+      <div class="id"><span class="ds-avatar ds-avatar--md">AL</span><span><span class="nm" style="color:#fff;">Anna Lindqvist</span><span class="rl" style="color:var(--muted-surface);">Lönechef</span></span></div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Incorrect usage</h2>
+    <p>Avatarer är alltid runda och beskurna i mitten. Förvräng dem inte, gör dem inte fyrkantiga och använd inte slumpfärger per person.</p>
+    <div class="grid3">
+      <div class="dont"><span class="tag">Inte fyrkantig</span><span class="ds-avatar ds-avatar--lg ph" style="border-radius:8px;"></span></div>
+      <div class="dont"><span class="tag">Töj inte</span><span class="ds-avatar ds-avatar--lg ph" style="transform:scaleX(1.5);"></span></div>
+      <div class="dont"><span class="tag">Inga regnbågsfärger</span><span class="ds-avatar ds-avatar--lg" style="background:#C0392B;">AL</span><span class="ds-avatar ds-avatar--lg" style="background:#8E44AD;">EH</span><span class="ds-avatar ds-avatar--lg" style="background:#2980B9;">SN</span></div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Sit initials on <code>--guide</code> (The Guide) with white text, always circular.</li>
+          <li>Fall back photo &rarr; initials &rarr; icon, in that order.</li>
+          <li>Use the size scale (24/32/40/48/64) and a ring when avatars overlap.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Invent per-person rainbow background palettes.</li>
+          <li>Make avatars square.</li>
+          <li>Size below 24px or off the scale.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

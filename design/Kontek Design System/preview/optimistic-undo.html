@@ -1,0 +1,79 @@
+<!-- @dsCard group="Organisms" viewport="940x720" name="Optimistic undo" subtitle="Approve now, restore with one tap" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optimistic undo — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  .flow { display:flex; gap:16px; flex-wrap:wrap; align-items:stretch; }
+  .step { flex:1; min-width:230px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); padding:16px; box-shadow:var(--shadow-xs); display:flex; flex-direction:column; gap:12px; }
+  .step__n { font-size:var(--t-eyebrow); font-weight:var(--w-bold); letter-spacing:.08em;  color:var(--ink-4); }
+  .step__t { font-size:var(--t-body-sm); color:var(--ink-3); line-height:1.45; }
+  .appr { background:#fff; border:1px solid transparent; border-radius:14px; box-shadow:var(--sh-1); padding:12px 14px; display:flex; align-items:center; gap:11px; }
+  .appr .ava { width:36px;height:36px;border-radius:50%;background:var(--avatar-fill);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex:none; }
+  .appr .b { flex:1; min-width:0; } .appr .b b { font-size:var(--t-body-sm); font-weight:var(--w-semibold); color:var(--ink); display:block; } .appr .b span { font-size:var(--t-micro); color:var(--ink-3); }
+  .appr.gone { opacity:.32; } .appr.gone .b b { text-decoration:line-through; }
+  .miniok { width:26px;height:26px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;flex:none; } .miniok svg{width:14px;height:14px;}
+  /* snackbar */
+  .snack { display:flex; align-items:center; gap:14px; min-height:48px; padding:10px 10px 10px 16px; border-radius:12px; background:var(--ground); color:#fff; box-shadow:var(--elev-pop); }
+  .snack .ic { width:22px;height:22px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;flex:none; } .snack .ic svg{width:13px;height:13px;color:#fff;}
+  .snack .txt { flex:1; font-size:var(--t-body-sm); }
+  .snack .undo { border:none; background:transparent; color:var(--shell-cta); font-family:var(--font-ui); font-size:var(--t-body-sm); font-weight:var(--w-semibold); padding:0 12px; height:36px; border-radius:8px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Optimistic undo</h1>
+  <div class="dg-intro"><p>Varje godkännande är <b>optimistiskt</b>: posten lämnar listan direkt och en mörk snackbar erbjuder Ångra.</p></div>
+
+  <div class="sec">
+    <h2>Approvals with optimistic undo</h2>
+    <p>Managers approve or reject single items — or approve all. Every action is <b>optimistic</b>: the item leaves the list immediately and a dark snackbar appears with an <b>Undo</b> that restores it to its original position. Snackbars auto-dismiss (3s; 5s when they carry an action) and carry a tone glyph.</p>
+    <div class="flow">
+      <div class="step">
+        <span class="step__n">1 · Pending</span>
+        <div class="appr"><span class="ava">ML</span><span class="b"><b>Maria Lund</b><span>Utlägg · 480 kr</span></span><span style="font-size:11px;font-weight:700;color:var(--info);background:var(--info-soft);padding:4px 9px;border-radius:999px;">Granska</span></div>
+        <span class="step__t">Manager taps <b>Godkänn</b>.</span>
+      </div>
+      <div class="step">
+        <span class="step__n">2 · Optimistic</span>
+        <div class="appr gone"><span class="ava">ML</span><span class="b"><b>Maria Lund</b><span>Godkänd</span></span><span class="miniok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></div>
+        <span class="step__t">Row leaves the list at once — no spinner, no wait.</span>
+      </div>
+      <div class="step">
+        <span class="step__n">3 · Reversible</span>
+        <div class="snack"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="txt">Utlägg godkänt</span><button class="undo">Ångra</button></div>
+        <span class="step__t"><b>Ångra</b> restores it to its exact position. Auto-dismiss 5s.</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Apply the mutation immediately and confirm with a snackbar — never block on a spinner.</li>
+          <li>Offer <b>Ångra</b> that restores the item to its original position.</li>
+          <li>Auto-dismiss after 3s, or 5s when the snackbar carries an action; carry a tone glyph (check / ×).</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Pop a confirmation dialog for a reversible approve/reject.</li>
+          <li>Stack multiple snackbars — replace the previous one.</li>
+          <li>Use a destructive (red) treatment for approve — green is go.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

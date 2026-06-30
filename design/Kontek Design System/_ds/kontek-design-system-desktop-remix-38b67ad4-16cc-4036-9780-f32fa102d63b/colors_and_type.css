@@ -1,0 +1,886 @@
+/* ============================================================
+   KONTEK — Colors & Type
+   Single source of truth for foundational + semantic tokens.
+   Fonts: Open Sans (UI + display) · JetBrains Mono (mono/numeric)
+   ============================================================ */
+
+/* One combined request for both families (fewer render-blocking round-trips
+   than two separate @imports). For true offline self-hosting, replace this
+   with local @font-face rules once .woff2 files are added to assets/. */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* Genuine JetBrains Mono (SIL OFL) self-declared so the family resolves
+   even where the remote @import is blocked. Swap the src to a locally
+   uploaded file when available — keep the family name 'JetBrains Mono'. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff2') format('woff2');
+}
+
+:root {
+  /* ---------- BRAND CORE (new palette) ---------- */
+  --ground:        #122121; /* Deepest Ground — pressed/active button state */
+  --signature:     #203B3C; /* Brand Signature — primary CTAs, active tab text (12:1 AAA) */
+  --guide:         #395F61; /* The Guide — sub-menu items, inactive tabs (7.0:1 AAA) */
+  --muted-surface: #B8C9CA; /* Muted Surface — card borders, matte accents, secondary text on dark */
+  --green:         #61BC8F; /* Interaction — toggle/checkbox fill (pair w/ Brand Signature border) */
+  --status-badge:  #9DDFB5; /* Status Badge — status pill bg, nav resting text (7.8:1 on Forest) */
+  --kontek-green:  #053F22; /* Kontek Green — nav/sidebar background (12.1:1 AAA) */
+  --red:           #E1462E; /* Primary CTA red — destructive only */
+
+  /* ---------- BRAND SUPPORT (derived, harmonized) ---------- */
+  --signature-hi:  #2A4B4C; /* hover/raised state on signature */
+  --guide-hi:      #5C8082; /* lighter guide — hairlines on dark */
+  --green-deep:    #0C4D33; /* Success Text — "Paid", "Balanced", "Matched" (9.9:1 AAA) */
+  --green-soft:    #E6F7ED; /* Celebration — row highlight for processed payroll */
+  --green-line:    #BFE3CF; /* green tint — borders on light */
+  /* secondary-scale semantic aliases (Kontek Green) */
+  --success-text:  #0C4D33; /* Success Text — "Paid" / "Balanced" / "Matched" labels */
+  --celebration:   #E6F7ED; /* Celebration — processed-payroll row highlight */
+
+  /* ---------- PRIMARY ACTION (teal-green, per button spec) ----------
+     The default primary button is mid-tone teal-green that deepens to a
+     near-black teal on hover/press. Green = positive/approve. Red = destructive. */
+  --action:              #203B3C; /* primary button fill (rest) — Brand Signature */
+  --action-hi:           #122121; /* primary button hover — Deepest Ground */
+  --action-press:        #122121; /* primary button active/pressed — Deepest Ground */
+  --action-ring:         #203B3C; /* focus ring (2px solid, 2px offset) */
+  --action-disabled:     #E6EAEE; /* disabled fill — cool light gray */
+  --action-disabled-ink: #A3B4B6; /* Silver Mist — disabled label */
+  --action-2:            #9DDFB5; /* secondary CTA fill — Status Badge */
+  --action-2-hi:         #84CFA6; /* secondary CTA hover — darker mint */
+  --action-2-press:      #61BC8F; /* secondary CTA pressed — Interaction green */
+
+  /* ---------- NEUTRALS (cool near-white, faint teal tint) ----------
+     Reconciled to the shipping prototypes (Hub / Sphere). */
+  --canvas:        #ECEFF3; /* Cloud — default page background, softer than white */
+  --surface:       #FFFFFF; /* Pure White — data tables, forms, modals, dropdowns */
+  --surface-2:     #E6EAEE; /* inset / secondary surface */
+  --table-row-alt:   #F9FBFA; /* Table zebra — odd-row tint (on --surface) */
+  --table-row-hover: #EDF4F0; /* Table hover — row hover wash (on --surface) */
+  --ink:           #0F1112; /* Obsidian — body text, payroll numbers (18.9:1 AAA) */
+  --ink-2:         #445C5E; /* Charcoal Teal — table headers, subtitles (7.2:1 AAA) */
+  --ink-3:         #475669; /* Slate Grey — breadcrumbs, inactive icons (7.5:1 AAA) */
+  --ink-4:         #66777A; /* Soft Steel — search bar borders, disabled labels */
+  --on-dark:       #FFFFFF; /* primary text on dark */
+  --on-dark-2:     #B8C9CA; /* Muted Surface — secondary text on dark */
+  --on-dark-3:     #7E9A93; /* muted text on dark */
+
+  /* ---------- HAIRLINES & DIVIDERS ---------- */
+  --line:          #DDE5E6; /* Stone — table row dividers, panel borders */
+  --line-2:        #E8EDEE;
+  --silver-mist:   #A3B4B6; /* Silver Mist — disabled UI states (non-text, WCAG exempt) */
+  --line-on-dark:  rgba(255, 255, 255, 0.12);
+
+  /* ---------- SEMANTIC STATUS ----------
+     Each status: text/icon colour + soft alert background. */
+  --ok:            #0C4D33; /* success text & icons */
+  --ok-text:       #0C4D33;
+  --ok-soft:       #E6F7ED; /* success notification background */
+  --ok-accent:     #61BC8F; /* success brand accent (progress, dots) */
+  --warn:          #7A4A0E; /* warning text & icons */
+  --warn-text:     #7A4A0E;
+  --warn-soft:     #FEF4E7; /* warning alert background */
+  --danger:        #9C3232; /* error text & icons */
+  --danger-text:   #9C3232;
+  --danger-soft:   #FDEEED; /* error message background */
+  --info:          #1A5298; /* informational text & icons */
+  --info-text:     #1A5298;
+  --info-soft:     #EBF2FB; /* information alert background */
+
+  /* ---------- TYPE FAMILIES ---------- */
+  --font-display:  'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-ui:       'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:     'SFMono-Regular', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+
+  /* ---------- TYPE SCALE (px) ---------- */
+  --t-display:     56px; /* hero serif */
+  --t-h1:          40px;
+  --t-h2:          30px;
+  --t-h3:          22px;
+  --t-title:       18px; /* card titles */
+  --t-body:        15px;
+  --t-body-sm:     14px;
+  --t-caption:     13px;
+  --t-eyebrow:     12px;
+  --t-micro:       11px;
+
+  /* ---------- WEIGHTS ---------- */
+  --w-regular:     400; /* @kind font */
+  --w-medium:      500; /* @kind font */
+  --w-semibold:    600; /* @kind font */
+  --w-bold:        700; /* @kind font */
+
+  /* ---------- RADII ---------- */
+  --r-button:      8px;  /* provided: 8pt button radius */
+  --r-input:       8px;
+  --r-card:        14px;
+  --r-panel:       18px;
+  --r-pill:        999px;
+  --r-sm:          6px;
+
+  /* ---------- SPACING (4px base) ---------- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px;
+
+  /* ---------- ELEVATION ---------- */
+  --shadow-xs:  0 1px 2px rgba(18, 33, 33, 0.05);
+  --shadow-sm:  0 1px 3px rgba(18, 33, 33, 0.06), 0 1px 2px rgba(18, 33, 33, 0.04);
+  --shadow-md:  0 4px 14px rgba(18, 33, 33, 0.08), 0 1px 3px rgba(18, 33, 33, 0.05);
+  --shadow-lg:  0 12px 32px rgba(18, 33, 33, 0.12), 0 2px 8px rgba(18, 33, 33, 0.06);
+  --shadow-cta: 0 6px 18px rgba(18, 33, 33, 0.18);
+
+  /* ---------- APP SHELL / LAYOUT (Dashboard layout spec) ----------
+     The new application frame: a near-black teal sidebar with a soft glow,
+     a mint call-to-action, and a floating white content panel. */
+  --shell-bg:        #053F22; /* Kontek Green — sidebar + top nav background */
+  --shell-bg-2:      #0A4A2A; /* glow / raised tone inside sidebar */
+  --shell-active:    #031E12; /* active nav pill — deeper kontek green */
+  --shell-hover:     rgba(255,255,255,0.07); /* nav item hover wash */
+  --shell-ink:       #FFFFFF; /* nav label + icon (active/primary) */
+  --shell-ink-2:     #9DDFB5; /* Status Badge — resting nav label */
+  --shell-line:      rgba(255,255,255,0.08); /* dividers on shell */
+  --shell-cta:       #A9E3BE; /* mint CTA fill */
+  --shell-cta-hi:    #97D9AE; /* mint CTA hover */
+  --shell-cta-ink:   #122121; /* CTA label + icon */
+
+  /* shell dimensions */
+  --sidebar-w:           280px;
+  --sidebar-w-collapsed: 84px;
+  --topbar-h:            80px;
+  --shell-gap:           10px;  /* float margin of content panel (right/bottom) */
+  --r-shell-panel:       18px;  /* content-panel corner radius */
+
+  /* content-panel background — faint green glow top-left → white */
+  --panel-grad: radial-gradient(135% 105% at 0% 0%, #E4EAEF 0%, #F4F7FA 40%, #FFFFFF 78%); /* @kind color */
+
+  /* elevation measured from the layout */
+  --elev-panel: 0 1px 2px rgba(5, 34, 37, 0.04);
+  --elev-menu:  0 14px 38px rgba(5, 34, 37, 0.20), 0 3px 10px rgba(5, 34, 37, 0.12); /* fly-out / dropdown */
+  --elev-pop:   0 8px 24px rgba(5, 34, 37, 0.14), 0 2px 6px rgba(5, 34, 37, 0.08);  /* company / user popover */
+  --elev-float: 0 18px 48px rgba(0, 0, 0, 0.34), 0 4px 12px rgba(0, 0, 0, 0.20);    /* white panel floating on dark */
+  --elev-drawer: -12px 0 32px rgba(0, 0, 0, 0.10); /* right-side overlay drawer */
+  --scrim:       rgba(18, 33, 33, 0.45);           /* dimming overlay behind drawers / modals */
+
+  /* ============================================================
+     GAIA FOUNDATION SCALES (Atoms) — canonical primitive tokens.
+     Spacing · Sizing · Radius · Shadows · Motion.
+     ============================================================ */
+
+  /* ---------- SPACING SCALE (spacing-00 … spacing-13) ----------
+     Layout gaps, padding and margins. Base unit 4px. */
+  --space-00: 0;      /* 0rem    */
+  --space-01: 2px;    /* 0.125rem */
+  --space-02: 4px;    /* 0.25rem */
+  --space-03: 8px;    /* 0.5rem  */
+  --space-04: 12px;   /* 0.75rem */
+  --space-05: 16px;   /* 1rem    */
+  --space-06: 24px;   /* 1.5rem  */
+  --space-07: 32px;   /* 2rem    */
+  --space-08: 40px;   /* 2.5rem  */
+  --space-09: 48px;   /* 3rem    */
+  --space-10: 64px;   /* 4rem    */
+  --space-11: 80px;   /* 5rem    */
+  --space-12: 96px;   /* 6rem    */
+  --space-13: 160px;  /* 10rem   */
+
+  /* ---------- SIZING SCALE (size-N) — Major Second (1.125) ----------
+     Widths / heights of elements. Token number == px value. */
+  --size-0: 0;     --size-1: 1px;    --size-2: 2px;    --size-4: 4px;
+  --size-6: 6px;   --size-8: 8px;    --size-10: 10px;  --size-12: 12px;
+  --size-14: 14px; --size-16: 16px;  --size-18: 18px;  --size-20: 20px;
+  --size-24: 24px; --size-28: 28px;  --size-32: 32px;  --size-36: 36px;
+  --size-40: 40px; --size-44: 44px;  --size-48: 48px;  --size-56: 56px;
+  --size-64: 64px; --size-80: 80px;  --size-96: 96px;  --size-112: 112px;
+  --size-128: 128px; --size-144: 144px; --size-160: 160px; --size-192: 192px;
+  --size-224: 224px; --size-256: 256px; --size-288: 288px; --size-320: 320px;
+  --size-352: 352px; --size-384: 384px; --size-416: 416px;
+
+  /* ---------- RADIUS PRIMITIVES (minimal — 3 values) ---------- */
+  --radius-default: 4px;     /* standard corner */
+  --radius-sharp:   0.02em;  /* near-square */
+  --radius-round:   999px;   /* pills / circles */
+
+  /* ---------- SHADOWS — directional elevation (base rgb 1,53,71) ----------
+     Named by light direction; the shadow falls on the opposite side.
+     4 stacked layers per token for a soft, realistic falloff. */
+  --shadow-north:
+      0 61px 24px rgba(1,53,71,0.01),
+      0 34px 21px rgba(1,53,71,0.05),
+      0 15px 15px rgba(1,53,71,0.09),
+      0 4px  8px  rgba(1,53,71,0.10);
+  --shadow-south:
+      0 -10px 4px rgba(1,53,71,0.01),
+      0 -6px  3px rgba(1,53,71,0.04),
+      0 -2px  2px rgba(1,53,71,0.07),
+      0 -1px  1px rgba(1,53,71,0.08);
+  --shadow-east:
+      -34px 0 14px rgba(1,53,71,0.01),
+      -19px 0 11px rgba(1,53,71,0.05),
+      -8px  0 8px  rgba(1,53,71,0.09),
+      -2px  0 5px  rgba(1,53,71,0.10);
+  --shadow-west:
+      21px 0 8px rgba(1,53,71,0.01),
+      12px 0 7px rgba(1,53,71,0.05),
+      5px  0 5px rgba(1,53,71,0.09),
+      1px  0 3px rgba(1,53,71,0.10);
+
+  /* ---------- MOTION ---------- */
+  /* legacy aliases (kept for existing components) */
+  --ease:        cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --dur-fast:    120ms; /* @kind other */
+  --dur:         200ms; /* @kind other */
+  --dur-slow:    320ms; /* @kind other */
+  --gaia-duration-0:        0ms; /* @kind other */
+  --gaia-duration-instant:  50ms; /* @kind other */
+  --gaia-duration-fast:     100ms; /* @kind other */
+  --gaia-duration-moderate: 150ms; /* @kind other */
+  --gaia-duration-slow:     250ms; /* @kind other */
+  --gaia-duration-slower:   400ms; /* @kind other */
+
+  /* easing tokens */
+  --gaia-easing-standard: cubic-bezier(0.2, 0, 0.38, 0.9); /* @kind other */
+  --gaia-easing-entrance: cubic-bezier(0, 0, 0.38, 0.9); /* @kind other */
+  --gaia-easing-exit:     cubic-bezier(0.2, 0, 1, 0.9); /* @kind other */
+  --gaia-easing-linear:   linear; /* @kind other */
+
+  /* transition tokens — composite (duration + easing). Primary API:
+     use as `transition: <property> var(--gaia-transition-hover);`.
+     Durations are var-referenced so the reduced-motion override below
+     propagates through every transition. */
+  --gaia-transition-hover:       var(--gaia-duration-instant)  cubic-bezier(0.2, 0, 0.38, 0.9); /* @kind other */
+  --gaia-transition-state:       var(--gaia-duration-fast)     cubic-bezier(0.2, 0, 0.38, 0.9); /* @kind other */
+  --gaia-transition-reveal:      var(--gaia-duration-moderate) cubic-bezier(0, 0, 0.38, 0.9); /* @kind other */
+  --gaia-transition-dismiss:     var(--gaia-duration-moderate) cubic-bezier(0.2, 0, 1, 0.9); /* @kind other */
+  --gaia-transition-overlay-in:  var(--gaia-duration-slow)     cubic-bezier(0, 0, 0.38, 0.9); /* @kind other */
+  --gaia-transition-overlay-out: var(--gaia-duration-slow)     cubic-bezier(0.2, 0, 1, 0.9); /* @kind other */
+  --gaia-transition-backdrop:    var(--gaia-duration-slower)   cubic-bezier(0.2, 0, 0.38, 0.9); /* @kind other */
+}
+
+/* Reduced motion — collapse all durations to 0ms. Continuous
+   animations (loaders) should swap to a static variant in markup. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --gaia-duration-0:        0ms; /* @kind other */
+    --gaia-duration-instant:  0ms; /* @kind other */
+    --gaia-duration-fast:     0ms; /* @kind other */
+    --gaia-duration-moderate: 0ms; /* @kind other */
+    --gaia-duration-slow:     0ms; /* @kind other */
+    --gaia-duration-slower:   0ms; /* @kind other */
+  }
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES
+   Apply directly or mirror these in component CSS.
+   ============================================================ */
+
+.ds-display {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  font-weight: var(--w-bold);
+  color: var(--ink);
+}
+.ds-h1 {
+  font-family: var(--font-display);
+  font-size: var(--t-h1);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: var(--w-bold);
+  color: var(--ink);
+}
+.ds-h2 {
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-h3 {
+  font-family: var(--font-ui);
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-title {
+  font-family: var(--font-ui);
+  font-size: var(--t-title);
+  line-height: 1.3;
+  font-weight: var(--w-semibold);
+  color: var(--ink);
+}
+.ds-body {
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  font-weight: var(--w-regular);
+  color: var(--ink-2);
+}
+.ds-body-sm {
+  font-family: var(--font-ui);
+  font-size: var(--t-body-sm);
+  line-height: 1.5;
+  font-weight: var(--w-regular);
+  color: var(--ink-2);
+}
+.ds-caption {
+  font-family: var(--font-ui);
+  font-size: var(--t-caption);
+  line-height: 1.45;
+  font-weight: var(--w-regular);
+  color: var(--ink-3);
+}
+.ds-eyebrow {
+  font-family: var(--font-ui);
+  font-size: var(--t-eyebrow);
+  line-height: 1;
+  font-weight: var(--w-semibold);
+  letter-spacing: 0.08em;
+  /* sentence case (versal first letter, gemener rest) — authored, not transformed */
+  color: var(--ink-4); /* muted by default, as shipping apps */
+}
+.ds-eyebrow--green { color: var(--green-deep); } /* accent variant */
+.ds-mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-body-sm);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   BUTTONS — 4 types (primary · secondary · ghost · transparent)
+   + danger + approve + icon. Height 40px · radius 4px · 8px gap.
+   States: default · hover · pressed · focus-visible · disabled
+   ============================================================ */
+.ds-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-03);            /* 8px */
+  height: 40px;
+  padding: 0 var(--space-05);      /* 16px */
+  font-family: var(--font-ui);
+  font-size: var(--t-body-sm);     /* 14px */
+  font-weight: var(--w-semibold);
+  line-height: 1;
+  border-radius: var(--radius-default); /* 4px */
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background var(--gaia-transition-hover),
+              color var(--gaia-transition-hover),
+              border-color var(--gaia-transition-hover),
+              box-shadow var(--gaia-transition-hover);
+}
+.ds-btn:focus { outline: none; }
+.ds-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.ds-btn:disabled, .ds-btn[disabled], .ds-btn[aria-disabled="true"] { cursor: not-allowed; }
+
+/* focus ring — shared */
+.ds-btn:focus-visible { outline: 2px solid var(--action-ring); outline-offset: 2px; }
+
+/* 1 — Primary (filled teal) */
+.ds-btn--primary { background: var(--action); color: #FFFFFF; }
+.ds-btn--primary:hover { background: var(--action-hi); }
+.ds-btn--primary:active { background: var(--action-press); }
+.ds-btn--primary:disabled, .ds-btn--primary[disabled] {
+  background: var(--action-disabled); color: var(--action-disabled-ink);
+}
+
+/* 2 — Secondary (outline) */
+.ds-btn--secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.ds-btn--secondary:hover { background: var(--surface-2); border-color: var(--ink-3); }
+.ds-btn--secondary:active { background: var(--surface-2); border-color: var(--ink-2); }
+.ds-btn--secondary:disabled, .ds-btn--secondary[disabled] {
+  background: var(--surface); color: var(--action-disabled-ink); border-color: var(--line);
+}
+
+/* 3 — Ghost (no border, fills on hover) */
+.ds-btn--ghost { background: transparent; color: var(--ink); }
+.ds-btn--ghost:hover { background: var(--surface-2); }
+.ds-btn--ghost:active { background: var(--line-2); }
+.ds-btn--ghost:disabled, .ds-btn--ghost[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* 4 — Transparent (text / link-like) */
+.ds-btn--transparent { background: transparent; color: var(--action); padding: 0 var(--space-03); }
+.ds-btn--transparent:hover { background: var(--green-soft); color: var(--action-hi); }
+.ds-btn--transparent:active { color: var(--action-press); }
+.ds-btn--transparent:disabled, .ds-btn--transparent[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* Approve / positive — accent green (distinct semantic) */
+.ds-btn--approve { background: var(--green); color: var(--ground); }
+.ds-btn--approve:hover { background: #4FA77B; }
+.ds-btn--approve:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* Secondary CTA — Status Badge mint fill; pressed deepens to Interaction green */
+.ds-btn--secondary-cta { background: var(--action-2); color: #ffffff; }
+.ds-btn--secondary-cta:hover { background: var(--action-2-hi); color: #ffffff; }
+.ds-btn--secondary-cta:active { background: var(--action-2-press); color: #ffffff; }
+.ds-btn--secondary-cta:focus-visible { outline: 2px solid var(--action-2); outline-offset: 2px; }
+.ds-btn--secondary-cta:disabled, .ds-btn--secondary-cta[disabled] { background: var(--action-disabled); color: var(--action-disabled-ink); }
+
+/* Destructive — red, ghost/transparent treatment */
+.ds-btn--danger { background: transparent; color: var(--danger); }
+.ds-btn--danger:hover { background: var(--danger-soft); }
+.ds-btn--danger:active { background: var(--danger-soft); }
+.ds-btn--danger:focus-visible { outline: 2px solid var(--danger); outline-offset: 2px; }
+.ds-btn--danger:disabled, .ds-btn--danger[disabled] { background: transparent; color: var(--action-disabled-ink); }
+
+/* Icon-only — square; combine with a type, e.g. "ds-btn ds-btn--secondary ds-btn--icon" */
+.ds-btn--icon { width: 40px; height: 40px; padding: 0; }
+.ds-btn--icon.ds-btn--transparent { width: 40px; padding: 0; }
+
+/* Small size modifier */
+.ds-btn--sm { height: 32px; padding: 0 var(--space-04); font-size: var(--t-caption); }
+.ds-btn--sm.ds-btn--icon { width: 32px; padding: 0; }
+.ds-btn--sm svg { width: 16px; height: 16px; }
+
+/* ============================================================
+   FORM CONTROLS — text input · textarea · select · search ·
+   checkbox · radio · switch · segmented control.
+   Height 40px · radius 8px (--r-input). States: default · hover ·
+   focus · disabled · error. Every state is reachable via real
+   pseudo-classes AND via .is-* modifier classes (for spec grids).
+   Accent fill = Interaction green (#61BC8F) paired with a
+   Brand-Signature border; focus ring = 3px signature @ 16% alpha.
+   ============================================================ */
+
+/* --- field scaffolding --- */
+.ds-field { display: flex; flex-direction: column; gap: var(--space-02); max-width: 320px; }
+.ds-label { font-family: var(--font-ui); font-size: var(--t-caption); font-weight: var(--w-semibold); color: var(--ink-2); }
+.ds-label .req { color: var(--danger); margin-left: 2px; }
+.ds-label .opt { color: var(--ink-4); font-weight: var(--w-regular); margin-left: 4px; }
+.ds-hint { font-size: var(--t-micro); color: var(--ink-3); line-height: 1.45; }
+.ds-hint--error { color: var(--danger); }
+.ds-hint--error svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px; }
+
+/* --- text input · textarea · select (shared shell) --- */
+.ds-input, .ds-textarea, .ds-select {
+  box-sizing: border-box; width: 100%; height: 40px; padding: 0 12px;
+  font-family: var(--font-ui); font-size: var(--t-body-sm); color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-input);
+  outline: none; transition: border-color var(--gaia-transition-state), box-shadow var(--gaia-transition-state);
+}
+.ds-textarea { height: auto; min-height: 92px; padding: 10px 12px; line-height: 1.5; resize: vertical; }
+.ds-input::placeholder, .ds-textarea::placeholder { color: var(--ink-4); }
+.ds-input:hover, .ds-textarea:hover, .ds-select:hover,
+.ds-input.is-hover, .ds-textarea.is-hover, .ds-select.is-hover { border-color: var(--ink-4); }
+.ds-input:focus, .ds-textarea:focus, .ds-select:focus,
+.ds-input.is-focus, .ds-textarea.is-focus, .ds-select.is-focus {
+  border-color: var(--signature); box-shadow: 0 0 0 3px rgba(32, 59, 60, 0.16);
+}
+.ds-input:disabled, .ds-textarea:disabled, .ds-select:disabled,
+.ds-input.is-disabled, .ds-textarea.is-disabled, .ds-select.is-disabled {
+  background: var(--surface-2); color: var(--silver-mist); border-color: var(--line);
+  cursor: not-allowed; box-shadow: none;
+}
+.ds-input.is-error, .ds-textarea.is-error, .ds-select.is-error { border-color: var(--danger); }
+.ds-input.is-error:focus, .ds-input.is-error.is-focus,
+.ds-textarea.is-error:focus, .ds-textarea.is-error.is-focus { box-shadow: 0 0 0 3px rgba(156, 50, 50, 0.16); }
+
+/* select chevron */
+.ds-select {
+  appearance: none; -webkit-appearance: none; padding-right: 36px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23475669' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+}
+
+/* --- search field ---
+   Kontek deviation from Gaia: the search field uses a fully rounded
+   (pill, 999px) radius — NOT the 8px shared by text input / select.
+   This visually separates "search/filter" from "data entry". */
+.ds-search { position: relative; display: inline-flex; align-items: center; width: 100%; max-width: 320px; }
+.ds-search > svg.lead { position: absolute; left: 14px; width: 18px; height: 18px; stroke: var(--ink-3); pointer-events: none; }
+.ds-search .ds-input { padding-left: 40px; padding-right: 38px; border-radius: var(--radius-round); }
+.ds-search .clear {
+  position: absolute; right: 8px; width: 24px; height: 24px; border: none; background: transparent;
+  border-radius: var(--radius-round); display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--ink-3);
+}
+.ds-search .clear:hover { background: var(--surface-2); color: var(--ink); }
+.ds-search .clear svg { width: 14px; height: 14px; }
+
+/* --- checkbox --- */
+.ds-checkbox, .ds-radio, .ds-switch {
+  display: inline-flex; align-items: center; gap: 12px; cursor: pointer; user-select: none;
+  font-family: var(--font-ui); font-size: var(--t-body-sm); color: var(--ink); line-height: 1.3;
+}
+.ds-checkbox > input, .ds-radio > input, .ds-switch > input {
+  position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none;
+}
+.ds-cbx {
+  width: 24px; height: 24px; flex-shrink: 0; border-radius: 7px; border: 1.5px solid var(--line);
+  background: var(--surface); display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--gaia-transition-state), border-color var(--gaia-transition-state);
+}
+.ds-cbx svg { width: 15px; height: 15px; stroke: #fff; stroke-width: 3; opacity: 0; transition: opacity var(--gaia-transition-state); }
+.ds-checkbox > input:checked + .ds-cbx, .ds-cbx.is-checked { background: var(--green); border-color: var(--green); }
+.ds-checkbox > input:checked + .ds-cbx svg, .ds-cbx.is-checked svg { opacity: 1; }
+.ds-cbx.is-indeterminate { background: var(--green); border-color: var(--green); }
+.ds-cbx.is-indeterminate::after { content: ''; width: 11px; height: 2.5px; border-radius: 2px; background: #fff; }
+/* locked / mandatory — selected but not editable: soft green wash, green tick, no border */
+.ds-cbx.is-locked { background: var(--green-soft); border-color: transparent; }
+.ds-cbx.is-locked svg { stroke: var(--green-deep); opacity: 1; }
+
+/* --- radio --- */
+.ds-rdo {
+  width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%; border: 1.5px solid var(--line);
+  background: var(--surface); display: inline-flex; align-items: center; justify-content: center;
+  transition: border-color var(--gaia-transition-state);
+}
+.ds-rdo::after {
+  content: ''; width: 8px; height: 8px; border-radius: 50%; background: #fff;
+  transform: scale(0); transition: transform var(--gaia-transition-state);
+}
+.ds-radio > input:checked + .ds-rdo, .ds-rdo.is-checked { background: var(--green); border-color: var(--green); }
+.ds-radio > input:checked + .ds-rdo::after, .ds-rdo.is-checked::after { transform: scale(1); }
+
+/* --- switch --- */
+.ds-swt {
+  width: 40px; height: 22px; flex-shrink: 0; border-radius: var(--radius-round); background: var(--silver-mist);
+  position: relative; transition: background var(--gaia-transition-state); display: inline-block;
+}
+.ds-swt::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; box-shadow: var(--shadow-sm); transition: transform var(--gaia-transition-state);
+}
+.ds-switch > input:checked + .ds-swt, .ds-swt.is-on { background: var(--green); }
+.ds-switch > input:checked + .ds-swt::after, .ds-swt.is-on::after { transform: translateX(18px); }
+
+/* shared focus ring for checkbox/radio/switch */
+.ds-checkbox > input:focus-visible + .ds-cbx, .ds-cbx.is-focus,
+.ds-radio > input:focus-visible + .ds-rdo, .ds-rdo.is-focus,
+.ds-switch > input:focus-visible + .ds-swt, .ds-swt.is-focus {
+  box-shadow: 0 0 0 3px rgba(32, 59, 60, 0.16); border-color: var(--signature);
+}
+/* hover */
+.ds-checkbox:hover .ds-cbx, .ds-cbx.is-hover,
+.ds-radio:hover .ds-rdo, .ds-rdo.is-hover { border-color: var(--signature); }
+/* disabled */
+.ds-checkbox.is-disabled, .ds-radio.is-disabled, .ds-switch.is-disabled { cursor: not-allowed; color: var(--silver-mist); }
+.ds-cbx.is-disabled, .ds-rdo.is-disabled, .ds-checkbox.is-disabled .ds-cbx, .ds-radio.is-disabled .ds-rdo { border-color: var(--silver-mist); background: var(--surface-2); }
+.ds-swt.is-disabled, .ds-switch.is-disabled .ds-swt { background: var(--surface-2); }
+/* error (checkbox/radio) */
+.ds-cbx.is-error, .ds-rdo.is-error { border-color: var(--danger); }
+
+/* --- segmented control --- */
+.ds-segmented {
+  display: inline-flex; padding: 3px; gap: 2px; background: var(--surface-2);
+  border-radius: var(--r-input); border: 1px solid var(--line);
+}
+.ds-segmented .seg {
+  border: none; background: transparent; cursor: pointer; padding: 0 14px; height: 32px;
+  border-radius: 6px; font-family: var(--font-ui); font-size: var(--t-caption); font-weight: var(--w-medium);
+  color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  transition: background var(--gaia-transition-state), color var(--gaia-transition-state), box-shadow var(--gaia-transition-state);
+}
+.ds-segmented .seg svg { width: 15px; height: 15px; }
+.ds-segmented .seg:hover { color: var(--ink); }
+.ds-segmented .seg.is-active { background: var(--surface); color: var(--ink); font-weight: var(--w-semibold); box-shadow: var(--shadow-xs); }
+.ds-segmented .seg:disabled, .ds-segmented .seg.is-disabled { color: var(--silver-mist); cursor: not-allowed; }
+
+/* ============================================================
+   UTILITIES — single-purpose helper classes. Compose, don't fork.
+   ============================================================ */
+.u-visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.u-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.u-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.u-nowrap { white-space: nowrap; }
+.u-tabular { font-variant-numeric: tabular-nums; }
+.u-balance { text-wrap: balance; }
+.u-pretty { text-wrap: pretty; }
+.u-full { width: 100%; }
+.u-center { display: flex; align-items: center; justify-content: center; }
+.u-between { display: flex; align-items: center; justify-content: space-between; }
+.u-muted { color: var(--ink-3); }
+.u-strong { font-weight: var(--w-semibold); }
+.u-divider { height: 1px; background: var(--line); border: 0; margin: 0; }
+.u-elevate { box-shadow: var(--shadow-md); }
+.u-round { border-radius: var(--radius-round); }
+
+/* ---- focus ring — the canonical keyboard-focus treatment ----
+   Apply to any custom interactive element that isn't a button/field.
+   --soft mirrors the inset 3px ring used by form controls. */
+.u-focus-ring:focus-visible { outline: 2px solid var(--action-ring); outline-offset: 2px; }
+.u-focus-ring--soft:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(32, 59, 60, 0.16); border-color: var(--signature); }
+/* static demo helpers (force the ring without focus) */
+.u-focus-ring.is-on { outline: 2px solid var(--action-ring); outline-offset: 2px; }
+
+/* ---- overlay / scrim — dims the page behind modals & drawers ---- */
+.u-overlay { position: fixed; inset: 0; background: rgba(18, 33, 33, 0.48); }
+
+/* ---- skeleton — loading placeholder; shimmer collapses w/ reduced-motion ---- */
+.u-skeleton { background: var(--surface-2); border-radius: var(--r-sm); position: relative; overflow: hidden; color: transparent; }
+.u-skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+  animation: u-shimmer 1.4s var(--gaia-easing-standard) infinite; }
+@keyframes u-shimmer { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .u-skeleton::after { animation: none; } }
+
+/* ---- thin custom scrollbar — for scroll panes inside the app shell ---- */
+.u-scroll { scrollbar-width: thin; scrollbar-color: var(--silver-mist) transparent; }
+.u-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+.u-scroll::-webkit-scrollbar-thumb { background: var(--silver-mist); border-radius: 999px;
+  border: 2px solid var(--surface); background-clip: padding-box; }
+.u-scroll::-webkit-scrollbar-thumb:hover { background: var(--ink-4); }
+.u-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* ============================================================
+   AVATAR — circular identity token. Photo · initials · icon fallback.
+   Size scale 24/32/40/48/64. Optional presence dot + status ring.
+   Initials sit on The Guide; never invent rainbow palettes.
+   ============================================================ */
+.ds-avatar {
+  position: relative; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: var(--radius-round); overflow: hidden;
+  background: var(--guide); color: #fff; font-family: var(--font-ui); font-weight: var(--w-semibold);
+  font-size: 14px; line-height: 1; letter-spacing: 0.01em; user-select: none;
+}
+.ds-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ds-avatar svg { width: 55%; height: 55%; stroke: #fff; }
+/* size modifiers */
+.ds-avatar--xs { width: 24px; height: 24px; font-size: 9.5px; }
+.ds-avatar--sm { width: 32px; height: 32px; font-size: 12px; }
+.ds-avatar--md { width: 40px; height: 40px; font-size: 14px; }
+.ds-avatar--lg { width: 48px; height: 48px; font-size: 16px; }
+.ds-avatar--xl { width: 64px; height: 64px; font-size: 22px; }
+/* tone variants for initials (kept within brand) */
+.ds-avatar--soft   { background: var(--green-soft); color: var(--green-deep); }
+.ds-avatar--forest { background: var(--kontek-green); color: #fff; }
+.ds-avatar--muted  { background: var(--surface-2); color: var(--ink-3); }
+/* presence dot — sits bottom-right, ringed against the host surface */
+.ds-avatar .ds-presence {
+  position: absolute; right: -1px; bottom: -1px; width: 30%; height: 30%; min-width: 8px; min-height: 8px;
+  border-radius: var(--radius-round); border: 2px solid var(--surface); background: var(--silver-mist); box-sizing: border-box;
+}
+.ds-avatar .ds-presence--online  { background: var(--green); }
+.ds-avatar .ds-presence--away    { background: #C98A2B; }
+.ds-avatar .ds-presence--offline { background: var(--silver-mist); }
+.ds-avatar .ds-presence--busy    { background: var(--danger); }
+/* ring (e.g. when overlapping or on a colored ground) */
+.ds-avatar--ring { box-shadow: 0 0 0 2px var(--surface); }
+
+/* avatar group — overlapping stack + overflow count */
+.ds-avatar-group { display: inline-flex; align-items: center; }
+.ds-avatar-group .ds-avatar { box-shadow: 0 0 0 2px var(--surface); margin-left: -10px; }
+.ds-avatar-group .ds-avatar:first-child { margin-left: 0; }
+.ds-avatar-group .ds-avatar--sm { margin-left: -8px; }
+.ds-avatar-group .ds-avatar--more { background: var(--surface-2); color: var(--ink-2); font-size: 12px; }
+
+/* ============================================================
+   FEEDBACK PANEL (organism) — captures a thumbs rating + optional
+   comment. Fixed 320px width; grows vertically with content.
+   Reuses .ds-textarea and .ds-btn. Brand: Brand-Signature fill on
+   the selected thumb and the Submit button.
+   ============================================================ */
+.ds-feedback {
+  box-sizing: border-box; width: 320px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--r-card); padding: 16px;
+  box-shadow: var(--shadow-md); font-family: var(--font-ui); color: var(--ink);
+}
+.ds-feedback__head { display: flex; align-items: flex-start; gap: 12px; }
+.ds-feedback__title { flex: 1; font-size: 15px; font-weight: var(--w-semibold); line-height: 1.33; color: var(--ink); margin: 0; }
+.ds-feedback__close {
+  flex-shrink: 0; width: 24px; height: 24px; margin: -2px -2px 0 0; padding: 0; border: none; background: transparent;
+  border-radius: 6px; color: var(--ink-3); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--gaia-transition-state), color var(--gaia-transition-state);
+}
+.ds-feedback__close:hover { background: var(--surface-2); color: var(--ink); }
+.ds-feedback__close svg { width: 18px; height: 18px; }
+
+/* rating row — 16px below the title */
+.ds-feedback__rating { display: flex; gap: 8px; margin-top: 16px; }
+.ds-thumb {
+  width: 40px; height: 40px; flex-shrink: 0; border: 1px solid var(--line); border-radius: var(--r-button);
+  background: var(--surface); color: var(--signature); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--gaia-transition-state), border-color var(--gaia-transition-state), color var(--gaia-transition-state);
+}
+.ds-thumb svg { width: 20px; height: 20px; }
+.ds-thumb:hover { border-color: var(--signature); background: var(--green-soft); }
+.ds-thumb.is-selected { background: var(--signature); border-color: var(--signature); color: #fff; }
+.ds-thumb:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(32, 59, 60, 0.16); border-color: var(--signature); }
+
+/* comment block — 24px below rating, 8px between prompt and field */
+.ds-feedback__prompt { font-size: 13px; font-weight: var(--w-medium); color: var(--ink-2); margin: 24px 0 8px; }
+.ds-feedback .ds-textarea { min-height: 96px; }
+
+/* action row — 16px above, right-aligned, 8px gap */
+.ds-feedback__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+/* confirmation state — replaces the whole body */
+.ds-feedback--confirm { display: flex; align-items: center; }
+.ds-feedback__thanks { font-size: 14px; font-weight: var(--w-medium); color: var(--ink); margin: 0; }
+
+/* ============================================================
+   NOTIFICATION (molecule) — inline alert / toast.
+   Five tones: neutral · info · success · warning · error. Icon
+   carries the semantic colour, the background is its soft tint and
+   the hairline is the tone at full strength; body copy stays Obsidian.
+   Anatomy: 16px padding · 4px radius (radius-default) · 24px icon ·
+   12px icon→text · 8px title→message · 16px message→actions.
+   Optional close / mute / more controls, an action row (primary +
+   link) and an auto-dismiss progress bar pinned to the bottom edge.
+   ============================================================ */
+.ds-note {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  gap: 12px;                          /* 12px icon → text */
+  padding: 16px;                      /* 16px all sides */
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-default); /* 4px */
+  font-family: var(--font-ui);
+  overflow: hidden;
+}
+.ds-note__icon {
+  flex-shrink: 0; width: 24px; height: 24px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink);
+}
+.ds-note__icon svg { width: 20px; height: 20px; }
+.ds-note__body { flex: 1 1 auto; min-width: 0; padding-top: 2px; }
+.ds-note__title {
+  margin: 0; font-family: var(--font-ui); font-size: var(--t-body); /* 15px */
+  font-weight: var(--w-bold); line-height: 1.4; color: var(--ink);
+}
+.ds-note__msg {
+  margin: 0; font-family: var(--font-ui); font-size: var(--t-body);
+  font-weight: var(--w-regular); line-height: 1.5; color: var(--ink-2);
+}
+.ds-note__title + .ds-note__msg { margin-top: 8px; }     /* 8px title → message */
+.ds-note__msg + .ds-note__msg { margin-top: 8px; }
+/* error / detail list */
+.ds-note__list { margin: 8px 0 0; padding-left: 18px; }
+.ds-note__list li { font-size: var(--t-body); line-height: 1.5; color: var(--ink-2); }
+.ds-note__list li + li { margin-top: 4px; }
+.ds-note__list a, .ds-note__msg a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+/* action row — 16px above; primary button + inline link, 16px gap */
+.ds-note__actions { display: flex; align-items: center; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.ds-note__link {
+  font-size: var(--t-body-sm); font-weight: var(--w-semibold); color: var(--signature);
+  text-decoration: none; cursor: pointer; border-radius: var(--radius-default);
+}
+.ds-note__link:hover { color: var(--action-hi); text-decoration: underline; text-underline-offset: 2px; }
+.ds-note__link:focus-visible { outline: 2px solid var(--action-ring); outline-offset: 2px; }
+
+/* top-right control cluster — close / mute / more; 24px apart */
+.ds-note__controls { flex-shrink: 0; display: flex; align-items: flex-start; gap: 8px; margin-left: 8px; }
+.ds-note__btn {
+  width: 24px; height: 24px; flex-shrink: 0; padding: 0; border: none; background: transparent;
+  border-radius: var(--radius-default); color: var(--ink-3); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--gaia-transition-state), color var(--gaia-transition-state);
+}
+.ds-note__btn:hover { background: rgba(15, 17, 18, 0.06); color: var(--ink); }
+.ds-note__btn:focus-visible { outline: 2px solid var(--action-ring); outline-offset: 2px; }
+.ds-note__btn svg { width: 18px; height: 18px; }
+
+/* auto-dismiss progress — pinned to the bottom edge */
+.ds-note__progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(15, 17, 18, 0.08); }
+.ds-note__progress > span { display: block; height: 100%; background: var(--signature); }
+
+/* compact single-line variant — icon + text + close on one row */
+.ds-note--inline { align-items: center; }
+.ds-note--inline .ds-note__body { padding-top: 0; }
+.ds-note--inline .ds-note__controls { align-items: center; }
+
+/* ---------- TONES ---------- */
+.ds-note--info    { background: var(--info-soft);   border-color: var(--info); }
+.ds-note--info    .ds-note__icon { color: var(--info); }
+.ds-note--info    .ds-note__progress > span { background: var(--info); }
+.ds-note--success { background: var(--ok-soft);     border-color: var(--ok); }
+.ds-note--success .ds-note__icon { color: var(--ok); }
+.ds-note--success .ds-note__progress > span { background: var(--ok); }
+.ds-note--warning { background: var(--warn-soft);   border-color: var(--warn); }
+.ds-note--warning .ds-note__icon { color: var(--warn); }
+.ds-note--warning .ds-note__progress > span { background: var(--warn); }
+.ds-note--error   { background: var(--danger-soft); border-color: var(--danger); }
+.ds-note--error   .ds-note__icon { color: var(--danger); }
+.ds-note--error   .ds-note__progress > span { background: var(--danger); }
+/* neutral keeps the white surface + Stone hairline (default) */
+
+/* ============================================================
+   MODAL / DIALOG (organism) — a centred dialog on a dimming scrim.
+   White surface · 4px radius (radius-default) · strong elevation.
+   Optional status icon, a title, a scrollable body,
+   and a footer button group (primary + transparent cancel; an
+   optional left-aligned slot). Sizes sm/md/lg cap the width; tone
+   variants error/warning/success/info colour the icon only.
+   Compose the scrim with .ds-scrim (or the .u-overlay utility).
+   ============================================================ */
+.ds-scrim { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: rgba(18, 33, 33, 0.48); }
+.ds-scrim .ds-modal { max-height: 100%; }
+
+.ds-modal {
+  box-sizing: border-box; position: relative; display: flex; flex-direction: column;
+  width: 100%; max-width: 520px;
+  background: var(--surface); border-radius: var(--radius-default);
+  box-shadow: var(--shadow-lg); font-family: var(--font-ui); color: var(--ink);
+}
+.ds-modal--sm { max-width: 400px; }
+.ds-modal--md { max-width: 520px; }
+.ds-modal--lg { max-width: 640px; }
+
+/* header — optional icon + (label + title); close pinned top-right */
+.ds-modal__header { display: flex; gap: 16px; padding: 24px 24px 0; align-items: flex-start; }
+.ds-modal__icon { flex-shrink: 0; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; color: var(--ink); }
+.ds-modal__icon svg { width: 32px; height: 32px; }
+.ds-modal__content { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ds-modal__title { margin: 0; font-size: var(--t-title); font-weight: var(--w-bold); color: var(--ink); line-height: 1.3; }
+.ds-modal__close { position: absolute; top: 22px; right: 20px; width: 28px; height: 28px; padding: 0; border: none; background: transparent; color: var(--ink-3); cursor: pointer; border-radius: var(--r-sm); display: inline-flex; align-items: center; justify-content: center; transition: background var(--gaia-transition-state), color var(--gaia-transition-state); }
+.ds-modal__close:hover { background: var(--surface-2); color: var(--ink); }
+.ds-modal__close:focus-visible { outline: 2px solid var(--action-ring); outline-offset: 2px; }
+.ds-modal__close svg { width: 20px; height: 20px; }
+
+/* body — scrolls when tall. As a sibling of the header it spans full
+   width; nested inside .ds-modal__content it aligns under the title. */
+.ds-modal__body { padding: 16px 24px 0; overflow-y: auto; }
+.ds-modal__content > .ds-modal__body { padding: 0; margin-top: 12px; }
+.ds-modal__body p { margin: 0 0 12px; font-size: var(--t-body); line-height: 1.6; color: var(--ink-2); }
+.ds-modal__body p:last-child { margin-bottom: 0; }
+.ds-modal__body a { color: var(--signature); text-decoration: underline; text-underline-offset: 2px; }
+.ds-modal__body h4 { margin: 18px 0 4px; font-size: var(--t-body); font-weight: var(--w-bold); color: var(--ink); }
+.ds-modal__body h4:first-child { margin-top: 0; }
+.ds-modal__body--divided { border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+
+/* footer — full width; primary group right, optional left slot */
+.ds-modal__footer { display: flex; align-items: center; gap: 12px; padding: 24px; }
+.ds-modal__actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+/* tone variants colour the icon only — the surface stays white */
+.ds-modal--error   .ds-modal__icon { color: var(--danger); }
+.ds-modal--warning .ds-modal__icon { color: var(--warn); }
+.ds-modal--success .ds-modal__icon { color: var(--ok); }
+.ds-modal--info    .ds-modal__icon { color: var(--info); }
+
+/* multi-step progress row — wizard flows; the current step is accented */
+.ds-modal__steps { display: flex; gap: 8px; margin-top: 16px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.ds-step { flex: 1; display: flex; gap: 9px; padding: 14px 6px; border-top: 2px solid transparent; margin-top: -1px; }
+.ds-step__icon { flex-shrink: 0; width: 18px; height: 18px; color: var(--ink-4); margin-top: 1px; }
+.ds-step__icon svg { width: 18px; height: 18px; display: block; }
+.ds-step__t { font-size: var(--t-body-sm); font-weight: var(--w-semibold); color: var(--ink); line-height: 1.2; }
+.ds-step__s { font-size: var(--t-caption); color: var(--ink-3); margin-top: 2px; line-height: 1.4; }
+.ds-step.is-current { border-top-color: var(--signature); }
+.ds-step.is-current .ds-step__icon, .ds-step.is-done .ds-step__icon { color: var(--green-deep); }

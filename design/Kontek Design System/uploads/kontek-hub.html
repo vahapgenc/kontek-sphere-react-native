@@ -1,0 +1,1768 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kontek Hub — Plattform</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #FAFBFB;
+    --bg-2: #F4F6F6;
+    --surface: #FFFFFF;
+    --ink: #0A1414;       /* near-black */
+    --ink-2: #1F2D2D;
+    --ink-3: #5E6E6E;
+    --ink-4: #8B9899;
+    --ink-5: #BBC4C5;
+    --line: #E5E9E9;
+    --line-2: #EEF1F1;
+    --brand: #122121;      /* Deepest Ground */
+    --brand-2: #203B3C;    /* Brand Signature */
+    --brand-3: #4E7476;    /* Guide */
+    --teal-soft: #D9E5E6;
+    --teal-fog: #F1F5F5;
+    --green: #0C4D33;      /* Success Text */
+    --green-2: #61BC8F;
+    --green-3: #9DDFB5;
+    --green-soft: #E6F7ED;
+    --amber: #B97E0A;
+    --amber-soft: #FBEEC8;
+    --rust: #B0431B;
+    --rust-soft: #F8DCC9;
+    --blue: #5A6B7E;
+    --blue-soft: #E4E9EE;
+    --purple: #7A4A8C;
+    --purple-soft: #EDE3F0;
+  }
+  html, body { background: var(--bg); }
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .font-serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; letter-spacing: -0.01em; }
+  .num { font-variant-numeric: tabular-nums; }
+  .eyebrow {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: var(--ink-4);
+  }
+  .card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .card-hover { transition: all 0.15s ease; }
+  .card-hover:hover {
+    border-color: var(--ink-5);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+    transform: translateY(-1px);
+  }
+  .row-tap { transition: background 0.12s ease; cursor: pointer; }
+  .row-tap:hover { background: var(--bg-2); }
+  .btn-primary {
+    background: #395F61; color: white; font-weight: 500; font-size: 13.5px;
+    padding: 9px 16px; border-radius: 8px;
+    transition: all 0.15s ease;
+  }
+  .btn-primary:hover { background: #052225; transform: translateY(-1px); }
+  .btn-primary:active { background: #052225; transform: none; }
+  .btn-primary:focus-visible { outline: 2px solid #395F61; outline-offset: 2px; }
+  .btn-primary:disabled, .btn-primary[disabled] {
+    background: #E2E4E9; color: #9CA3AE; cursor: not-allowed; transform: none;
+  }
+  .btn-secondary {
+    background: white; color: var(--ink-2); font-weight: 500; font-size: 13.5px;
+    padding: 9px 16px; border-radius: 8px; border: 1px solid var(--line);
+    transition: all 0.15s ease;
+  }
+  .btn-secondary:hover { border-color: var(--ink-5); }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 8px;
+    color: var(--ink-3); font-size: 13.5px; font-weight: 500;
+    cursor: pointer; transition: all 0.12s ease;
+  }
+  .nav-item:hover { background: var(--bg-2); color: var(--ink); }
+  .nav-item.active {
+    background: var(--ink); color: white;
+  }
+  .product-tile {
+    transition: all 0.18s ease;
+  }
+  .product-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .fade-in { animation: fadeIn 0.22s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide-in-right { animation: slideRight 0.25s ease; }
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  /* checkbox-like indicator */
+  .dot { width: 6px; height: 6px; border-radius: 3px; display: inline-block; }
+  /* persona switcher */
+  .persona-bar {
+    background: var(--brand);
+    color: rgba(255,255,255,0.85);
+    font-size: 11px;
+    padding: 8px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    letter-spacing: 0.02em;
+  }
+  .persona-pill {
+    padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+    background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.10); cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .persona-pill:hover { background: rgba(255,255,255,0.16); color: white; }
+  .persona-pill.active {
+    background: var(--green-2); color: var(--brand);
+    border-color: var(--green-2);
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useMemo, useEffect, createContext, useContext } = React;
+
+/* ================================================================
+   ICONS
+   ================================================================ */
+const Icon = ({ name, size = 16, strokeWidth = 1.8, style = {}, className = "" }) => {
+  const props = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth, strokeLinecap: "round", strokeLinejoin: "round", style, className };
+  const i = {
+    home:    <svg {...props}><path d="M3 12 L12 4 L21 12" /><path d="M5 10 V20 H19 V10" /></svg>,
+    grid:    <svg {...props}><rect x="4" y="4" width="7" height="7" rx="1.5" /><rect x="13" y="4" width="7" height="7" rx="1.5" /><rect x="4" y="13" width="7" height="7" rx="1.5" /><rect x="13" y="13" width="7" height="7" rx="1.5" /></svg>,
+    doc:     <svg {...props}><path d="M7 3h9l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" /><path d="M16 3v4h4" /><path d="M9 12h6 M9 16h6 M9 8h2" /></svg>,
+    store:   <svg {...props}><path d="M3 9 V20 H21 V9" /><path d="M3 9 L5 4 H19 L21 9 Z" /><path d="M9 13 H15" /></svg>,
+    users:   <svg {...props}><circle cx="9" cy="8" r="3.2" /><path d="M3 20c0-3 3-5 6-5s6 2 6 5" /><circle cx="17" cy="9" r="2.6" /><path d="M15 14c2 0 6 1.5 6 5" /></svg>,
+    settings:<svg {...props}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>,
+    chevR:   <svg {...props}><path d="M9 6l6 6-6 6" /></svg>,
+    chevD:   <svg {...props}><path d="M6 9l6 6 6-6" /></svg>,
+    chevL:   <svg {...props}><path d="M15 6l-6 6 6 6" /></svg>,
+    plus:    <svg {...props}><path d="M12 5v14 M5 12h14" /></svg>,
+    x:       <svg {...props}><path d="M18 6L6 18 M6 6l12 12" /></svg>,
+    check:   <svg {...props}><path d="M5 12l5 5L20 7" /></svg>,
+    search:  <svg {...props}><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>,
+    bell:    <svg {...props}><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 0 1-3.4 0" /></svg>,
+    external:<svg {...props}><path d="M14 4h6v6" /><path d="M20 4L10 14" /><path d="M19 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6" /></svg>,
+    bolt:    <svg {...props}><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" /></svg>,
+    cube:    <svg {...props}><path d="M12 3L4 7v10l8 4 8-4V7l-8-4z" /><path d="M4 7l8 4 8-4 M12 11v10" /></svg>,
+    coin:    <svg {...props}><circle cx="12" cy="12" r="9" /><path d="M9 9.5C9 8 10 7 12 7s3 1 3 2.5S13.5 11 12 11.5s-3 1-3 2.5 1 2.5 3 2.5 3-1 3-2.5" /></svg>,
+    bank:    <svg {...props}><path d="M3 9l9-5 9 5" /><path d="M5 9v9 M9 9v9 M15 9v9 M19 9v9" /><path d="M3 20h18 M3 9h18" /></svg>,
+    book:    <svg {...props}><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2V5z" /><path d="M4 19a2 2 0 0 1 2-2h12" /></svg>,
+    chart:   <svg {...props}><path d="M3 21h18" /><path d="M7 17V11 M12 17V7 M17 17V13" /></svg>,
+    headphones:<svg {...props}><path d="M3 12a9 9 0 0 1 18 0" /><path d="M3 12v5a2 2 0 0 0 2 2h2v-7H3z" /><path d="M21 12v5a2 2 0 0 1-2 2h-2v-7h4z" /></svg>,
+    shield:  <svg {...props}><path d="M12 2l9 4v6c0 5-3.5 9-9 10-5.5-1-9-5-9-10V6l9-4z" /></svg>,
+    sparkle: <svg {...props}><path d="M12 3v4 M12 17v4 M3 12h4 M17 12h4 M5.6 5.6l2.8 2.8 M15.6 15.6l2.8 2.8 M5.6 18.4l2.8-2.8 M15.6 8.4l2.8-2.8" /></svg>,
+    download:<svg {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5 5 5-5" /><path d="M12 15V3" /></svg>,
+    arrow:   <svg {...props}><path d="M5 12h14 M13 6l6 6-6 6" /></svg>,
+    info:    <svg {...props}><circle cx="12" cy="12" r="10" /><path d="M12 16v-5 M12 8h0" /></svg>,
+    user:    <svg {...props}><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 4-7 8-7s8 3 8 7" /></svg>,
+    building:<svg {...props}><rect x="4" y="4" width="16" height="16" rx="1" /><path d="M8 8h2 M8 12h2 M8 16h2 M14 8h2 M14 12h2 M14 16h2" /></svg>,
+    briefcase:<svg {...props}><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" /></svg>,
+    mail:    <svg {...props}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>,
+    phone:   <svg {...props}><path d="M5 3h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 5a2 2 0 0 1 2-2z" /></svg>,
+    bid:     <svg {...props}><path d="M3 12h18 M3 8h18 M3 16h18" /></svg>,
+    swap:    <svg {...props}><path d="M4 7h13l-3-3 M20 17H7l3 3" /></svg>,
+    star:    <svg {...props}><path d="M12 3l2.5 6 6.5 1-5 5 1 7-6-3-6 3 1-7-5-5 6.5-1z" /></svg>,
+    play:    <svg {...props}><path d="M7 4v16l13-8z" /></svg>,
+  };
+  return i[name] || null;
+};
+
+/* ================================================================
+   DATA
+   ================================================================ */
+
+// Slutkund: Anna Lindqvist på Norrström Industrier
+const CUSTOMER_USER = {
+  name: "Anna Lindqvist",
+  initials: "AL",
+  role: "Löneadministratör",
+  email: "anna.lindqvist@norrstrom.se",
+  phone: "070-555 12 34",
+  company: { id: "norrstrom", name: "Norrström Industrier AB", orgnr: "556789-1234", employees: 32, since: "2019-03-12", customerNumber: "K-4218" },
+  isAdmin: true,
+};
+
+// Byrå: Linda Karlsson på Karlsson Redovisning
+const AGENCY_USER = {
+  name: "Linda Karlsson",
+  initials: "LK",
+  role: "Auktoriserad redovisningskonsult",
+  email: "linda@karlssonred.se",
+  phone: "070-444 89 21",
+  company: { id: "karlsson", name: "Karlsson Redovisning AB", orgnr: "556321-9876", employees: 8, since: "2017-06-01", customerNumber: "K-3041" },
+  isAdmin: true,
+  // Byrån har flera klienter
+  clients: [
+    { id: "norrstrom", name: "Norrström Industrier AB", orgnr: "556789-1234", employees: 32, products: ["next", "sphere"], status: "active", lastActivity: "Idag", health: "good" },
+    { id: "bilcentrum", name: "Bilcentrum Linköping AB", orgnr: "556445-2211", employees: 14, products: ["next"], status: "active", lastActivity: "Igår", health: "good" },
+    { id: "lindberg", name: "Lindberg Café & Konditori HB", orgnr: "969012-3344", employees: 6, products: ["next"], status: "active", lastActivity: "2 dagar sedan", health: "good" },
+    { id: "norra", name: "Norra Vårdcentralen AB", orgnr: "556332-1100", employees: 22, products: ["next", "sphere"], status: "active", lastActivity: "Idag", health: "warning" },
+    { id: "ostgota", name: "Östgöta Bygg & Anläggning AB", orgnr: "556776-4455", employees: 41, products: ["next"], status: "active", lastActivity: "3 dagar sedan", health: "good" },
+    { id: "kompass", name: "Kompass Konsult AB", orgnr: "556889-7766", employees: 4, products: [], status: "onboarding", lastActivity: "Imorse", health: "onboarding" },
+    { id: "tornet", name: "Tornet Bemanning AB", orgnr: "556112-8899", employees: 28, products: ["next", "sphere"], status: "active", lastActivity: "Idag", health: "good" },
+    { id: "skogen", name: "Skogen & Sjön Turism AB", orgnr: "556778-3322", employees: 12, products: ["next"], status: "active", lastActivity: "Igår", health: "good" },
+  ],
+};
+
+// Produkter Norrström har idag
+const CUSTOMER_PRODUCTS = [
+  {
+    id: "next", name: "Kontek Next", tagline: "Löneadministration",
+    icon: "cube", color: "var(--brand)",
+    description: "Modern löneadmin med Watson AI-assistent",
+    usersActive: 3, usersLicensed: 5,
+    plan: "Standard", planPrice: "1 290 kr/mån",
+    status: "active",
+    lastUsed: "Just nu",
+    url: "kontek-next.html",
+  },
+  {
+    id: "sphere", name: "Kontek Sphere", tagline: "Försystem för medarbetare",
+    icon: "grid", color: "var(--brand-2)",
+    description: "Mobil självservice för anställda och chefer",
+    usersActive: 28, usersLicensed: 32,
+    plan: "Per anställd", planPrice: "39 kr/mån/anställd",
+    status: "active",
+    lastUsed: "12 min sedan",
+    url: "kontek-sphere.html",
+  },
+];
+
+// Byråns "produkter" - byrå-licens
+const AGENCY_PRODUCTS = [
+  {
+    id: "next", name: "Kontek Next", tagline: "Löneadministration",
+    icon: "cube", color: "var(--brand)",
+    description: "Hantera lön åt alla dina klienter",
+    usersActive: 6, usersLicensed: 10,
+    plan: "Byrå-licens", planPrice: "Klientvolym",
+    status: "active",
+    lastUsed: "Just nu",
+    url: "kontek-next.html",
+  },
+  {
+    id: "sphere", name: "Kontek Sphere", tagline: "Försystem för medarbetare",
+    icon: "grid", color: "var(--brand-2)",
+    description: "För klienternas anställda",
+    usersActive: 4, usersLicensed: "—",
+    plan: "Byrå-licens", planPrice: "Klientvolym",
+    status: "active",
+    lastUsed: "1 timme sedan",
+    url: "kontek-sphere.html",
+  },
+];
+
+const MARKETPLACE_ITEMS = [
+  // Kategorier: bookkeeping, banking, hr, authorities, communication, time, ai, identity
+  // Aktiva integrationer (redan installerade hos Norrström)
+  { id: "fortnox", name: "Fortnox Bokföring", category: "Ekonomi", description: "Automatisk överföring av bokföringsorder från lönekörningar", icon: "book", color: "#1A8F4A", status: "active", official: true, popularity: 5 },
+  { id: "swedbank", name: "Swedbank", category: "Bank", description: "Bankgirofiler direkt till företagsbank — SUS-format", icon: "bank", color: "#FF7D1E", status: "active", official: true, popularity: 5 },
+  { id: "skatteverket", name: "Skatteverket — AGI", category: "Myndighet", description: "Inrapportering av arbetsgivardeklaration på individnivå", icon: "shield", color: "#005A9C", status: "active", official: true, popularity: 5 },
+  { id: "fk", name: "Försäkringskassan", category: "Myndighet", description: "Automatisk hantering av VAB, sjukfrånvaro och föräldrapenning", icon: "shield", color: "#0058A3", status: "active", official: true, popularity: 4 },
+  { id: "bankid", name: "BankID", category: "Identitet", description: "Inloggning, signering av lönelistor och bankgiroöverföringar", icon: "shield", color: "#193E4F", status: "active", official: true, popularity: 5 },
+  { id: "fora", name: "Fora", category: "Pension", description: "Rapportering av tjänstepension för kollektivavtal SAF-LO", icon: "shield", color: "#003B5C", status: "active", official: true, popularity: 4 },
+
+  // Tillgängliga (inte installerade än)
+  { id: "visma_bok", name: "Visma eEkonomi", category: "Ekonomi", description: "Alternativ till Fortnox för bokföringsöverföring", icon: "book", color: "#D52B1E", status: "available", official: false, popularity: 4 },
+  { id: "fortnox_dok", name: "Fortnox Dokument", category: "Ekonomi", description: "Synkroniserad dokumenthantering för anställningsavtal och intyg", icon: "doc", color: "#1A8F4A", status: "available", official: true, popularity: 3 },
+  { id: "seb", name: "SEB", category: "Bank", description: "Bankgirofiler till SEB företagsbank", icon: "bank", color: "#005DAA", status: "available", official: true, popularity: 4 },
+  { id: "handelsbanken", name: "Handelsbanken", category: "Bank", description: "Bankgirofiler till Handelsbanken", icon: "bank", color: "#005AA0", status: "available", official: true, popularity: 4 },
+  { id: "nordea", name: "Nordea", category: "Bank", description: "Bankgirofiler till Nordea Företag", icon: "bank", color: "#0000A0", status: "available", official: true, popularity: 4 },
+  { id: "alecta", name: "Alecta", category: "Pension", description: "Tjänstepension för kollektivavtal ITP — automatisk rapportering", icon: "shield", color: "#003B5C", status: "available", official: true, popularity: 4 },
+  { id: "collectum", name: "Collectum", category: "Pension", description: "ITP-administration och premierapportering", icon: "shield", color: "#5C2D91", status: "available", official: true, popularity: 3 },
+  { id: "kivra", name: "Kivra", category: "Kommunikation", description: "Skicka lönespecar och anställningsdokument digitalt", icon: "mail", color: "#9C2B5C", status: "available", official: true, popularity: 4 },
+  { id: "outlook", name: "Microsoft 365", category: "Kommunikation", description: "Synkronisera lönekalender, attestpåminnelser till Teams", icon: "mail", color: "#0078D4", status: "available", official: true, popularity: 4 },
+  { id: "slack", name: "Slack", category: "Kommunikation", description: "Notiser om attester, lönekörningar och frånvaro direkt i Slack", icon: "mail", color: "#4A154B", status: "available", official: true, popularity: 3 },
+  { id: "scb", name: "SCB — Strukturlönestatistik", category: "Myndighet", description: "Årlig rapportering av lönestatistik till Statistiska centralbyrån", icon: "shield", color: "#1F4788", status: "available", official: true, popularity: 3 },
+  { id: "quinyx", name: "Quinyx Schemaläggning", category: "Tid", description: "Importera scheman och tidrapporter automatiskt", icon: "briefcase", color: "#FF6B6B", status: "available", official: false, popularity: 3 },
+  { id: "planday", name: "Planday", category: "Tid", description: "Schemaläggning för restaurang, retail och vård", icon: "briefcase", color: "#5E2BFF", status: "available", official: false, popularity: 3 },
+  { id: "tidomat", name: "Tidomat", category: "Tid", description: "Tidstämpling och passersystem — importera arbetstid", icon: "briefcase", color: "#003B5C", status: "available", official: false, popularity: 2 },
+  { id: "lifeplan", name: "Lifeplan", category: "HR", description: "Anställda kan välja och optimera tjänstepension från lönespec", icon: "user", color: "#00A09A", status: "available", official: false, popularity: 3 },
+  { id: "benify", name: "Benify", category: "HR", description: "Förmånsplattform — synka anställda och löneunderlag", icon: "star", color: "#E94E1B", status: "available", official: false, popularity: 4 },
+  { id: "epassi", name: "Epassi Friskvård", category: "HR", description: "Friskvårdsbidrag — automatisk avdragshantering på lönespec", icon: "star", color: "#00A859", status: "available", official: false, popularity: 4 },
+  { id: "edenred", name: "Edenred Lunchförmån", category: "HR", description: "Lunchkort och skattepliktig förmånsadministration", icon: "star", color: "#E40046", status: "available", official: false, popularity: 3 },
+
+  // Kommande (snart tillgängligt)
+  { id: "almega", name: "Almega Avtalsbevakning", category: "Avtal", description: "Live-uppdateringar när tjänstemannaavtalet ändras — Watson hämtar regler direkt", icon: "doc", color: "#003B5C", status: "coming", official: true, popularity: 0 },
+  { id: "klarna", name: "Klarna Företag", category: "Bank", description: "Snabbutbetalning till anställda — utbetalningar inom minuter", icon: "bank", color: "#FFB3C7", status: "coming", official: false, popularity: 0 },
+];
+
+// Avtal & licenser
+const CUSTOMER_AGREEMENTS = [
+  {
+    id: "main", title: "Kontek Plattform — Huvudavtal",
+    status: "active",
+    type: "Huvudavtal",
+    signed: "2019-03-12", renewal: "2026-12-31",
+    monthly: 2540, annual: 30480,
+    items: [
+      { name: "Kontek Next — Standard", desc: "Löneadministration · 5 användarlicenser", price: 1290 },
+      { name: "Kontek Sphere — Per anställd", desc: "Försystem · 32 anställda × 39 kr", price: 1248 },
+    ],
+    contactPerson: "Erik Bergström", contactEmail: "erik.bergstrom@norrstrom.se",
+    invoicedTo: "Norrström Industrier AB, Industrivägen 12, 602 23 Norrköping",
+  },
+];
+
+const AGENCY_AGREEMENTS = [
+  {
+    id: "main", title: "Kontek Byråavtal — Karlsson Redovisning",
+    status: "active",
+    type: "Byråavtal",
+    signed: "2017-06-01", renewal: "2026-09-30",
+    monthly: 4890, annual: 58680,
+    items: [
+      { name: "Kontek Next — Byrå", desc: "Löneadministration · 10 konsultlicenser · obegränsade klienter", price: 3490 },
+      { name: "Kontek Sphere — Byrå", desc: "Försystem · per klients anställda", price: 1400 },
+    ],
+    contactPerson: "Linda Karlsson", contactEmail: "linda@karlssonred.se",
+    invoicedTo: "Karlsson Redovisning AB, Storgatan 4, 111 51 Stockholm",
+  },
+];
+
+const CUSTOMER_INVOICES = [
+  { id: "F-2604", date: "2026-04-01", amount: 2540, status: "paid", paidDate: "2026-04-05", period: "April 2026" },
+  { id: "F-2603", date: "2026-03-01", amount: 2540, status: "paid", paidDate: "2026-03-04", period: "Mars 2026" },
+  { id: "F-2602", date: "2026-02-01", amount: 2540, status: "paid", paidDate: "2026-02-06", period: "Februari 2026" },
+  { id: "F-2601", date: "2026-01-01", amount: 2540, status: "paid", paidDate: "2026-01-08", period: "Januari 2026" },
+];
+
+const AGENCY_INVOICES = [
+  { id: "F-9404", date: "2026-04-01", amount: 4890, status: "paid", paidDate: "2026-04-03", period: "April 2026" },
+  { id: "F-9403", date: "2026-03-01", amount: 4890, status: "paid", paidDate: "2026-03-04", period: "Mars 2026" },
+  { id: "F-9402", date: "2026-02-01", amount: 4730, status: "paid", paidDate: "2026-02-05", period: "Februari 2026" },
+  { id: "F-9401", date: "2026-01-01", amount: 4730, status: "paid", paidDate: "2026-01-04", period: "Januari 2026" },
+];
+
+const CUSTOMER_TEAM_USERS = [
+  { id: 1, name: "Anna Lindqvist", initials: "AL", email: "anna.lindqvist@norrstrom.se", role: "Administratör", products: ["next", "sphere"], lastActive: "Just nu", you: true },
+  { id: 2, name: "Erik Bergström", initials: "EB", email: "erik.bergstrom@norrstrom.se", role: "Produktionsledare", products: ["sphere"], lastActive: "12 min sedan" },
+  { id: 3, name: "Margareta Johansson", initials: "MJ", email: "m.johansson@norrstrom.se", role: "VD", products: ["next", "sphere"], lastActive: "Igår" },
+  { id: 4, name: "Pär Söderlind", initials: "PS", email: "par.soderlind@norrstrom.se", role: "Lönehandläggare", products: ["next"], lastActive: "3 timmar sedan" },
+];
+
+const AGENCY_TEAM_USERS = [
+  { id: 1, name: "Linda Karlsson", initials: "LK", email: "linda@karlssonred.se", role: "Senior konsult, partner", products: ["next", "sphere"], clients: 8, lastActive: "Just nu", you: true },
+  { id: 2, name: "Marcus Lindholm", initials: "ML", email: "marcus@karlssonred.se", role: "Auktoriserad konsult", products: ["next", "sphere"], clients: 4, lastActive: "30 min sedan" },
+  { id: 3, name: "Sofia Eriksson", initials: "SE", email: "sofia@karlssonred.se", role: "Redovisningskonsult", products: ["next"], clients: 3, lastActive: "1 timme sedan" },
+  { id: 4, name: "David Persson", initials: "DP", email: "david@karlssonred.se", role: "Junior konsult", products: ["next"], clients: 2, lastActive: "Igår" },
+  { id: 5, name: "Anna Söderberg", initials: "AS", email: "anna.s@karlssonred.se", role: "Kontorsassistent", products: [], clients: 0, lastActive: "Idag" },
+];
+
+/* ================================================================
+   APP STATE
+   ================================================================ */
+
+const AppContext = createContext(null);
+const useApp = () => useContext(AppContext);
+
+const AppProvider = ({ children }) => {
+  const [persona, setPersona] = useState("customer"); // "customer" | "agency"
+  const [stage, setStage] = useState("website"); // "website" | "login" | "app"
+  const [activeView, setActiveView] = useState("home");
+  const [activeClient, setActiveClient] = useState(null); // for agency drill-down
+  // Marketplace integrations installed
+  const [installed, setInstalled] = useState(() => new Set(MARKETPLACE_ITEMS.filter(m => m.status === "active").map(m => m.id)));
+
+  const user = persona === "customer" ? CUSTOMER_USER : AGENCY_USER;
+  const products = persona === "customer" ? CUSTOMER_PRODUCTS : AGENCY_PRODUCTS;
+  const agreements = persona === "customer" ? CUSTOMER_AGREEMENTS : AGENCY_AGREEMENTS;
+  const invoices = persona === "customer" ? CUSTOMER_INVOICES : AGENCY_INVOICES;
+  const team = persona === "customer" ? CUSTOMER_TEAM_USERS : AGENCY_TEAM_USERS;
+
+  const switchPersona = (p) => {
+    setPersona(p);
+    setActiveView("home");
+    setActiveClient(null);
+  };
+
+  const reset = () => {
+    setPersona("customer");
+    setStage("website");
+    setActiveView("home");
+    setActiveClient(null);
+    setInstalled(new Set(MARKETPLACE_ITEMS.filter(m => m.status === "active").map(m => m.id)));
+  };
+
+  const installItem = (id) => setInstalled(prev => new Set([...prev, id]));
+  const uninstallItem = (id) => setInstalled(prev => { const n = new Set(prev); n.delete(id); return n; });
+
+  return (
+    <AppContext.Provider value={{
+      persona, switchPersona,
+      stage, setStage,
+      activeView, setActiveView,
+      activeClient, setActiveClient,
+      user, products, agreements, invoices, team,
+      installed, installItem, uninstallItem,
+      reset,
+    }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+/* ================================================================
+   SHARED UI
+   ================================================================ */
+
+const Avatar = ({ initials, size = 32, bg = "var(--brand)", color = "white", className = "" }) => (
+  <div className={"flex items-center justify-center font-semibold flex-shrink-0 " + className}
+    style={{ width: size, height: size, borderRadius: size / 2, background: bg, color, fontSize: size * 0.4 }}>
+    {initials}
+  </div>
+);
+
+const Pill = ({ children, tone = "neutral", dot = false, size = "md" }) => {
+  const styles = {
+    neutral: { bg: "var(--bg-2)", color: "var(--ink-3)", dot: "var(--ink-4)" },
+    green:   { bg: "var(--green-soft)", color: "var(--green)", dot: "var(--green-2)" },
+    amber:   { bg: "var(--amber-soft)", color: "#7A5300", dot: "var(--amber)" },
+    rust:    { bg: "var(--rust-soft)", color: "var(--rust)", dot: "var(--rust)" },
+    blue:    { bg: "var(--blue-soft)", color: "#3A4A5E", dot: "var(--blue)" },
+    teal:    { bg: "var(--teal-fog)", color: "var(--brand-2)", dot: "var(--brand-3)" },
+    ink:     { bg: "var(--ink)", color: "white", dot: "var(--green-2)" },
+    purple:  { bg: "var(--purple-soft)", color: "var(--purple)", dot: "var(--purple)" },
+  }[tone];
+  const padding = size === "sm" ? "2px 7px" : "3px 9px";
+  const fontSize = size === "sm" ? 10 : 11;
+  return (
+    <span style={{ background: styles.bg, color: styles.color, padding, borderRadius: 99, fontSize, fontWeight: 500, display: "inline-flex", alignItems: "center", gap: 5 }}>
+      {dot && <span style={{ width: 5, height: 5, borderRadius: 3, background: styles.dot }} />}
+      {children}
+    </span>
+  );
+};
+
+const TopBar = () => {
+  const { user, persona, activeClient, setActiveClient } = useApp();
+  return (
+    <div className="flex items-center justify-between px-7 py-3" style={{ background: "white", borderBottom: "1px solid var(--line)" }}>
+      <div className="flex items-center gap-4">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <div style={{ width: 26, height: 26, borderRadius: 7, background: "var(--ink)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 11, height: 11, borderRadius: 5.5, background: "var(--green-2)", boxShadow: "inset 0 0 0 2px var(--ink)" }} />
+          </div>
+          <span className="font-semibold" style={{ fontSize: 15, letterSpacing: "-0.01em" }}>Kontek <span style={{ fontWeight: 400, color: "var(--ink-3)" }}>Hub</span></span>
+        </div>
+
+        {/* Company / client switcher */}
+        <div style={{ width: 1, height: 22, background: "var(--line)" }} />
+        {persona === "agency" && activeClient ? (
+          <button onClick={() => setActiveClient(null)}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-md row-tap"
+            style={{ background: "var(--bg-2)" }}>
+            <Icon name="chevL" size={13} style={{ color: "var(--ink-3)" }} />
+            <span className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>{user.company.name} →</span>
+            <span className="text-[12.5px] font-semibold">{activeClient.name}</span>
+            <Pill tone="teal" size="sm">Klientvy</Pill>
+          </button>
+        ) : (
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md row-tap" style={{ background: "var(--bg-2)" }}>
+            <Icon name="building" size={13} style={{ color: "var(--ink-3)" }} />
+            <span className="text-[12.5px] font-semibold">{user.company.name}</span>
+            <span className="text-[11px] num" style={{ color: "var(--ink-4)" }}>{user.company.customerNumber}</span>
+            <Icon name="chevD" size={12} style={{ color: "var(--ink-4)" }} />
+          </div>
+        )}
+      </div>
+
+      <div className="flex items-center gap-2">
+        <button className="px-2.5 py-1.5 rounded-md flex items-center gap-1.5" style={{ color: "var(--ink-3)", border: "1px solid var(--line)" }}>
+          <Icon name="search" size={13} />
+          <span className="text-[11.5px]">Sök</span>
+          <span className="num text-[10px] px-1 rounded" style={{ background: "var(--bg-2)", color: "var(--ink-4)" }}>⌘K</span>
+        </button>
+        <button className="p-2 rounded-md" style={{ color: "var(--ink-3)" }}><Icon name="bell" size={15} /></button>
+        <div style={{ width: 1, height: 22, background: "var(--line)" }} />
+        <div className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-md row-tap">
+          <Avatar initials={user.initials} size={26} bg="var(--brand-2)" />
+          <div className="text-right">
+            <div className="text-[11.5px] font-semibold leading-tight">{user.name}</div>
+            <div className="text-[10px] leading-tight" style={{ color: "var(--ink-4)" }}>{user.role}</div>
+          </div>
+          <Icon name="chevD" size={12} style={{ color: "var(--ink-4)" }} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Sidebar = () => {
+  const { activeView, setActiveView, persona } = useApp();
+  const items = persona === "customer" ? [
+    { id: "home", icon: "home", label: "Översikt" },
+    { id: "products", icon: "cube", label: "Mina produkter" },
+    { id: "agreements", icon: "doc", label: "Avtal & licenser" },
+    { id: "marketplace", icon: "store", label: "Marknadsplats" },
+    { id: "users", icon: "users", label: "Användare" },
+    { id: "settings", icon: "settings", label: "Inställningar" },
+  ] : [
+    { id: "home", icon: "home", label: "Översikt" },
+    { id: "clients", icon: "briefcase", label: "Mina klienter", badge: 8 },
+    { id: "products", icon: "cube", label: "Mina produkter" },
+    { id: "agreements", icon: "doc", label: "Avtal & licenser" },
+    { id: "marketplace", icon: "store", label: "Marknadsplats" },
+    { id: "users", icon: "users", label: "Konsulter" },
+    { id: "settings", icon: "settings", label: "Inställningar" },
+  ];
+
+  return (
+    <aside style={{ width: 220, background: "white", borderRight: "1px solid var(--line)", padding: "16px 12px", display: "flex", flexDirection: "column", gap: 2 }}>
+      <div className="px-2 py-2 eyebrow">Plattform</div>
+      {items.map(it => (
+        <div key={it.id} onClick={() => setActiveView(it.id)}
+          className={"nav-item" + (activeView === it.id ? " active" : "")}>
+          <Icon name={it.icon} size={15} />
+          <span className="flex-1">{it.label}</span>
+          {it.badge && <span className="num text-[10.5px] font-medium px-1.5 py-0.5 rounded" style={{ background: activeView === it.id ? "rgba(255,255,255,0.18)" : "var(--bg-2)", color: activeView === it.id ? "white" : "var(--ink-3)" }}>{it.badge}</span>}
+        </div>
+      ))}
+
+      <div style={{ marginTop: "auto", padding: 8, borderTop: "1px solid var(--line-2)", paddingTop: 12 }}>
+        <div className="eyebrow mb-2 px-2">Resurser</div>
+        <div className="nav-item"><Icon name="book" size={15} /><span>Dokumentation</span></div>
+        <div className="nav-item"><Icon name="headphones" size={15} /><span>Support</span></div>
+      </div>
+    </aside>
+  );
+};
+
+/* ================================================================
+   WEBSITE VIEW — embeds the actual kontek.se with login overlay
+   ================================================================ */
+
+const WebsiteView = () => {
+  const { setStage } = useApp();
+  const [loadError, setLoadError] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
+  // If iframe hasn't fired onLoad after 6 seconds, assume blocked
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (!iframeLoaded) setLoadError(true);
+    }, 6000);
+    return () => clearTimeout(t);
+  }, [iframeLoaded]);
+
+  return (
+    <div className="fade-in" style={{ minHeight: "100vh", background: "white", position: "relative" }}>
+      {/* White patch covering only "Mina sidor" text — leaves Konteks own
+          red outlined button shape visible underneath. */}
+      <div style={{
+        position: "fixed",
+        top: 26, right: 38,
+        width: 96, height: 32,
+        background: "white",
+        zIndex: 40,
+        pointerEvents: "none",
+      }} />
+
+      {/* "Logga in" — styled like Konteks own red outlined button to look
+          like the original button just changed its label. */}
+      <button onClick={() => setStage("login")}
+        style={{
+          position: "fixed",
+          top: 26, right: 38,
+          width: 96, height: 32,
+          zIndex: 50,
+          background: "white",
+          color: "#E1462E",
+          fontSize: 14,
+          fontWeight: 600,
+          fontFamily: "'Inter', -apple-system, system-ui, sans-serif",
+          letterSpacing: "-0.005em",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none",
+        }}>
+        Logga in
+      </button>
+
+      {/* Iframe with the real website */}
+      <div style={{ height: "100vh", background: "white" }}>
+        <iframe
+          src="https://www.kontek.se/sv/"
+          title="Kontek.se"
+          onLoad={() => setIframeLoaded(true)}
+          style={{
+            width: "100%",
+            height: "100vh",
+            border: "none",
+            background: "white",
+            display: loadError ? "none" : "block",
+          }}
+        />
+      </div>
+
+      {/* Fallback if iframe is blocked */}
+      {loadError && (
+        <div className="fade-in" style={{
+          position: "fixed",
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: "var(--bg)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          padding: 32,
+          zIndex: 5,
+        }}>
+          <div className="card" style={{ maxWidth: 540, padding: 40, textAlign: "center" }}>
+            <div style={{
+              width: 60, height: 60, borderRadius: 14,
+              background: "var(--amber-soft)", color: "var(--amber)",
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              marginBottom: 20,
+            }}>
+              <Icon name="info" size={28} />
+            </div>
+            <div className="font-serif" style={{ fontSize: 26, letterSpacing: "-0.015em", marginBottom: 10 }}>
+              Kontek.se kunde inte bäddas in
+            </div>
+            <p className="text-[14px] mb-6" style={{ color: "var(--ink-3)", lineHeight: 1.5 }}>
+              Sajten blockerar inbäddning från andra domäner (vanlig säkerhetsåtgärd). Du kan öppna kontek.se i en ny flik istället, eller gå direkt till Hub-inloggningen.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <a href="https://www.kontek.se/sv/" target="_blank" rel="noopener noreferrer"
+                className="btn-secondary flex items-center gap-1.5">
+                <Icon name="external" size={13} /> Öppna kontek.se
+              </a>
+              <button onClick={() => setStage("login")} className="btn-primary flex items-center gap-1.5">
+                Gå direkt till Hub <Icon name="arrow" size={13} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ================================================================
+   LOGIN VIEW
+   ================================================================ */
+
+const LoginView = () => {
+  const { setStage, persona } = useApp();
+  const [step, setStep] = useState("email"); // email | bankid
+  const [email, setEmail] = useState(persona === "customer" ? "anna.lindqvist@norrstrom.se" : "linda@karlssonred.se");
+
+  useEffect(() => {
+    setEmail(persona === "customer" ? "anna.lindqvist@norrstrom.se" : "linda@karlssonred.se");
+  }, [persona]);
+
+  return (
+    <div className="fade-in" style={{ minHeight: "100vh", background: "var(--brand)", display: "flex" }}>
+      {/* Left half - login form */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "white", padding: "48px 56px" }}>
+        {/* Logo - clickable back to website */}
+        <button onClick={() => setStage("website")} className="flex items-center gap-2 row-tap px-1 py-1 rounded-md" style={{ alignSelf: "flex-start" }}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: "var(--ink)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 13, height: 13, borderRadius: 6.5, background: "var(--green-2)", boxShadow: "inset 0 0 0 2.5px var(--ink)" }} />
+          </div>
+          <span className="font-semibold" style={{ fontSize: 17, letterSpacing: "-0.01em" }}>Kontek <span style={{ fontWeight: 400, color: "var(--ink-3)" }}>Hub</span></span>
+        </button>
+
+        {/* Center content */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", maxWidth: 380, margin: "0 auto", width: "100%" }}>
+          <div className="eyebrow mb-2" style={{ color: "var(--brand-3)" }}>Välkommen tillbaka</div>
+          <h1 className="font-serif" style={{ fontSize: 38, letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 8 }}>
+            Logga in på Kontek
+          </h1>
+          <p className="text-[14px] mb-8" style={{ color: "var(--ink-3)" }}>
+            Ett enda konto för alla dina Kontek-produkter och tjänster.
+          </p>
+
+          {step === "email" && (
+            <div className="space-y-4 fade-in">
+              <div>
+                <label className="text-[12px] font-medium block mb-1.5" style={{ color: "var(--ink-2)" }}>E-postadress</label>
+                <input value={email} onChange={e => setEmail(e.target.value)}
+                  className="w-full px-3.5 py-2.5 text-[13.5px] outline-none rounded-lg"
+                  style={{ background: "white", border: "1px solid var(--line)" }} />
+              </div>
+
+              <button onClick={() => setStep("bankid")}
+                className="w-full py-3 rounded-lg text-[13.5px] font-semibold flex items-center justify-center gap-2"
+                style={{ background: "var(--ink)", color: "white" }}>
+                Fortsätt
+                <Icon name="arrow" size={15} />
+              </button>
+
+              <div className="flex items-center gap-3 my-2">
+                <div style={{ height: 1, flex: 1, background: "var(--line)" }} />
+                <span className="text-[11px] uppercase tracking-wide" style={{ color: "var(--ink-4)", letterSpacing: "0.08em" }}>eller</span>
+                <div style={{ height: 1, flex: 1, background: "var(--line)" }} />
+              </div>
+
+              <button onClick={() => setStep("bankid")}
+                className="w-full py-3 rounded-lg text-[13.5px] font-semibold flex items-center justify-center gap-2"
+                style={{ background: "white", color: "var(--ink)", border: "1px solid var(--line)" }}>
+                <div style={{ width: 18, height: 18, borderRadius: 4, background: "#193E4F", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 700, fontSize: 9 }}>B</div>
+                Logga in med BankID
+              </button>
+
+              <div className="text-center">
+                <a className="text-[12px] font-medium" style={{ color: "var(--ink-3)" }}>Glömt lösenord?</a>
+              </div>
+            </div>
+          )}
+
+          {step === "bankid" && (
+            <div className="space-y-4 fade-in text-center">
+              <div className="mx-auto" style={{ width: 80, height: 80, borderRadius: 18, background: "#193E4F", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 700, fontSize: 32 }}>
+                B
+              </div>
+              <div>
+                <div className="font-display font-semibold text-[16px] mb-1">Öppna BankID-appen</div>
+                <div className="text-[12.5px]" style={{ color: "var(--ink-3)" }}>Skanna QR-koden eller bekräfta i appen för att logga in.</div>
+              </div>
+              <button onClick={() => setStage("app")}
+                className="w-full py-3 rounded-lg text-[13.5px] font-semibold flex items-center justify-center gap-2 mt-4"
+                style={{ background: "var(--ink)", color: "white" }}>
+                Simulera lyckad inloggning
+              </button>
+              <button onClick={() => setStep("email")}
+                className="text-[12px] font-medium" style={{ color: "var(--ink-3)" }}>← Tillbaka</button>
+            </div>
+          )}
+        </div>
+
+        <div className="text-[11px]" style={{ color: "var(--ink-4)" }}>
+          © Kontek 2026 · <span style={{ marginLeft: 8 }}>Sekretess</span> <span style={{ marginLeft: 8 }}>Användarvillkor</span>
+        </div>
+      </div>
+
+      {/* Right half - marketing visual */}
+      <div style={{ flex: 1, background: "var(--brand)", color: "white", padding: "48px 56px", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative", overflow: "hidden" }}>
+        {/* Decorative gradient blob */}
+        <div style={{ position: "absolute", top: -100, right: -80, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, rgba(97,188,143,0.15) 0%, transparent 70%)" }} />
+
+        <div className="eyebrow" style={{ color: "var(--green-2)" }}>EN PLATTFORM FÖR ALLT KONTEK</div>
+
+        <div>
+          <h2 className="font-serif" style={{ fontSize: 44, lineHeight: 1.1, letterSpacing: "-0.02em", color: "white", marginBottom: 16 }}>
+            Alla dina produkter,<br />ett enda inlogg.
+          </h2>
+          <p className="text-[15px] leading-relaxed" style={{ color: "rgba(255,255,255,0.65)", maxWidth: 420 }}>
+            Lön, försystem, integrationer, avtal, support. Allt på samma ställe — för slutkund och för byrå.
+          </p>
+        </div>
+
+        {/* Mini feature grid */}
+        <div className="grid grid-cols-2 gap-3 max-w-md">
+          {[
+            { icon: "cube", label: "Mina produkter" },
+            { icon: "store", label: "Marknadsplats" },
+            { icon: "doc", label: "Avtal & licenser" },
+            { icon: "users", label: "Användarhantering" },
+          ].map(f => (
+            <div key={f.label} className="flex items-center gap-2.5 p-3 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div style={{ width: 28, height: 28, borderRadius: 7, background: "rgba(97,188,143,0.18)", color: "var(--green-2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon name={f.icon} size={14} />
+              </div>
+              <span className="text-[12.5px] font-medium">{f.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   HOME VIEW
+   ================================================================ */
+
+const HomeView = () => {
+  const { user, products, persona, setActiveView } = useApp();
+  const hour = new Date().getHours();
+  const greeting = hour < 10 ? "God morgon" : hour < 17 ? "Hej" : "God kväll";
+  const isAgency = persona === "agency";
+
+  return (
+    <div className="fade-in" style={{ padding: "48px 40px", maxWidth: 1080, margin: "0 auto" }}>
+      {/* Greeting */}
+      <div className="mb-10">
+        <div className="eyebrow mb-1">{user.company.name}</div>
+        <h1 className="font-serif" style={{ fontSize: 42, letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+          {greeting}, {user.name.split(" ")[0]}
+        </h1>
+        <p className="text-[14.5px] mt-2" style={{ color: "var(--ink-3)", maxWidth: 560 }}>
+          {isAgency
+            ? `Du hanterar ${user.clients.length} klienter just nu. Välj en produkt nedan för att börja arbeta.`
+            : "Välj en produkt nedan för att börja arbeta, eller utforska nya integrationer i marknadsplatsen."}
+        </p>
+      </div>
+
+      {/* Products section — full width, larger tiles */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="eyebrow mb-0.5">Dina produkter</div>
+            <div className="text-[16px] font-semibold">{products.length} aktiva</div>
+          </div>
+          <button onClick={() => setActiveView("products")}
+            className="text-[12px] font-medium flex items-center gap-1" style={{ color: "var(--ink-3)" }}>
+            Visa alla <Icon name="chevR" size={11} />
+          </button>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          {products.map(p => <ProductTile key={p.id} product={p} />)}
+        </div>
+      </div>
+
+      {/* Marketplace nudge — full width banner */}
+      <div className="card overflow-hidden card-hover cursor-pointer" onClick={() => setActiveView("marketplace")}>
+        <div className="flex items-center gap-5 p-5">
+          <div style={{
+            width: 52, height: 52, borderRadius: 12,
+            background: "var(--teal-fog)", color: "var(--brand-2)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
+          }}>
+            <Icon name="sparkle" size={22} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="eyebrow" style={{ color: "var(--brand-3)" }}>MARKNADSPLATS</span>
+              <Pill tone="green" dot>3 nya</Pill>
+            </div>
+            <div className="font-semibold text-[15px] mb-0.5">Utforska integrationer för Kontek</div>
+            <div className="text-[12.5px]" style={{ color: "var(--ink-3)" }}>
+              Tjänstepension från Alecta, lunchförmån från Edenred och Microsoft Teams-integration är nu tillgängliga.
+            </div>
+          </div>
+          <Icon name="arrow" size={18} style={{ color: "var(--ink-3)", flexShrink: 0 }} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const StatCard = ({ icon, label, value, sub, accent }) => (
+  <div className="card p-4">
+    <div className="flex items-center gap-2 mb-2.5">
+      <div style={{ width: 26, height: 26, borderRadius: 6, background: "var(--bg-2)", color: "var(--ink-2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Icon name={icon} size={13} />
+      </div>
+      <span className="eyebrow">{label}</span>
+    </div>
+    <div className="flex items-baseline gap-2">
+      <span className="font-serif num" style={{ fontSize: 28, letterSpacing: "-0.015em", lineHeight: 1, color: accent || "var(--ink)" }}>{value}</span>
+      {sub && <span className="text-[11px] num" style={{ color: "var(--ink-4)" }}>{sub}</span>}
+    </div>
+  </div>
+);
+
+const ProductTile = ({ product }) => {
+  const { persona } = useApp();
+  const open = () => { window.open(product.url, "_blank"); };
+  return (
+    <div className="card product-tile cursor-pointer overflow-hidden" onClick={open}>
+      <div style={{ padding: "16px 16px 14px", background: product.color, color: "white" }}>
+        <div className="flex items-center justify-between mb-3">
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(255,255,255,0.16)", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Icon name={product.icon} size={16} />
+          </div>
+          <Icon name="external" size={13} style={{ color: "rgba(255,255,255,0.6)" }} />
+        </div>
+        <div className="text-[10.5px] uppercase tracking-wider font-semibold mb-0.5" style={{ color: "var(--green-2)", letterSpacing: "0.05em" }}>
+          {product.tagline}
+        </div>
+        <div className="font-serif text-[20px]" style={{ letterSpacing: "-0.01em" }}>{product.name}</div>
+      </div>
+      <div className="p-4">
+        <div className="text-[12px] mb-3" style={{ color: "var(--ink-3)", lineHeight: 1.45 }}>{product.description}</div>
+        <div className="flex items-center justify-between text-[11px]">
+          <div className="flex items-center gap-1.5">
+            <Icon name="user" size={11} style={{ color: "var(--ink-4)" }} />
+            <span style={{ color: "var(--ink-3)" }}>
+              <span className="num font-semibold" style={{ color: "var(--ink)" }}>{product.usersActive}</span>
+              {product.usersLicensed !== "—" && <> / <span className="num">{product.usersLicensed}</span></>}
+              <span className="ml-1" style={{ color: "var(--ink-4)" }}>användare</span>
+            </span>
+          </div>
+          <span style={{ color: "var(--ink-4)" }}>{product.lastUsed}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ClientRow = ({ client, last }) => {
+  const { setActiveClient, setActiveView } = useApp();
+  const healthMeta = {
+    good: { tone: "green", label: "Inga åtgärder" },
+    warning: { tone: "amber", label: "1 åtgärd" },
+    onboarding: { tone: "blue", label: "Onboarding" },
+  }[client.health] || { tone: "neutral", label: "—" };
+
+  return (
+    <div className="px-4 py-3 row-tap flex items-center gap-3"
+      style={{ borderBottom: last ? "none" : "1px solid var(--line-2)" }}
+      onClick={() => { setActiveClient(client); setActiveView("clients"); }}>
+      <Avatar initials={client.name.split(" ").map(w => w[0]).slice(0, 2).join("")} size={32} bg="var(--brand-2)" />
+      <div className="flex-1 min-w-0">
+        <div className="text-[13px] font-semibold">{client.name}</div>
+        <div className="flex items-center gap-2 text-[11px]" style={{ color: "var(--ink-4)" }}>
+          <span className="num">{client.orgnr}</span>
+          <span>·</span>
+          <span><span className="num">{client.employees}</span> anställda</span>
+          <span>·</span>
+          <span>{client.lastActivity}</span>
+        </div>
+      </div>
+      <Pill tone={healthMeta.tone} dot>{healthMeta.label}</Pill>
+      <Icon name="chevR" size={14} style={{ color: "var(--ink-4)" }} />
+    </div>
+  );
+};
+
+/* ================================================================
+   PRODUCTS VIEW
+   ================================================================ */
+
+const ProductsView = () => {
+  const { products } = useApp();
+  return (
+    <div className="fade-in" style={{ padding: "32px 40px", maxWidth: 1200, margin: "0 auto" }}>
+      <ViewHeader eyebrow="Mina produkter" title="Allt du har tillgång till" subtitle="Klicka på en produkt för att öppna den, eller hantera licenser och användare." />
+
+      <div className="space-y-3">
+        {products.map(p => (
+          <div key={p.id} className="card p-5">
+            <div className="flex items-start gap-4">
+              <div style={{ width: 56, height: 56, borderRadius: 12, background: p.color, color: "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Icon name={p.icon} size={26} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="font-serif" style={{ fontSize: 22, letterSpacing: "-0.01em" }}>{p.name}</div>
+                  <Pill tone="green" dot>Aktiv</Pill>
+                </div>
+                <div className="text-[13px] mb-3" style={{ color: "var(--ink-3)" }}>{p.description}</div>
+                <div className="flex items-center gap-6 text-[11.5px]">
+                  <div>
+                    <div className="eyebrow mb-0.5">Plan</div>
+                    <div className="font-semibold text-[12.5px]">{p.plan}</div>
+                  </div>
+                  <div>
+                    <div className="eyebrow mb-0.5">Pris</div>
+                    <div className="font-semibold text-[12.5px] num">{p.planPrice}</div>
+                  </div>
+                  <div>
+                    <div className="eyebrow mb-0.5">Användare</div>
+                    <div className="font-semibold text-[12.5px]">
+                      <span className="num">{p.usersActive}</span>
+                      {p.usersLicensed !== "—" && <> / <span className="num">{p.usersLicensed}</span></>}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="eyebrow mb-0.5">Senast använd</div>
+                    <div className="font-semibold text-[12.5px]">{p.lastUsed}</div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 flex-shrink-0">
+                <button onClick={() => window.open(p.url, "_blank")} className="btn-primary flex items-center gap-1.5">
+                  Öppna <Icon name="external" size={13} />
+                </button>
+                <button className="btn-secondary">Hantera</button>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Discover more */}
+        <div className="card p-5" style={{ background: "var(--bg-2)", borderStyle: "dashed", borderColor: "var(--line)" }}>
+          <div className="flex items-center gap-4">
+            <div style={{ width: 56, height: 56, borderRadius: 12, background: "white", color: "var(--ink-3)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed var(--line)" }}>
+              <Icon name="plus" size={22} />
+            </div>
+            <div className="flex-1">
+              <div className="font-serif mb-0.5" style={{ fontSize: 18 }}>Fler produkter på väg</div>
+              <div className="text-[12.5px]" style={{ color: "var(--ink-3)" }}>Kontek Insights (BI/rapporter) lanseras Q4 2026. Kontek Recruiting kommer Q2 2027.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ViewHeader = ({ eyebrow, title, subtitle, action }) => (
+  <div className="flex items-start justify-between mb-7">
+    <div>
+      <div className="eyebrow mb-1">{eyebrow}</div>
+      <h1 className="font-serif" style={{ fontSize: 32, letterSpacing: "-0.02em", lineHeight: 1.1 }}>{title}</h1>
+      {subtitle && <p className="text-[13.5px] mt-1.5" style={{ color: "var(--ink-3)", maxWidth: 620 }}>{subtitle}</p>}
+    </div>
+    {action}
+  </div>
+);
+
+/* ================================================================
+   AGREEMENTS VIEW
+   ================================================================ */
+
+const AgreementsView = () => {
+  const { agreements, invoices, user, persona } = useApp();
+  const a = agreements[0];
+  const daysToRenewal = Math.floor((new Date(a.renewal) - new Date("2026-05-22")) / (1000 * 60 * 60 * 24));
+  return (
+    <div className="fade-in" style={{ padding: "32px 40px", maxWidth: 1200, margin: "0 auto" }}>
+      <ViewHeader eyebrow="Avtal & licenser" title="Din avtalsöversikt" subtitle="Här ser du dina aktiva avtal, vad som ingår, fakturahistorik och förnyelsedatum." />
+
+      {/* Main agreement */}
+      <div className="card overflow-hidden mb-6">
+        <div className="px-6 py-5 flex items-start justify-between" style={{ background: "var(--brand)", color: "white" }}>
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Pill tone="ink" dot><span style={{ color: "var(--green-2)" }}>Aktivt</span></Pill>
+              <span className="text-[11px]" style={{ color: "rgba(255,255,255,0.6)" }}>· {a.type}</span>
+            </div>
+            <div className="font-serif" style={{ fontSize: 22, letterSpacing: "-0.01em" }}>{a.title}</div>
+            <div className="text-[12px] mt-1 num" style={{ color: "rgba(255,255,255,0.6)" }}>
+              Tecknat {a.signed}  ·  Förnyas {a.renewal} (<span className="font-semibold" style={{ color: daysToRenewal < 90 ? "var(--green-2)" : "rgba(255,255,255,0.7)" }}>om {daysToRenewal} dagar</span>)
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-[10.5px] uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.5)", letterSpacing: "0.06em" }}>Månadskostnad</div>
+            <div className="font-serif num" style={{ fontSize: 28, letterSpacing: "-0.015em", lineHeight: 1.1, marginTop: 4 }}>
+              {a.monthly.toLocaleString("sv-SE")} <span className="text-[12px] font-normal" style={{ color: "rgba(255,255,255,0.5)" }}>kr</span>
+            </div>
+            <div className="text-[11px] mt-0.5 num" style={{ color: "rgba(255,255,255,0.5)" }}>{a.annual.toLocaleString("sv-SE")} kr/år</div>
+          </div>
+        </div>
+
+        {/* Line items */}
+        <div className="px-6 py-4" style={{ borderBottom: "1px solid var(--line-2)" }}>
+          <div className="eyebrow mb-3">Det här ingår</div>
+          {a.items.map((it, i) => (
+            <div key={i} className="flex items-center justify-between py-2.5" style={{ borderBottom: i === a.items.length - 1 ? "none" : "1px solid var(--line-2)" }}>
+              <div>
+                <div className="text-[13px] font-semibold">{it.name}</div>
+                <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>{it.desc}</div>
+              </div>
+              <div className="num text-[13.5px] font-semibold">{it.price.toLocaleString("sv-SE")} <span className="text-[10.5px] opacity-60 font-normal">kr/mån</span></div>
+            </div>
+          ))}
+        </div>
+
+        {/* Contact and invoice details */}
+        <div className="px-6 py-4 grid grid-cols-3 gap-6" style={{ background: "var(--bg-2)" }}>
+          <div>
+            <div className="eyebrow mb-1.5">Avtalskontakt</div>
+            <div className="text-[12.5px] font-semibold">{a.contactPerson}</div>
+            <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>{a.contactEmail}</div>
+          </div>
+          <div>
+            <div className="eyebrow mb-1.5">Faktureras till</div>
+            <div className="text-[11.5px]" style={{ color: "var(--ink-2)", lineHeight: 1.5 }}>{a.invoicedTo}</div>
+          </div>
+          <div className="flex items-end justify-end gap-2">
+            <button className="btn-secondary text-[12px]">Ladda ned avtal</button>
+            <button className="btn-primary text-[12px]">Ändra plan</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Invoice history */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <div className="eyebrow mb-0.5">Fakturor</div>
+            <div className="text-[15px] font-semibold">Senaste 12 månaderna</div>
+          </div>
+          <button className="text-[11.5px] font-medium flex items-center gap-1" style={{ color: "var(--ink-3)" }}>Exportera CSV <Icon name="download" size={11} /></button>
+        </div>
+        <div className="card overflow-hidden">
+          <div className="grid grid-cols-5 px-4 py-2.5 text-[11px] uppercase font-semibold" style={{ background: "var(--bg-2)", color: "var(--ink-4)", letterSpacing: "0.05em", borderBottom: "1px solid var(--line-2)" }}>
+            <div>Faktura</div>
+            <div>Period</div>
+            <div>Datum</div>
+            <div>Status</div>
+            <div className="text-right">Belopp</div>
+          </div>
+          {invoices.map((inv, i) => (
+            <div key={inv.id} className="grid grid-cols-5 px-4 py-3 row-tap items-center"
+              style={{ borderBottom: i === invoices.length - 1 ? "none" : "1px solid var(--line-2)" }}>
+              <div className="text-[12.5px] font-semibold num">{inv.id}</div>
+              <div className="text-[12.5px]">{inv.period}</div>
+              <div className="text-[12.5px] num" style={{ color: "var(--ink-3)" }}>{inv.date}</div>
+              <div><Pill tone="green" dot>Betald</Pill></div>
+              <div className="text-right text-[12.5px] num font-semibold">{inv.amount.toLocaleString("sv-SE")} kr</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   MARKETPLACE VIEW
+   ================================================================ */
+
+const MarketplaceView = () => {
+  const { installed, installItem, uninstallItem } = useApp();
+  const [filter, setFilter] = useState("all"); // all | active | available | coming
+  const [category, setCategory] = useState("all");
+  const [search, setSearch] = useState("");
+  const [openItem, setOpenItem] = useState(null);
+
+  const categories = ["all", ...Array.from(new Set(MARKETPLACE_ITEMS.map(i => i.category)))];
+
+  const filtered = MARKETPLACE_ITEMS.filter(it => {
+    if (filter === "active" && !installed.has(it.id)) return false;
+    if (filter === "available" && (installed.has(it.id) || it.status === "coming")) return false;
+    if (filter === "coming" && it.status !== "coming") return false;
+    if (category !== "all" && it.category !== category) return false;
+    if (search && !it.name.toLowerCase().includes(search.toLowerCase()) && !it.description.toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+
+  return (
+    <div className="fade-in" style={{ padding: "32px 40px", maxWidth: 1200, margin: "0 auto" }}>
+      <ViewHeader
+        eyebrow="Marknadsplats"
+        title="Integrationer för Kontek"
+        subtitle="Koppla Kontek mot bank, bokföring, myndigheter, pension, förmåner och fler system. Aktivera de du behöver, alla aktiveras direkt utan installation."
+      />
+
+      {/* Filter bar */}
+      <div className="flex items-center gap-2 mb-5">
+        <div className="flex items-center gap-1 p-1 rounded-lg" style={{ background: "var(--bg-2)" }}>
+          {[
+            { id: "all", label: "Alla", count: MARKETPLACE_ITEMS.length },
+            { id: "active", label: "Aktiva", count: installed.size },
+            { id: "available", label: "Tillgängliga", count: MARKETPLACE_ITEMS.filter(i => !installed.has(i.id) && i.status !== "coming").length },
+            { id: "coming", label: "Kommande", count: MARKETPLACE_ITEMS.filter(i => i.status === "coming").length },
+          ].map(f => (
+            <button key={f.id} onClick={() => setFilter(f.id)}
+              className="px-3 py-1.5 rounded-md text-[12px] font-medium transition flex items-center gap-1.5"
+              style={{
+                background: filter === f.id ? "white" : "transparent",
+                color: filter === f.id ? "var(--ink)" : "var(--ink-3)",
+                boxShadow: filter === f.id ? "0 1px 3px rgba(0,0,0,0.06)" : "none",
+              }}>
+              {f.label}
+              <span className="num text-[10.5px] px-1.5 rounded" style={{ background: filter === f.id ? "var(--bg-2)" : "transparent", color: filter === f.id ? "var(--ink-3)" : "var(--ink-4)" }}>{f.count}</span>
+            </button>
+          ))}
+        </div>
+        <select value={category} onChange={e => setCategory(e.target.value)}
+          className="px-3 py-1.5 rounded-md text-[12px] outline-none"
+          style={{ background: "white", border: "1px solid var(--line)", color: "var(--ink-2)" }}>
+          {categories.map(c => <option key={c} value={c}>{c === "all" ? "Alla kategorier" : c}</option>)}
+        </select>
+        <div className="ml-auto flex items-center gap-2 px-3 py-1.5 rounded-md" style={{ background: "white", border: "1px solid var(--line)" }}>
+          <Icon name="search" size={13} style={{ color: "var(--ink-4)" }} />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Sök integration..."
+            className="text-[12px] outline-none bg-transparent" style={{ width: 160 }} />
+        </div>
+      </div>
+
+      {/* Grid of integrations */}
+      <div className="grid grid-cols-3 gap-3">
+        {filtered.map(it => (
+          <MarketplaceCard key={it.id} item={it} installed={installed.has(it.id)} onOpen={() => setOpenItem(it)} />
+        ))}
+      </div>
+
+      {filtered.length === 0 && (
+        <div className="card p-10 text-center">
+          <Icon name="search" size={26} style={{ color: "var(--ink-4)", margin: "0 auto 12px", display: "block" }} />
+          <div className="text-[13px] font-semibold mb-1">Inga matchande integrationer</div>
+          <div className="text-[12px]" style={{ color: "var(--ink-3)" }}>Prova ett annat filter eller sökord.</div>
+        </div>
+      )}
+
+      {openItem && <MarketplaceDetail item={openItem} installed={installed.has(openItem.id)} onClose={() => setOpenItem(null)} onInstall={() => { installItem(openItem.id); setOpenItem(null); }} onUninstall={() => { uninstallItem(openItem.id); setOpenItem(null); }} />}
+    </div>
+  );
+};
+
+const MarketplaceCard = ({ item, installed, onOpen }) => {
+  const isComing = item.status === "coming";
+  return (
+    <div className="card card-hover cursor-pointer p-4" onClick={onOpen}>
+      <div className="flex items-start justify-between mb-3">
+        <div style={{ width: 38, height: 38, borderRadius: 9, background: item.color + "18", color: item.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <Icon name={item.icon} size={18} />
+        </div>
+        {installed && <Pill tone="green" dot>Aktiv</Pill>}
+        {isComing && <Pill tone="purple">Snart</Pill>}
+        {!installed && !isComing && <span className="text-[11px] font-medium" style={{ color: "var(--ink-4)" }}>Aktivera</span>}
+      </div>
+      <div className="flex items-center gap-1.5 mb-0.5">
+        <div className="text-[13.5px] font-semibold">{item.name}</div>
+        {item.official && <Icon name="check" size={11} strokeWidth={2.6} style={{ color: "var(--green-2)" }} />}
+      </div>
+      <div className="text-[10.5px] mb-2" style={{ color: "var(--ink-4)" }}>{item.category}{item.official && " · Officiell"}</div>
+      <div className="text-[11.5px]" style={{ color: "var(--ink-3)", lineHeight: 1.4 }}>{item.description}</div>
+    </div>
+  );
+};
+
+const MarketplaceDetail = ({ item, installed, onClose, onInstall, onUninstall }) => {
+  const isComing = item.status === "coming";
+  return (
+    <div className="fade-in" style={{ position: "fixed", inset: 0, background: "rgba(10,20,20,0.45)", zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center", padding: 40 }}
+      onClick={onClose}>
+      <div className="card slide-in-right" onClick={e => e.stopPropagation()}
+        style={{ maxWidth: 520, width: "100%", maxHeight: "85vh", overflowY: "auto" }}>
+        <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: "1px solid var(--line)" }}>
+          <div className="text-[11px] eyebrow">Integration</div>
+          <button onClick={onClose}><Icon name="x" size={16} style={{ color: "var(--ink-3)" }} /></button>
+        </div>
+
+        <div className="px-6 py-5">
+          <div className="flex items-start gap-4 mb-4">
+            <div style={{ width: 56, height: 56, borderRadius: 12, background: item.color + "18", color: item.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Icon name={item.icon} size={26} />
+            </div>
+            <div className="flex-1">
+              <div className="font-serif" style={{ fontSize: 22, letterSpacing: "-0.01em" }}>{item.name}</div>
+              <div className="text-[12px] mb-2" style={{ color: "var(--ink-4)" }}>{item.category}{item.official && " · Officiell partner"}</div>
+              {installed && <Pill tone="green" dot>Aktiv</Pill>}
+              {isComing && <Pill tone="purple">Tillgänglig snart</Pill>}
+              {!installed && !isComing && <Pill tone="neutral">Inte aktiverad</Pill>}
+            </div>
+          </div>
+
+          <div className="text-[13px] mb-5" style={{ color: "var(--ink-2)", lineHeight: 1.5 }}>{item.description}</div>
+
+          <div className="card p-4 mb-5" style={{ background: "var(--bg-2)", border: "1px solid var(--line-2)" }}>
+            <div className="eyebrow mb-2">Det här gör integrationen</div>
+            <div className="space-y-2">
+              {[
+                "Synkroniserar automatiskt vid varje lönekörning",
+                "Krypterad anslutning med BankID-signering",
+                "Felmeddelanden och avstämning via Watson",
+                "Aktiveras inom 60 sekunder — ingen installation",
+              ].map((t, i) => (
+                <div key={i} className="flex items-start gap-2 text-[12px]" style={{ color: "var(--ink-2)" }}>
+                  <Icon name="check" size={13} strokeWidth={2.4} style={{ color: "var(--green-2)", marginTop: 1, flexShrink: 0 }} />
+                  <span>{t}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 mb-5">
+            <div>
+              <div className="eyebrow mb-1">Pris</div>
+              <div className="text-[13px] font-semibold">{item.official ? "Ingår" : "299 kr/mån"}</div>
+            </div>
+            <div>
+              <div className="eyebrow mb-1">Användning</div>
+              <div className="text-[13px] font-semibold">{item.popularity > 4 ? "Mycket vanlig" : item.popularity > 3 ? "Vanlig" : item.popularity > 0 ? "Specialiserad" : "Förhandsvisning"}</div>
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <button onClick={onClose} className="flex-1 btn-secondary">Stäng</button>
+            {!installed && !isComing && <button onClick={onInstall} className="flex-1 btn-primary">Aktivera</button>}
+            {installed && <button onClick={onUninstall} className="flex-1 btn-secondary" style={{ color: "var(--rust)" }}>Avaktivera</button>}
+            {isComing && <button className="flex-1 btn-primary" style={{ background: "var(--purple)" }}>Få notis vid lansering</button>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   USERS VIEW
+   ================================================================ */
+
+const UsersView = () => {
+  const { team, persona } = useApp();
+  const isAgency = persona === "agency";
+  return (
+    <div className="fade-in" style={{ padding: "32px 40px", maxWidth: 1200, margin: "0 auto" }}>
+      <ViewHeader
+        eyebrow={isAgency ? "Konsulter" : "Användare"}
+        title={isAgency ? "Konsulterna på byrån" : "Användare på Norrström Industrier"}
+        subtitle={isAgency
+          ? "Här hanterar du dina konsulter och vilka klienter de jobbar med."
+          : "Här hanterar du vem som har tillgång till vilka Kontek-produkter."}
+        action={<button className="btn-primary flex items-center gap-1.5"><Icon name="plus" size={13} strokeWidth={2.2} /> Bjud in {isAgency ? "konsult" : "användare"}</button>}
+      />
+
+      <div className="card overflow-hidden">
+        <div className="grid px-4 py-2.5 text-[11px] uppercase font-semibold" style={{ background: "var(--bg-2)", color: "var(--ink-4)", letterSpacing: "0.05em", borderBottom: "1px solid var(--line-2)", gridTemplateColumns: isAgency ? "2.5fr 1.6fr 1.4fr 0.8fr 1fr 0.4fr" : "2.5fr 2fr 1.4fr 1.4fr 1fr 0.4fr" }}>
+          <div>Namn</div>
+          <div>{isAgency ? "Roll" : "E-post"}</div>
+          <div>Produkter</div>
+          <div>{isAgency ? "Klienter" : "Senast aktiv"}</div>
+          <div>{isAgency ? "Senast aktiv" : "Roll"}</div>
+          <div></div>
+        </div>
+        {team.map((u, i) => (
+          <div key={u.id} className="grid px-4 py-3 row-tap items-center"
+            style={{ borderBottom: i === team.length - 1 ? "none" : "1px solid var(--line-2)", gridTemplateColumns: isAgency ? "2.5fr 1.6fr 1.4fr 0.8fr 1fr 0.4fr" : "2.5fr 2fr 1.4fr 1.4fr 1fr 0.4fr" }}>
+            <div className="flex items-center gap-2.5">
+              <Avatar initials={u.initials} size={32} bg={u.you ? "var(--ink)" : "var(--brand-3)"} />
+              <div>
+                <div className="text-[12.5px] font-semibold flex items-center gap-1.5">
+                  {u.name}
+                  {u.you && <Pill tone="ink" size="sm">Du</Pill>}
+                </div>
+                <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}>{u.email}</div>
+              </div>
+            </div>
+            <div className="text-[12px]" style={{ color: "var(--ink-2)" }}>{isAgency ? u.role : u.email}</div>
+            <div className="flex gap-1">
+              {u.products.includes("next") && <Pill tone="teal" size="sm">Next</Pill>}
+              {u.products.includes("sphere") && <Pill tone="teal" size="sm">Sphere</Pill>}
+              {u.products.length === 0 && <span className="text-[11px]" style={{ color: "var(--ink-4)" }}>Ingen åtkomst</span>}
+            </div>
+            <div className="text-[11.5px] num" style={{ color: "var(--ink-3)" }}>
+              {isAgency ? <span><span className="num font-semibold" style={{ color: "var(--ink)" }}>{u.clients}</span> aktiva</span> : u.lastActive}
+            </div>
+            <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>
+              {isAgency ? u.lastActive : u.role}
+            </div>
+            <div className="text-right"><Icon name="chevR" size={13} style={{ color: "var(--ink-4)" }} /></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   CLIENTS VIEW (agency only)
+   ================================================================ */
+
+const ClientsView = () => {
+  const { user, activeClient, setActiveClient } = useApp();
+  const clients = user.clients;
+
+  if (activeClient) return <ClientDetailView />;
+
+  return (
+    <div className="fade-in" style={{ padding: "32px 40px", maxWidth: 1200, margin: "0 auto" }}>
+      <ViewHeader
+        eyebrow="Klientportfölj"
+        title="Mina klienter"
+        subtitle={`Du hanterar ${clients.length} klienter med totalt ${clients.reduce((s, c) => s + c.employees, 0)} anställda. Klicka på en klient för att se deras produkter, status och senaste aktivitet.`}
+        action={<button className="btn-primary flex items-center gap-1.5"><Icon name="plus" size={13} strokeWidth={2.2} /> Lägg till klient</button>}
+      />
+
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-3 mb-5">
+        <StatCard icon="briefcase" label="Aktiva klienter" value={clients.filter(c => c.status === "active").length} accent="var(--green-2)" />
+        <StatCard icon="user" label="Anställda totalt" value={clients.reduce((s, c) => s + c.employees, 0)} accent="var(--brand-3)" />
+        <StatCard icon="cube" label="Klienter med Sphere" value={clients.filter(c => c.products.includes("sphere")).length} accent="var(--brand-3)" />
+        <StatCard icon="bolt" label="Onboardas" value={clients.filter(c => c.status === "onboarding").length} accent="var(--purple)" sub="ny denna månad" />
+      </div>
+
+      <div className="card overflow-hidden">
+        <div className="grid grid-cols-6 px-4 py-2.5 text-[11px] uppercase font-semibold" style={{ background: "var(--bg-2)", color: "var(--ink-4)", letterSpacing: "0.05em", borderBottom: "1px solid var(--line-2)" }}>
+          <div className="col-span-2">Klient</div>
+          <div>Org.nr</div>
+          <div>Anställda</div>
+          <div>Produkter</div>
+          <div>Status</div>
+        </div>
+        {clients.map((c, i) => {
+          const healthMeta = {
+            good: { tone: "green", label: "OK" },
+            warning: { tone: "amber", label: "Granska" },
+            onboarding: { tone: "purple", label: "Onboarding" },
+          }[c.health];
+          return (
+            <div key={c.id} className="grid grid-cols-6 px-4 py-3 row-tap items-center"
+              style={{ borderBottom: i === clients.length - 1 ? "none" : "1px solid var(--line-2)" }}
+              onClick={() => setActiveClient(c)}>
+              <div className="col-span-2 flex items-center gap-2.5">
+                <Avatar initials={c.name.split(" ").map(w => w[0]).slice(0, 2).join("")} size={32} bg="var(--brand-2)" />
+                <div>
+                  <div className="text-[12.5px] font-semibold">{c.name}</div>
+                  <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}>Senast: {c.lastActivity}</div>
+                </div>
+              </div>
+              <div className="text-[12px] num" style={{ color: "var(--ink-3)" }}>{c.orgnr}</div>
+              <div className="text-[12px] num font-semibold">{c.employees}</div>
+              <div className="flex gap-1">
+                {c.products.includes("next") && <Pill tone="teal" size="sm">Next</Pill>}
+                {c.products.includes("sphere") && <Pill tone="teal" size="sm">Sphere</Pill>}
+                {c.products.length === 0 && <span className="text-[11px]" style={{ color: "var(--ink-4)" }}>—</span>}
+              </div>
+              <div className="flex items-center gap-2">
+                <Pill tone={healthMeta.tone} dot>{healthMeta.label}</Pill>
+                <Icon name="chevR" size={13} style={{ color: "var(--ink-4)", marginLeft: "auto" }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const ClientDetailView = () => {
+  const { activeClient, setActiveClient } = useApp();
+  const c = activeClient;
+  const initials = c.name.split(" ").map(w => w[0]).slice(0, 2).join("");
+
+  return (
+    <div className="fade-in" style={{ padding: "32px 40px", maxWidth: 1200, margin: "0 auto" }}>
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-4 text-[12px]" style={{ color: "var(--ink-3)" }}>
+        <button onClick={() => setActiveClient(null)} className="row-tap px-2 py-1 rounded-md flex items-center gap-1">
+          <Icon name="chevL" size={13} /> Tillbaka till klienter
+        </button>
+      </div>
+
+      <div className="card p-6 mb-5">
+        <div className="flex items-start gap-4">
+          <Avatar initials={initials} size={56} bg="var(--brand-2)" />
+          <div className="flex-1">
+            <div className="font-serif" style={{ fontSize: 26, letterSpacing: "-0.015em" }}>{c.name}</div>
+            <div className="flex items-center gap-3 mt-1.5 text-[12px]" style={{ color: "var(--ink-3)" }}>
+              <span className="num">{c.orgnr}</span>
+              <span>·</span>
+              <span><span className="num font-semibold" style={{ color: "var(--ink)" }}>{c.employees}</span> anställda</span>
+              <span>·</span>
+              <span>Senast aktivitet {c.lastActivity}</span>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={() => window.open("kontek-next.html", "_blank")}
+              className="btn-secondary flex items-center gap-1.5">
+              <Icon name="external" size={12} /> Öppna i Next
+            </button>
+            <button className="btn-primary">Hantera</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-5" style={{ gridTemplateColumns: "1.6fr 1fr" }}>
+        <div className="space-y-5">
+          {/* Their products */}
+          <div>
+            <div className="eyebrow mb-2">Klientens produkter</div>
+            <div className="card overflow-hidden">
+              {c.products.length === 0 ? (
+                <div className="px-5 py-6 text-center">
+                  <div className="text-[12.5px] mb-2" style={{ color: "var(--ink-3)" }}>Klienten har ännu inga aktiverade produkter</div>
+                  <button className="btn-primary text-[12px]">Starta onboarding</button>
+                </div>
+              ) : (
+                <>
+                  {c.products.includes("next") && (
+                    <div className="px-4 py-3.5 flex items-center gap-3" style={{ borderBottom: c.products.includes("sphere") ? "1px solid var(--line-2)" : "none" }}>
+                      <div style={{ width: 36, height: 36, borderRadius: 8, background: "var(--brand)", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Icon name="cube" size={17} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-[13px] font-semibold">Kontek Next</div>
+                        <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>Löneadministration · Aktiverad mars 2019</div>
+                      </div>
+                      <Pill tone="green" dot>Aktiv</Pill>
+                    </div>
+                  )}
+                  {c.products.includes("sphere") && (
+                    <div className="px-4 py-3.5 flex items-center gap-3">
+                      <div style={{ width: 36, height: 36, borderRadius: 8, background: "var(--brand-2)", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Icon name="grid" size={17} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-[13px] font-semibold">Kontek Sphere</div>
+                        <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>Försystem · {c.employees} aktiva anställda</div>
+                      </div>
+                      <Pill tone="green" dot>Aktiv</Pill>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Activity */}
+          <div>
+            <div className="eyebrow mb-2">Senaste aktivitet</div>
+            <div className="card overflow-hidden">
+              {[
+                { time: "Idag 09:14", who: "Marcus Lindholm", what: "Körde lönekörning april 2026", icon: "play" },
+                { time: "Igår 16:30", who: "Sofia Eriksson", what: "Lade till 2 nya anställda", icon: "plus" },
+                { time: "Igår 13:20", who: "Marcus Lindholm", what: "Aktiverade integration: Fortnox Bokföring", icon: "store" },
+                { time: "2 dagar sedan", who: "Linda Karlsson", what: "Granskade avtalsöversikt", icon: "doc" },
+              ].map((a, i, arr) => (
+                <div key={i} className="px-4 py-3 flex items-center gap-3"
+                  style={{ borderBottom: i === arr.length - 1 ? "none" : "1px solid var(--line-2)" }}>
+                  <div style={{ width: 30, height: 30, borderRadius: 7, background: "var(--bg-2)", color: "var(--ink-2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon name={a.icon} size={13} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[12px]">
+                      <span className="font-semibold">{a.who}</span>
+                      <span style={{ color: "var(--ink-3)" }}> — {a.what}</span>
+                    </div>
+                  </div>
+                  <div className="text-[10.5px]" style={{ color: "var(--ink-4)" }}>{a.time}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-5">
+          {/* Contact card */}
+          <div className="card p-4">
+            <div className="eyebrow mb-3">Klientens kontakt</div>
+            <div className="flex items-center gap-2.5 mb-3">
+              <Avatar initials="MJ" size={36} bg="var(--brand-3)" />
+              <div>
+                <div className="text-[12.5px] font-semibold">Margareta Johansson</div>
+                <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>VD</div>
+              </div>
+            </div>
+            <div className="space-y-2 text-[11.5px]" style={{ color: "var(--ink-2)" }}>
+              <div className="flex items-center gap-2"><Icon name="mail" size={12} style={{ color: "var(--ink-4)" }} /> m.johansson@{c.id}.se</div>
+              <div className="flex items-center gap-2"><Icon name="phone" size={12} style={{ color: "var(--ink-4)" }} /> <span className="num">011-12 34 56</span></div>
+            </div>
+          </div>
+
+          {/* Health */}
+          <div className="card p-4">
+            <div className="eyebrow mb-2">Klientens hälsa</div>
+            {c.health === "good" && (
+              <>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Icon name="check" size={14} strokeWidth={2.4} style={{ color: "var(--green-2)" }} />
+                  <span className="text-[13px] font-semibold">Allt på spåret</span>
+                </div>
+                <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>Inga öppna ärenden. Senaste lönekörningen genomfördes utan avvikelser.</div>
+              </>
+            )}
+            {c.health === "warning" && (
+              <>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Icon name="info" size={14} strokeWidth={2.4} style={{ color: "var(--amber)" }} />
+                  <span className="text-[13px] font-semibold">1 sak att kolla</span>
+                </div>
+                <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>Watson har flaggat avvikande övertid på 2 anställda i senaste körningen — behöver godkännas av kund innan låsning.</div>
+              </>
+            )}
+            {c.health === "onboarding" && (
+              <>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Icon name="sparkle" size={14} strokeWidth={2.4} style={{ color: "var(--purple)" }} />
+                  <span className="text-[13px] font-semibold">Onboardas just nu</span>
+                </div>
+                <div className="text-[11.5px]" style={{ color: "var(--ink-3)" }}>Klienten är i uppstartsfas. 3 av 7 steg klara. Första lönekörningen planerad till juni 2026.</div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   SETTINGS VIEW
+   ================================================================ */
+
+const SettingsView = () => {
+  const { user, persona } = useApp();
+  return (
+    <div className="fade-in" style={{ padding: "32px 40px", maxWidth: 1200, margin: "0 auto" }}>
+      <ViewHeader eyebrow="Inställningar" title="Konto och företag" subtitle="Hantera ditt företags uppgifter, säkerhet och notifikationer." />
+
+      <div className="grid gap-5" style={{ gridTemplateColumns: "1fr 1fr" }}>
+        <div className="card p-5">
+          <div className="eyebrow mb-3">Företagsuppgifter</div>
+          <SettingRow label="Företagsnamn" value={user.company.name} />
+          <SettingRow label="Organisationsnummer" value={user.company.orgnr} mono />
+          <SettingRow label="Kundnummer" value={user.company.customerNumber} mono />
+          <SettingRow label="Antal anställda" value={user.company.employees} mono />
+          <SettingRow label="Kund sedan" value={user.company.since} mono last />
+        </div>
+
+        <div className="card p-5">
+          <div className="eyebrow mb-3">Din profil</div>
+          <SettingRow label="Namn" value={user.name} />
+          <SettingRow label="Roll" value={user.role} />
+          <SettingRow label="E-post" value={user.email} />
+          <SettingRow label="Telefon" value={user.phone} mono />
+          <SettingRow label="Behörighet" value="Administratör" tone="green" last />
+        </div>
+
+        <div className="card p-5">
+          <div className="eyebrow mb-3">Säkerhet</div>
+          <SettingToggleRow label="Tvåfaktorsautentisering" sub="Skydda kontot med BankID eller authenticator-app" enabled />
+          <SettingToggleRow label="Enbart BankID-inloggning" sub="Stäng av lösenordsinloggning helt" enabled />
+          <SettingToggleRow label="IP-begränsningar" sub="Tillåt bara inloggning från specifika IP-adresser" />
+          <SettingToggleRow label="Inloggningsnotiser" sub="Få e-post vid ny enhet eller plats" enabled last />
+        </div>
+
+        <div className="card p-5">
+          <div className="eyebrow mb-3">Notifikationer</div>
+          <SettingToggleRow label="Avtalsförnyelser" sub="Påminnelse 90, 30 och 7 dagar innan" enabled />
+          <SettingToggleRow label="Nya marknadsplats-integrationer" sub="Varannan vecka" />
+          <SettingToggleRow label="Produktnyheter" sub="Större uppdateringar i Kontek-produkter" enabled />
+          <SettingToggleRow label="Veckosammanfattning" sub="Skickas måndag morgon" last />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SettingRow = ({ label, value, mono, tone, last }) => (
+  <div className="flex items-center justify-between py-2.5" style={{ borderBottom: last ? "none" : "1px solid var(--line-2)" }}>
+    <span className="text-[12px]" style={{ color: "var(--ink-3)" }}>{label}</span>
+    {tone === "green" ? <Pill tone="green" dot>{value}</Pill> :
+      <span className={"text-[12.5px] font-semibold" + (mono ? " num" : "")}>{value}</span>}
+  </div>
+);
+
+const SettingToggleRow = ({ label, sub, enabled = false, last }) => {
+  const [on, setOn] = useState(enabled);
+  return (
+    <div className="flex items-center justify-between py-3" style={{ borderBottom: last ? "none" : "1px solid var(--line-2)" }}>
+      <div className="flex-1">
+        <div className="text-[12.5px] font-semibold">{label}</div>
+        {sub && <div className="text-[11px]" style={{ color: "var(--ink-3)" }}>{sub}</div>}
+      </div>
+      <button onClick={() => setOn(!on)}
+        style={{
+          width: 34, height: 20, borderRadius: 10, padding: 2,
+          background: on ? "var(--green-2)" : "var(--line)",
+          transition: "background 0.15s",
+          position: "relative",
+        }}>
+        <div style={{
+          width: 16, height: 16, borderRadius: 8, background: "white",
+          transform: on ? "translateX(14px)" : "translateX(0)",
+          transition: "transform 0.15s",
+          boxShadow: "0 1px 2px rgba(0,0,0,0.15)",
+        }} />
+      </button>
+    </div>
+  );
+};
+
+/* ================================================================
+   APP SHELL
+   ================================================================ */
+
+const AppShell = () => {
+  const { activeView, persona, switchPersona, reset, setStage } = useApp();
+
+  const renderView = () => {
+    switch (activeView) {
+      case "home":        return <HomeView />;
+      case "products":    return <ProductsView />;
+      case "agreements":  return <AgreementsView />;
+      case "marketplace": return <MarketplaceView />;
+      case "users":       return <UsersView />;
+      case "clients":     return <ClientsView />;
+      case "settings":    return <SettingsView />;
+      default:            return <HomeView />;
+    }
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--bg)" }}>
+      {/* Persona bar (demo only) */}
+      <div className="persona-bar">
+        <div className="flex items-center gap-3">
+          <span style={{ color: "var(--green-2)", fontWeight: 600, letterSpacing: "0.05em" }}>DEMO</span>
+          <span style={{ color: "rgba(255,255,255,0.5)" }}>·</span>
+          <span>Du är inloggad som</span>
+          <button onClick={() => switchPersona("customer")} className={"persona-pill" + (persona === "customer" ? " active" : "")}>
+            <Icon name="building" size={11} style={{ marginRight: 4, display: "inline-block", verticalAlign: -1 }} /> Slutkund
+          </button>
+          <button onClick={() => switchPersona("agency")} className={"persona-pill" + (persona === "agency" ? " active" : "")}>
+            <Icon name="briefcase" size={11} style={{ marginRight: 4, display: "inline-block", verticalAlign: -1 }} /> Redovisningsbyrå
+          </button>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={() => setStage("website")} className="persona-pill" style={{ background: "transparent" }}>
+            ← Tillbaka till kontek.se
+          </button>
+          <button onClick={reset} className="persona-pill" style={{ background: "transparent" }}>
+            ↻ Återställ
+          </button>
+        </div>
+      </div>
+
+      <TopBar />
+      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+        <Sidebar />
+        <main style={{ flex: 1, overflowY: "auto" }}>
+          {renderView()}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+const App = () => {
+  const { stage, reset } = useApp();
+
+  // Small reset banner only on website + login stages
+  const DemoBar = () => (
+    <div style={{
+      position: "fixed", bottom: 16, right: 16, zIndex: 100,
+      background: "var(--ink)", color: "white",
+      padding: "8px 14px", borderRadius: 99,
+      boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
+      display: "flex", alignItems: "center", gap: 10,
+      fontSize: 11, fontWeight: 500,
+    }}>
+      <span style={{ color: "var(--green-2)", fontWeight: 600, letterSpacing: "0.05em" }}>DEMO</span>
+      <span style={{ color: "rgba(255,255,255,0.4)" }}>·</span>
+      <button onClick={reset} style={{ color: "rgba(255,255,255,0.7)" }}>↻ Återställ</button>
+    </div>
+  );
+
+  if (stage === "website") return <><WebsiteView /><DemoBar /></>;
+  if (stage === "login") return <><LoginView /><DemoBar /></>;
+  return <AppShell />;
+};
+
+class ErrorBoundary extends React.Component {
+  constructor(p) { super(p); this.state = { e: null }; }
+  static getDerivedStateFromError(e) { return { e }; }
+  componentDidCatch(e, info) { console.error(e, info); }
+  render() {
+    if (this.state.e) {
+      return <div style={{ padding: 40, fontFamily: "monospace", whiteSpace: "pre-wrap", color: "red" }}>{String(this.state.e?.stack || this.state.e)}</div>;
+    }
+    return this.props.children;
+  }
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <ErrorBoundary>
+    <AppProvider><App /></AppProvider>
+  </ErrorBoundary>
+);
+</script>
+</body>
+</html>

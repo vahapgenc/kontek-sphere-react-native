@@ -1,0 +1,12 @@
+/* ============================================================
+   KONTEK NEXT — Design System entry point
+   Single stylesheet for consumers. Mobile-first: this pulls in the
+   source-of-truth tokens + semantic classes, which in turn import the
+   mobile-native components.
+
+       <link rel="stylesheet" href="styles.css">
+
+   (The desktop UI kit keeps its own frozen ui_kits/kontek-next/tokens.css,
+   and preview/_card.css is spec-card chrome — neither is part of this entry.)
+   ============================================================ */
+@import url('colors_and_type.css');

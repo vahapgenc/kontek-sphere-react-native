@@ -1,0 +1,189 @@
+<!-- @dsCard group="Molecules" name="Buttons" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Buttons — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { margin:0; padding:30px 34px 60px; background:var(--canvas); font-family:var(--font-ui); color:var(--ink); }
+  .sec { margin-bottom:34px; }
+  .sec > h2 { font-family:var(--font-ui); font-size:var(--t-title); font-weight:var(--w-semibold); margin:0 0 4px; }
+  .sec > p { font-size:var(--t-caption); color:var(--ink-3); margin:0 0 16px; max-width:640px; line-height:1.5; }
+  .frame { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card);
+           padding:22px; display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+  .frame.spread { justify-content:space-between; }
+  .state { display:flex; flex-direction:column; align-items:center; gap:9px; }
+  .state .lbl { font-size:11px; color:var(--ink-3); font-weight:var(--w-medium); }
+  /* static state simulations (real states use pseudo-classes) */
+  .is-hover.ds-btn--primary { background:var(--action-hi); }
+  .is-press.ds-btn--primary { background:var(--action-press); }
+  .is-hover.ds-btn--secondary { background:var(--surface-2); border-color:var(--ink-3); }
+  .is-hover.ds-btn--ghost { background:var(--surface-2); }
+  .is-hover.ds-btn--transparent { background:var(--green-soft); color:var(--action-hi); }
+  .is-focus { outline:2px solid var(--action-ring); outline-offset:2px; }
+  .divider { width:1px; align-self:stretch; background:var(--line); margin:0 2px; }
+  .anatomy { font-size:var(--t-caption); color:var(--ink-3); }
+  .anatomy b { color:var(--ink-2); font-weight:var(--w-semibold); }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Buttons</h1>
+  <div class="dg-intro"><p>Knappen bär vyns viktigaste åtgärd. Fyra typer bygger hierarki — <b>en primär per vy</b>, resten trappas ner. Skriv ett verb på knappen, aldrig ett substantiv.</p></div>
+
+  <div class="sec">
+    <h2>Type variants</h2>
+    <p>Four types establish hierarchy — <b>primary</b> (one per view, the main CTA), <b>secondary</b> (support actions), <b>ghost</b> (low-priority), <b>transparent</b> (minimal / inline). Height 48px (tap-safe on iOS &amp; Android) · radius 12px · 8px gap.</p>
+    <div class="frame">
+      <button class="ds-btn ds-btn--primary">Spara faktura</button>
+      <button class="ds-btn ds-btn--secondary">Avbryt</button>
+      <button class="ds-btn ds-btn--ghost">Förhandsgranska</button>
+      <button class="ds-btn ds-btn--transparent">Läs mer</button>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Mobile shapes — block &amp; large</h2>
+    <p>On a phone the main action is a full-width <b>block</b> button; <b>--lg</b> (56px) is the prominent sticky-bottom CTA. <b>--sm</b> (40px) is for compact controls inside dense rows.</p>
+    <div class="frame col" style="max-width:380px;">
+      <button class="ds-btn ds-btn--primary ds-btn--block ds-btn--lg">Granska &amp; godkänn</button>
+      <button class="ds-btn ds-btn--secondary ds-btn--block">Visa detaljer</button>
+      <span style="display:flex;gap:10px;">
+        <button class="ds-btn ds-btn--ghost ds-btn--sm">Filtrera</button>
+        <button class="ds-btn ds-btn--secondary ds-btn--sm">Sortera</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States — primary</h2>
+    <p>Default · hover (pointer) · pressed (active) · focus (keyboard) · disabled (action unavailable).</p>
+    <div class="frame">
+      <div class="state"><button class="ds-btn ds-btn--primary">Skicka</button><span class="lbl">Default</span></div>
+      <div class="state"><button class="ds-btn ds-btn--primary is-hover">Skicka</button><span class="lbl">Hover</span></div>
+      <div class="state"><button class="ds-btn ds-btn--primary is-press">Skicka</button><span class="lbl">Pressed</span></div>
+      <div class="state"><button class="ds-btn ds-btn--primary is-focus">Skicka</button><span class="lbl">Focus</span></div>
+      <div class="state"><button class="ds-btn ds-btn--primary" disabled>Skicka</button><span class="lbl">Disabled</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States — secondary · ghost · transparent</h2>
+    <p>Default · hover · disabled for the non-primary types. Disabled stays visible to show the action exists but is unavailable.</p>
+    <div class="frame">
+      <div class="state"><button class="ds-btn ds-btn--secondary">Exportera</button><span class="lbl">Secondary</span></div>
+      <div class="state"><button class="ds-btn ds-btn--secondary is-hover">Exportera</button><span class="lbl">Hover</span></div>
+      <div class="state"><button class="ds-btn ds-btn--secondary" disabled>Exportera</button><span class="lbl">Disabled</span></div>
+      <div class="divider"></div>
+      <div class="state"><button class="ds-btn ds-btn--ghost">Detaljer</button><span class="lbl">Ghost</span></div>
+      <div class="state"><button class="ds-btn ds-btn--ghost is-hover">Detaljer</button><span class="lbl">Hover</span></div>
+      <div class="state"><button class="ds-btn ds-btn--ghost" disabled>Detaljer</button><span class="lbl">Disabled</span></div>
+      <div class="divider"></div>
+      <div class="state"><button class="ds-btn ds-btn--transparent">Ångra</button><span class="lbl">Transparent</span></div>
+      <div class="state"><button class="ds-btn ds-btn--transparent is-hover">Ångra</button><span class="lbl">Hover</span></div>
+      <div class="state"><button class="ds-btn ds-btn--transparent" disabled>Ångra</button><span class="lbl">Disabled</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>With icons — leading · trailing</h2>
+    <p>Leading icon for action context (download, add); trailing icon for direction or disclosure (dropdown, external link).</p>
+    <div class="frame">
+      <button class="ds-btn ds-btn--primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Ladda ner dokument</button>
+      <button class="ds-btn ds-btn--secondary">Öppna rapport<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></button>
+      <button class="ds-btn ds-btn--secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9V5a2 2 0 0 1 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v3"/><path d="m22 13-5.5 5.5"/><path d="M16 13h6v6"/></svg>Importera data</button>
+      <button class="ds-btn ds-btn--transparent">Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
+      <button class="ds-btn ds-btn--transparent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Tillbaka</button>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Icon button — states &amp; toolbar</h2>
+    <p>Icon-only buttons for compact toolbars and dense layouts (edit, delete, refresh). Always pair with a tooltip for accessibility.</p>
+    <div class="frame">
+      <div class="state"><button class="ds-btn ds-btn--primary ds-btn--icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button><span class="lbl">Default</span></div>
+      <div class="state"><button class="ds-btn ds-btn--primary ds-btn--icon is-hover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button><span class="lbl">Hover</span></div>
+      <div class="state"><button class="ds-btn ds-btn--primary ds-btn--icon is-press"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button><span class="lbl">Pressed</span></div>
+      <div class="state"><button class="ds-btn ds-btn--primary ds-btn--icon is-focus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button><span class="lbl">Focus</span></div>
+      <div class="state"><button class="ds-btn ds-btn--primary ds-btn--icon" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button><span class="lbl">Disabled</span></div>
+      <div class="divider"></div>
+      <button class="ds-btn ds-btn--ghost ds-btn--icon" title="Sök"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <button class="ds-btn ds-btn--ghost ds-btn--icon" title="Redigera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+      <button class="ds-btn ds-btn--ghost ds-btn--icon" title="Dela"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+      <button class="ds-btn ds-btn--ghost ds-btn--icon" title="Favorit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 2.5 14 7.5l5.5.8-4 3.9.9 5.5-4.9-2.6L7.6 18l.9-5.5-4-3.9 5.5-.8z"/></svg></button>
+      <button class="ds-btn ds-btn--ghost ds-btn--icon" title="Mer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Action group — confirm / cancel</h2>
+    <p>Dialog and modal footers: primary on the right for the main confirmation, secondary for cancel. One primary per dialog, right-aligned.</p>
+    <div class="frame" style="justify-content:flex-end;">
+      <button class="ds-btn ds-btn--secondary">Avbryt</button>
+      <button class="ds-btn ds-btn--primary">Godkänn utbetalning</button>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Destructive action</h2>
+    <p>Destructive actions use the ghost or transparent type to avoid over-emphasising risky operations. Never place “Ta bort” immediately beside “Spara” — separate it spatially or behind a confirmation dialog.</p>
+    <div class="frame spread">
+      <button class="ds-btn ds-btn--danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Ta bort post</button>
+      <span style="display:flex;gap:14px;">
+        <button class="ds-btn ds-btn--primary">Spara ändringar</button>
+        <button class="ds-btn ds-btn--secondary">Behåll post</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy" style="gap:28px;">
+      <div><b>Height</b> &nbsp;48px (sm 40 · lg 56)</div>
+      <div><b>Radius</b> &nbsp;12px (r-button)</div>
+      <div><b>Padding</b> &nbsp;24px (0 icon-only)</div>
+      <div><b>Gap</b> &nbsp;8px</div>
+      <div><b>Icon</b> &nbsp;20px</div>
+      <div><b>Label</b> &nbsp;16px / 600</div>
+      <div><b>Tap target</b> &nbsp;≥ 48px</div>
+      <div><b>Press</b> &nbsp;scale 0.97</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__examples">
+      <figure class="kdd__ex kdd__ex--do">
+        <div class="kdd__ex__stage"><button class="ds-btn ds-btn--approve">Godkänn utbetalning</button></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Green carries the positive, go-ahead action.</figcaption>
+      </figure>
+      <figure class="kdd__ex kdd__ex--dont">
+        <div class="kdd__ex__stage"><button class="ds-btn" style="background:var(--red);color:#fff;">Godkänn utbetalning</button></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Red on approve reads as destructive &mdash; never do this.</figcaption>
+      </figure>
+    </div>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Keep one clear primary action per screen; make it a full-width <code>--block</code> on the phone.</li>
+          <li>Put a verb on the label &mdash; the action, not the feature name.</li>
+          <li>Use <code>--approve</code> (green) for save/approve, <code>--danger</code> only for destructive.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use red for save or approve.</li>
+          <li>Show two primary buttons competing on one screen.</li>
+          <li>Place &ldquo;Ta bort&rdquo; right beside &ldquo;Spara&rdquo; &mdash; separate it or gate it behind a confirm.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!-- @dsCard group="Molecules" viewport="940x860" name="Badges" subtitle="Status pills (what state) & count badges (how many)" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Badges — Kontek</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  /* status pill — token-driven; colour comes entirely from the tone */
+  .pill { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600;
+          letter-spacing:0.01em; line-height:1.3; padding:4px 10px; border-radius:var(--r-pill); white-space:nowrap; }
+  .pill .dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex:none; }
+  .pill--ok      { background:var(--ok-bg);     color:var(--ok); }
+  .pill--warn    { background:var(--warn-bg);   color:var(--warn); }
+  .pill--info    { background:var(--info-bg);   color:var(--info); }
+  .pill--danger  { background:var(--danger-bg); color:var(--danger); }
+  .pill--neutral { background:var(--surface-2); color:var(--ink-3); }
+  .pill--brand   { background:var(--green-soft); color:var(--signature); }
+
+  .tones { display:flex; flex-direction:column; gap:0; width:100%; }
+  .trow { display:grid; grid-template-columns:max-content 1fr; gap:18px; align-items:center; padding:13px 4px; border-bottom:1px solid var(--line-2); }
+  .trow:last-child { border-bottom:0; }
+  .trow .meaning { font-size:13px; color:var(--ink-3); line-height:1.45; }
+  .trow .meaning b { color:var(--ink-2); font-weight:600; }
+  .tone-key { font-family:var(--font-mono); font-size:12px; color:var(--ink-4); margin-left:8px; }
+
+  .maprow { display:grid; grid-template-columns:120px 1fr; gap:18px; align-items:center; padding:11px 4px; border-bottom:1px solid var(--line-2); }
+  .maprow:last-child { border-bottom:0; }
+  .maprow code { font-family:var(--font-mono); font-size:12.5px; color:var(--ink-2); }
+
+  /* count badge demo */
+  .counts { display:flex; gap:34px; flex-wrap:wrap; align-items:flex-start; }
+  .ico { position:relative; width:44px; height:44px; border-radius:12px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; color:var(--ink-2); }
+  .ico svg { width:24px; height:24px; }
+  .tabish { display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--signature); padding:4px 8px 0; }
+  .tabish .ds-tab__icon svg { width:27px; height:27px; }
+  .tabish .lab { font-size:11px; font-weight:600; }
+
+  .anatomy { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); padding:20px 22px; display:flex; gap:28px; flex-wrap:wrap; font-size:var(--t-caption); color:var(--ink-3); }
+  .anatomy b { color:var(--ink-2); font-weight:600; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Badges</h1>
+  <div class="dg-intro"><p>Två obesläktade saker kallas ”badge”. Håll isär dem: <b>statuspiller</b> säger <b>vilket tillstånd</b> (sex semantiska toner, prick = levande tillstånd), <b>antalsbrickor</b> säger <b>hur många</b> (grön cirkel i nav-fliken, neutralt grå annars; vit siffra, bara när &gt; 0). Blanda dem aldrig.</p></div>
+
+  <div class="sec">
+    <h2>Status pill — the six tones</h2>
+    <p>A pill's colour is never set by hand. You pick a <b>tone by meaning</b>; the tone resolves to a matched text-colour + soft-background pair. These six are the complete set — default tone is <code>info</code>.</p>
+    <div class="frame" style="display:block;">
+      <div class="tones">
+        <div class="trow"><span><span class="pill pill--ok"><span class="dot"></span>Godkänd</span></span><span class="meaning"><b>ok</b> — klart och bra: godkänd, betald, aktiv. <span class="tone-key">--ok · --ok-bg</span></span></div>
+        <div class="trow"><span><span class="pill pill--warn"><span class="dot"></span>Åtgärd krävs</span></span><span class="meaning"><b>warn</b> — behöver dig: fixa, åtgärd krävs. <span class="tone-key">--warn · --warn-bg</span></span></div>
+        <div class="trow"><span><span class="pill pill--info"><span class="dot"></span>Väntar på godkännande</span></span><span class="meaning"><b>info</b> — pågår: inväntar godkännande, granska. <span class="tone-key">--info · --info-bg</span></span></div>
+        <div class="trow"><span><span class="pill pill--danger"><span class="dot"></span>Avvisad</span></span><span class="meaning"><b>danger</b> — misslyckat/negativt: avvisad. <span class="tone-key">--danger · --danger-bg</span></span></div>
+        <div class="trow"><span><span class="pill pill--neutral">Gäller: maj</span></span><span class="meaning"><b>neutral</b> — tyst metadata, valfria ledtrådar. <span class="tone-key">--ink-3 · --surface-2</span></span></div>
+        <div class="trow"><span><span class="pill pill--brand"><span class="dot"></span>Preliminär</span></span><span class="meaning"><b>brand</b> — varumärkesmarkör, t.ex. ”Preliminär” på lön. <span class="tone-key">--signature · --green-soft</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>State → tone → label</h2>
+    <p>Item-tillstånd löses genom en delad tabell så att samma tillstånd alltid ser likadant ut. Använd dessa etiketter och toner ordagrant.</p>
+    <div class="frame" style="display:block;">
+      <div class="tones">
+        <div class="maprow"><code>action</code><span><span class="pill pill--warn"><span class="dot"></span>Åtgärd krävs</span></span></div>
+        <div class="maprow"><code>pending</code><span><span class="pill pill--info"><span class="dot"></span>Väntar på godkännande</span></span></div>
+        <div class="maprow"><code>approved</code><span><span class="pill pill--ok"><span class="dot"></span>Godkänd</span></span></div>
+        <div class="maprow"><code>rejected</code><span><span class="pill pill--danger"><span class="dot"></span>Avvisad</span></span></div>
+        <div class="maprow"><code>info</code><span><span class="pill pill--neutral">Info</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Dot or no dot</h2>
+    <p>Rule of thumb: a <b>live state of a real item</b> carries a dot; a <b>static tag or metadata</b> doesn't.</p>
+    <div class="frame" style="gap:26px;">
+      <span class="pill pill--ok"><span class="dot"></span>Betald</span>
+      <span class="pill pill--warn"><span class="dot"></span>Fixa</span>
+      <span class="pill pill--info"><span class="dot"></span>Granska</span>
+      <span class="divider"></span>
+      <span class="pill pill--neutral">Gäller: maj</span>
+      <span class="pill pill--neutral">Kan kräva intyg</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Count badge</h2>
+    <p>A tiny number bubble that shows a <b>count</b> — only ever when it is <b>&gt; 0</b>. <b>Green is for the bottom-nav tabs only.</b> Everywhere else a count appears — the app-bar bell, a section header — it is a <b>neutral dark-grey</b> circle. White number, 2px white ring in both cases.</p>
+    <div class="frame" style="gap:40px; align-items:flex-start;">
+      <div class="state cc">
+        <div class="counts">
+          <span class="tabish"><span class="ds-tab__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg><span class="ds-tab__badge">5</span></span><span class="lab">Hem</span></span>
+          <span class="tabish"><span class="ds-tab__icon" style="color:var(--ink-3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg><span class="ds-tab__badge">12</span></span><span class="lab">Anställda</span></span>
+        </div>
+        <span class="lbl">Nav-flikar — grön</span>
+      </div>
+      <div class="divider"></div>
+      <div class="state cc">
+        <div class="counts">
+          <span class="tabish"><span class="ds-tab__icon" style="color:var(--ink-3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ds-tab__badge ds-tab__badge--neutral">3</span></span><span class="lab">Notiser</span></span>
+          <span class="tabish"><span class="ds-tab__icon" style="color:var(--ink-3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg><span class="ds-tab__badge ds-tab__badge--neutral">12</span></span><span class="lab">Att göra</span></span>
+        </div>
+        <span class="lbl">Klocka &amp; rubriker — neutralt grått</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="anatomy">
+      <div><b>Pill</b>&nbsp; --r-pill · 4px 10px · 11px/600</div>
+      <div><b>Dot</b>&nbsp; 6×6 · text colour</div>
+      <div><b>Tones</b>&nbsp; 6 (ok·warn·info·danger·neutral·brand)</div>
+      <div><b>Count</b>&nbsp; 18px · pill at 2+ digits · white 11px</div>
+      <div><b>Fill</b>&nbsp; --green (nav) · --ink-3 (elsewhere)</div>
+      <div><b>Ring</b>&nbsp; 2px --surface</div>
+      <div><b>Position</b>&nbsp; top -6 · right -11</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__examples">
+      <figure class="kdd__ex kdd__ex--do">
+        <div class="kdd__ex__stage"><span class="pill pill--info"><span class="dot"></span>Granska</span><span class="ds-tab__icon" style="color:var(--ink-2);margin-right:6px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ds-tab__badge ds-tab__badge--neutral">3</span></span></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Pill = what state (tone + dot); circle = how many. Two different jobs.</figcaption>
+      </figure>
+      <figure class="kdd__ex kdd__ex--dont">
+        <div class="kdd__ex__stage"><span class="pill pill--info">Väntar (3)</span><span class="pill" style="background:var(--danger-bg);color:var(--danger);">Ta bort</span></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't bury a count in a pill, and never use danger for a destructive action.</figcaption>
+      </figure>
+    </div>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Pick the tone by <b>meaning</b>, and always use the matched text + background pair.</li>
+          <li>Add a dot for a live item state; leave it off for a static tag or metadata.</li>
+          <li>Use the green count circle on the bottom-nav tabs and the neutral grey circle for the bell and section headers — white number, 2px ring, only when <code>&gt; 0</code>.</li>
+          <li>Keep labels 1–2 words, sentence case; shorten the copy rather than truncate.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use <code>danger</code> for a destructive action — it only marks a negative/failed state (rejected).</li>
+          <li>Hand-roll a 7th colour; an uncovered state maps to <code>neutral</code>.</li>
+          <li>Put a count inside a pill, a status word inside a circle, or render a ”0” badge.</li>
+          <li>Mix a tone's text colour with a different background.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

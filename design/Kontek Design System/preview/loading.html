@@ -1,0 +1,102 @@
+<!-- @dsCard group="Molecules" viewport="900x520" name="Loading" subtitle="Skeletons, spinners & pull-to-refresh" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Loading — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .skelcard { width:300px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); padding:16px; box-shadow:var(--shadow-sm); }
+  .skelrow { display:flex; align-items:center; gap:14px; }
+  .skelrow + .skelrow { margin-top:16px; }
+  .spinrow { display:flex; align-items:center; gap:30px; }
+  .spincol { display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .ptr { width:300px; border:1px solid var(--line); border-radius:var(--r-card); overflow:hidden; background:var(--surface); }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Loading</h1>
+  <div class="dg-intro"><p>Skelett som speglar layouten som laddar, spinner för korta väntor. Frys allt till ett lugnt statiskt läge vid reducerad rörelse.</p></div>
+
+  <div class="sec">
+    <h2>Skeletons</h2>
+    <p>While data loads, mirror the shape of the content with shimmering placeholders rather than a blank screen or a lone spinner — it keeps the layout stable and the wait feeling shorter. Compose from text, title, circle and block primitives. The shimmer freezes for <code>prefers-reduced-motion</code>.</p>
+    <div class="frame center">
+      <div class="skelcard">
+        <div class="skelrow">
+          <div class="ds-skeleton ds-skeleton--circle" style="width:40px;height:40px;"></div>
+          <div style="flex:1;">
+            <div class="ds-skeleton ds-skeleton--title" style="width:62%;"></div>
+            <div class="ds-skeleton ds-skeleton--text" style="width:88%;margin-top:8px;"></div>
+          </div>
+        </div>
+        <div class="skelrow">
+          <div class="ds-skeleton ds-skeleton--circle" style="width:40px;height:40px;"></div>
+          <div style="flex:1;">
+            <div class="ds-skeleton ds-skeleton--title" style="width:48%;"></div>
+            <div class="ds-skeleton ds-skeleton--text" style="width:76%;margin-top:8px;"></div>
+          </div>
+        </div>
+        <div class="ds-skeleton ds-skeleton--block" style="margin-top:16px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Spinner &amp; pull-to-refresh</h2>
+    <p>A spinner covers indeterminate waits inside buttons, inline loads and the pull-to-refresh affordance at the top of a scrolling list. Three sizes plus an on-dark variant.</p>
+    <div class="frame center" style="gap:40px;">
+      <div class="spinrow">
+        <div class="spincol"><span class="ds-spinner ds-spinner--sm"></span><span class="lbl">sm</span></div>
+        <div class="spincol"><span class="ds-spinner"></span><span class="lbl">default</span></div>
+        <div class="spincol"><span class="ds-spinner ds-spinner--lg"></span><span class="lbl">lg</span></div>
+        <div class="spincol" style="background:var(--ground);padding:14px;border-radius:14px;"><span class="ds-spinner ds-spinner--on-dark"></span><span class="lbl" style="color:var(--on-dark-2);">on dark</span></div>
+      </div>
+      <div>
+        <div class="ptr">
+          <div class="ds-ptr"><span class="ds-spinner ds-spinner--sm"></span> Uppdaterar…</div>
+          <div style="border-top:1px solid var(--line-2);padding:14px 16px;font-size:14px;color:var(--ink-3);">Senaste körningar</div>
+        </div>
+        <div class="lbl" style="margin-top:10px;">Pull-to-refresh</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy">
+      <div><b>Skeleton</b> &nbsp;surface-2 + 1.4s shimmer</div>
+      <div><b>Spinner</b> &nbsp;green-line ring, deep-green head</div>
+      <div><b>Sizes</b> &nbsp;20 · 28 · 40px</div>
+      <div><b>Reduced motion</b> &nbsp;shimmer & spin freeze</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use skeletons that mirror the layout that's loading.</li>
+          <li>Reserve the spinner for short, indeterminate waits.</li>
+          <li>Freeze shimmer and spin to a calm static state under <code>prefers-reduced-motion</code>.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Block an optimistic action behind a spinner &mdash; apply it and confirm.</li>
+          <li>Leave an infinite spin running with no reduced-motion fallback.</li>
+          <li>Show a generic spinner where a structured skeleton would reassure.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

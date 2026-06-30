@@ -1,0 +1,95 @@
+<!-- @dsCard group="Molecules" name="Search" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Search — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+</head>
+<body>
+
+  <h1 class="dg-h1">Search</h1>
+  <div class="dg-intro"><p>Filtrerar listor och vyer direkt medan du skriver. Ledande förstoringsglas och en rensa-knapp när det finns text.</p></div>
+
+  <div class="sec">
+    <h2>Usage</h2>
+    <p>Filtrerar eller söker i en lista, tabell eller global vy. Ledande förstoringsglas, valfri rensningsknapp när fältet har innehåll. Samma höjd och radie som textfältet.</p>
+    <div class="frame col">
+      <div class="ds-search">
+        <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="ds-input" type="text" placeholder="Sök anställd, period eller belopp">
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States</h2>
+    <p>Tom · fokus · med värde (visar rensa) · inaktiverad.</p>
+    <div class="frame col">
+      <div style="display:flex;flex-direction:column;gap:8px;"><span class="lbl">Tom</span>
+        <div class="ds-search" style="width:300px;">
+          <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="ds-input" type="text" placeholder="Sök">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><span class="lbl">Fokus</span>
+        <div class="ds-search" style="width:300px;">
+          <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="ds-input is-focus" type="text" value="">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><span class="lbl">Med värde</span>
+        <div class="ds-search" style="width:300px;">
+          <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="ds-input" type="text" value="Erik Holm">
+          <button class="clear" title="Rensa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><span class="lbl">Inaktiverad</span>
+        <div class="ds-search" style="width:300px;">
+          <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--silver-mist);"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="ds-input is-disabled" type="text" placeholder="Sök" disabled>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Compact — in a toolbar</h2>
+    <p>I täta verktygsrader får sökfältet en fast bredd och placeras intill filter och åtgärder.</p>
+    <div class="frame center">
+      <div class="ds-search" style="width:220px;">
+        <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="ds-input" type="text" placeholder="Sök i tabellen">
+      </div>
+      <button class="ds-btn ds-btn--secondary">Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Show a leading magnifier and a clear (&times;) button once there is input.</li>
+          <li>Filter results live as the user types.</li>
+          <li>Keep the 48px field height for an easy thumb tap.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Require a submit tap when live filtering is possible.</li>
+          <li>Hide the clear affordance.</li>
+          <li>Use search where a short segmented control or filter chip fits.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

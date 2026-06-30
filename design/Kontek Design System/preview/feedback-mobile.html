@@ -1,0 +1,97 @@
+<!-- @dsCard group="Molecules" viewport="900x640" name="Feedback — banner, snackbar, toast" subtitle="Inline status & transient messages" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Feedback — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .col2 { display:flex; flex-direction:column; gap:14px; width:100%; max-width:380px; }
+  svg.i { fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Feedback</h1>
+  <div class="dg-intro"><p>Banner för status i flödet, snackbar för övergående bekräftelse med en åtgärd, toast för en snabb kvittens.</p></div>
+
+  <div class="sec">
+    <h2>Banner — inline status</h2>
+    <p>An in-flow block that explains the state of the screen. Four tones map to the semantic colours: <b>info</b>, <b>ok</b>, <b>warn</b>, <b>danger</b>. Leading icon, a short title, optional detail and an optional dismiss. Persistent — it stays until the condition clears or the user closes it.</p>
+    <div class="frame col">
+      <div class="col2">
+        <div class="ds-banner">
+          <span class="ds-banner__icon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
+          <div class="ds-banner__body"><div class="ds-banner__title">Time är inte kopplat till Lön</div><div class="ds-banner__text">Koppla Time så fylls tidrapporterna i automatiskt.</div></div>
+          <button class="ds-banner__close" aria-label="Stäng"><svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="ds-banner ds-banner--ok">
+          <span class="ds-banner__icon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <div class="ds-banner__body"><div class="ds-banner__title">Majkörningen är godkänd</div><div class="ds-banner__text">Utbetalning sker 25 maj till 32 anställda.</div></div>
+        </div>
+        <div class="ds-banner ds-banner--warn">
+          <span class="ds-banner__icon"><svg class="i" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span>
+          <div class="ds-banner__body"><div class="ds-banner__title">3 tidrapporter saknar attest</div><div class="ds-banner__text">Sista dag för majkörningen är 23 maj.</div></div>
+        </div>
+        <div class="ds-banner ds-banner--danger">
+          <span class="ds-banner__icon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span>
+          <div class="ds-banner__body"><div class="ds-banner__title">Utbetalningen misslyckades</div><div class="ds-banner__text">Kontonumret för Erik Holm kunde inte verifieras.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Snackbar &amp; toast — transient</h2>
+    <p>Brief, self-dismissing confirmations that float near the bottom. A <b>snackbar</b> carries text and at most one action (e.g. Ångra); a <b>toast</b> is a compact centred pill confirming a completed action. Neither blocks the UI.</p>
+    <div class="frame col">
+      <div class="col2">
+        <div class="ds-snackbar">
+          <span class="ds-snackbar__text">Tidrapport för Erik Holm godkänd</span>
+          <button class="ds-snackbar__action">Ångra</button>
+        </div>
+        <div style="display:flex;justify-content:center;padding-top:4px;">
+          <span class="ds-toast"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Sparat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy">
+      <div><b>Banner</b> &nbsp;semantic soft bg + tinted border</div>
+      <div><b>Snackbar</b> &nbsp;Deepest-Ground pill · mint action</div>
+      <div><b>Toast</b> &nbsp;pill, 18px confirming icon</div>
+      <div><b>Action</b> &nbsp;max one per snackbar</div>
+      <div><b>Persistence</b> &nbsp;banner stays · toast auto-hides</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use a banner for in-flow status, a snackbar for transient confirmation with one action, a toast for a quick ack.</li>
+          <li>Make optimistic mutations reversible with an Undo snackbar.</li>
+          <li>Auto-dismiss snackbars (3s; 5s with an action) and carry a tone glyph.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Stack multiple snackbars &mdash; replace the previous one.</li>
+          <li>Put more than one action in a snackbar.</li>
+          <li>Use a transient toast for an error that needs the user to act &mdash; use a banner.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

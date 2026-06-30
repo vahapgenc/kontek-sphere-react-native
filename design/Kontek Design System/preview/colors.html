@@ -1,0 +1,166 @@
+<!-- @dsCard group="Atoms" name="Colors" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  body { margin:0; padding:28px 30px 40px; background:var(--canvas); font-family:var(--font-ui); color:var(--ink); }
+  section + section { margin-top:34px; }
+  .sec { font-size:13px; font-weight:700; letter-spacing:.06em;  color:var(--ink-2); padding:0 4px 12px; border-bottom:1px solid var(--line); }
+  .list { display:flex; flex-direction:column; gap:12px; margin-top:14px; }
+  .item { display:flex; align-items:center; gap:18px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow-sm); }
+  .sw { width:64px; height:64px; border-radius:12px; flex:none; border:1px solid rgba(18,33,33,.10); display:flex; align-items:center; justify-content:center; }
+  .txt { flex:1; min-width:0; }
+  .name { font-size:18px; font-weight:700; color:var(--ink); }
+  .desc { font-size:14px; color:var(--ink-3); margin-top:3px; line-height:1.4; }
+  .hex { flex:none; font-size:14px; font-weight:600; color:var(--ink-2); background:var(--surface-2); border-radius:8px; padding:7px 12px; font-variant-numeric:tabular-nums; }
+  .hexpair { display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+  .hexpair .hex { font-size:12.5px; padding:5px 10px; }
+  .hexpair .lbl { font-size:10px; font-weight:600; letter-spacing:.04em;  color:var(--ink-4); margin-right:2px; }
+  .hexrow { display:flex; align-items:center; gap:6px; }
+  .sw svg { width:24px; height:24px; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Colors</h1>
+  <div class="dg-intro"><p>Hela Kontek-paletten och vad varje färg är till för. Mest <b>gröntonat neutralt</b>; grönt markerar positiva åtgärder och aktiva lägen, rött enbart för destruktivt.</p></div>
+
+  <section>
+    <div class="sec">Surface hierarchy</div>
+    <div class="list">
+      <div class="item">
+        <div class="sw" style="background:#203B3C"></div>
+        <div class="txt"><div class="name">Brand Signature — Navigation</div><div class="desc">Nav bar + sidebar background</div></div>
+        <div class="hex">#203B3C</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#053F22"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="txt"><div class="name">Kontek Green — Icon background</div><div class="desc">Icon tiles &amp; avatars on light surfaces</div></div>
+        <div class="hex">#053F22</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#ECEFF3"></div>
+        <div class="txt"><div class="name">Cloud — Canvas</div><div class="desc">Default page background — softer than white for 8-hour workdays</div></div>
+        <div class="hex">#ECEFF3</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#FFFFFF"></div>
+        <div class="txt"><div class="name">Pure White — Elevated</div><div class="desc">Data tables, input forms, modals, dropdowns</div></div>
+        <div class="hex">#FFFFFF</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec">Primary scale — dark teal</div>
+    <div class="list">
+      <div class="item">
+        <div class="sw" style="background:#203B3C"></div>
+        <div class="txt"><div class="name">Brand Signature</div><div class="desc">Nav bar + sidebar background, primary CTAs, active tab text (12:1 AAA)</div></div>
+        <div class="hex">#203B3C</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#395F61"></div>
+        <div class="txt"><div class="name">The Guide</div><div class="desc">Sub-menu items, inactive tabs (7.0:1 AAA)</div></div>
+        <div class="hex">#395F61</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#B8C9CA"></div>
+        <div class="txt"><div class="name">Muted Surface</div><div class="desc">Card borders, matte accents, secondary text on dark</div></div>
+        <div class="hex">#B8C9CA</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#122121"></div>
+        <div class="txt"><div class="name">Deepest Ground</div><div class="desc">Pressed/active button state</div></div>
+        <div class="hex">#122121</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec">Secondary scale — Kontek green</div>
+    <div class="list">
+      <div class="item">
+        <div class="sw" style="background:#9DDFB5"></div>
+        <div class="txt"><div class="name">Status Badge</div><div class="desc">Secondary CTA fill · Status pill background · Nav bar resting text (8.0:1 AAA on Brand Signature)</div></div>
+        <div class="hex">#9DDFB5</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#61BC8F"></div>
+        <div class="txt"><div class="name">Interaction</div><div class="desc">Toggle/checkbox fill · Secondary CTA pressed state — pair with Brand Signature border</div></div>
+        <div class="hex">#61BC8F</div>
+      </div>
+
+      <div class="item">
+        <div class="sw" style="background:#E6F7ED"></div>
+        <div class="txt"><div class="name">Celebration</div><div class="desc">Row highlight for successfully processed payroll</div></div>
+        <div class="hex">#E6F7ED</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec">Neutral scale</div>
+    <div class="list">
+      <div class="item">
+        <div class="sw" style="background:#0F1112"></div>
+        <div class="txt"><div class="name">Obsidian</div><div class="desc">Body text, payroll numbers (18.9:1 AAA)</div></div>
+        <div class="hex">#0F1112</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#445C5E"></div>
+        <div class="txt"><div class="name">Charcoal Teal</div><div class="desc">Table headers, subtitles (7.2:1 AAA)</div></div>
+        <div class="hex">#445C5E</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#475669"></div>
+        <div class="txt"><div class="name">Slate Grey</div><div class="desc">Breadcrumbs, inactive icons (7.5:1 AAA)</div></div>
+        <div class="hex">#475669</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#66777A"></div>
+        <div class="txt"><div class="name">Soft Steel</div><div class="desc">Search bar borders, disabled labels</div></div>
+        <div class="hex">#66777A</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#A3B4B6"></div>
+        <div class="txt"><div class="name">Silver Mist</div><div class="desc">Disabled UI states (non-text, WCAG exempt)</div></div>
+        <div class="hex">#A3B4B6</div>
+      </div>
+      <div class="item">
+        <div class="sw" style="background:#DDE5E6"></div>
+        <div class="txt"><div class="name">Stone</div><div class="desc">Table row dividers, panel borders</div></div>
+        <div class="hex">#DDE5E6</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Reach for the named token for each role &mdash; most surfaces stay a quiet, green-tinted neutral.</li>
+          <li>Mark positive / go-ahead actions, active states, icons and progress with green.</li>
+          <li>Sit avatars on <code>--guide</code> and keep every fill single-colour.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use red for anything but destructive / irreversible actions.</li>
+          <li>Invent a new hex &mdash; derive a missing shade with <code>color-mix()</code> from an existing token.</li>
+          <li>Add decorative gradients or multi-colour avatar fills.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

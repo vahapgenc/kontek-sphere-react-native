@@ -1,0 +1,69 @@
+<!-- @dsCard group="Atoms" name="Principles" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Guides — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:16px; width:100%; }
+  .g { border-radius:12px; padding:16px 18px; border:1px solid var(--line); background:var(--surface); }
+  .g .hd { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:.04em;  }
+  .g.do .hd { color:var(--green-deep); }
+  .g.no .hd { color:var(--danger); }
+  .g .hd svg { width:16px; height:16px; }
+  .g p { font-size:13px; color:var(--ink-2); line-height:1.5; margin:10px 0 0; }
+  .princip { display:flex; flex-direction:column; gap:0; width:100%; }
+  .prow { display:flex; gap:14px; padding:14px 4px; border-bottom:1px solid var(--line-2); align-items:flex-start; }
+  .prow:last-child { border-bottom:0; }
+  .prow .ic { width:34px; height:34px; border-radius:9px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .prow .ic svg { width:18px; height:18px; stroke:var(--green-deep); }
+  .prow .t { font-size:14px; font-weight:600; color:var(--ink); }
+  .prow .d { font-size:13px; color:var(--ink-3); margin-top:2px; line-height:1.5; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Principles</h1>
+  <div class="dg-intro"><p>Grunden bakom alla mönster: lugnt, kompetent och lätt mänskligt. <b>Ett tydligt nästa steg per vy</b> &mdash; allt annat ska kännas omhändertaget.</p></div>
+
+  <div class="sec">
+    <h2>The four principles</h2>
+    <p>Fyra hållningar som varje skärm vilar på.</p>
+    <div class="frame">
+      <div class="princip">
+        <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><div><div class="t">En primär åtgärd per vy</div><div class="d">Endast en knapp bär huvud­handlingen. Stödåtgärder är sekundära, ghost eller transparenta.</div></div></div>
+        <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="17" r="2.5"/><circle cx="6" cy="12" r="3"/></svg></span><div><div class="t">Färgdisciplin</div><div class="d">Grönt är accent: ikoner, aktiva lägen, godkänn/spara. Rött enbart för destruktivt. Ytor är gröntonat neutrala.</div></div></div>
+        <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></span><div><div class="t">Återhållsam rörelse</div><div class="d">120–320ms, mjuk easing. Hover = lyft, navrad = tonfade. Ingen studs, ingen oändlig loop på innehåll.</div></div></div>
+        <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></span><div><div class="t">Mening före utfyllnad</div><div class="d">Konkreta siffror och raka verb. Inga påhittade mått, ingen dekorativ data.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Keep one clear primary action per screen; everything else secondary or ghost.</li>
+          <li>Reassure first, then give the specifics.</li>
+          <li>Let whitespace carry the calm.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Compete two primary actions on one screen.</li>
+          <li>Pad a screen with filler &mdash; an empty section is a calm reassurance card, not dummy content.</li>
+          <li>Bury the one thing that needs the user under chrome.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

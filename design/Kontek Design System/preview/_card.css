@@ -1,0 +1,18 @@
+/* Shared chrome for Kontek Next design-system spec cards.
+   Mirrors the section / frame / state layout used by buttons.html. */
+body { margin: 0; padding: 30px 34px 60px; background: var(--canvas); font-family: var(--font-ui); color: var(--ink); -webkit-font-smoothing: antialiased; }
+.sec { margin-bottom: 34px; }
+.sec:last-child { margin-bottom: 0; }
+.sec > h2 { font-family: var(--font-ui); font-size: var(--t-title); font-weight: var(--w-semibold); margin: 0 0 4px; }
+.sec > p { font-size: var(--t-caption); color: var(--ink-3); margin: 0 0 16px; max-width: 680px; line-height: 1.55; }
+.frame { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 24px; display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+.frame.center { align-items: center; }
+.frame.spread { justify-content: space-between; }
+.frame.col { flex-direction: column; gap: 18px; }
+.state { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; }
+.state.cc { align-items: center; }
+.state .lbl { font-size: 11px; color: var(--ink-3); font-weight: var(--w-medium); }
+.divider { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
+.anatomy { font-size: var(--t-caption); color: var(--ink-3); display: flex; gap: 28px; flex-wrap: wrap; }
+.anatomy b { color: var(--ink-2); font-weight: var(--w-semibold); }
+.cols { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }

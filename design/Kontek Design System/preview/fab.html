@@ -1,0 +1,91 @@
+<!-- @dsCard group="Molecules" viewport="900x460" name="Floating action button" subtitle="The one persistent create action" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>FAB — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .ground { position:relative; width:300px; height:240px; border-radius:24px; overflow:hidden; background:var(--canvas); border:1px solid var(--line); }
+  .ground .rows { padding:16px; display:flex; flex-direction:column; gap:10px; }
+  .skel { height:46px; border-radius:12px; background:var(--surface); border:1px solid var(--line-2); }
+  .fab-pin { position:absolute; right:18px; bottom:18px; }
+  svg.i { fill:none; stroke:currentColor; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Floating action button</h1>
+  <div class="dg-intro"><p>Den <b>enda</b> bestående skapa-åtgärden. Cirkulär mintknapp som flyter över innehållet; --extended bär en etikett.</p></div>
+
+  <div class="sec">
+    <h2>Floating action button</h2>
+    <p>One persistent, screen-level create action — <b>Ny lönekörning</b>, <b>Ny anställd</b>. It floats above the content, bottom-right, clear of the tab bar. <b>Circular</b> when the icon is self-evident; <b>extended</b> with a label when the action needs naming or on a first-run screen. Accent-mint CTA fill with the brand glow; a Signature variant exists for secondary contexts.</p>
+    <div class="frame center" style="gap:34px;">
+
+      <div class="state cc">
+        <div class="ground">
+          <div class="rows"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+          <div class="fab-pin"><button class="ds-fab" aria-label="Ny körning"><svg class="i" width="26" height="26" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button></div>
+        </div>
+        <span class="lbl">Circular — in context</span>
+      </div>
+
+      <div class="state cc">
+        <div class="ground">
+          <div class="rows"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+          <div class="fab-pin"><button class="ds-fab ds-fab--extended"><svg class="i" width="22" height="22" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Ny körning</button></div>
+        </div>
+        <span class="lbl">Extended — labelled</span>
+      </div>
+
+      <div class="state cc" style="justify-content:center;gap:18px;">
+        <span style="display:flex;gap:16px;align-items:center;">
+          <button class="ds-fab" aria-label="Lägg till"><svg class="i" width="26" height="26" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+          <button class="ds-fab ds-fab--signature" aria-label="Lägg till"><svg class="i" width="26" height="26" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+        </span>
+        <span class="lbl">Mint (primary) · Signature (secondary)</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy">
+      <div><b>Size</b> &nbsp;56×56 (extended auto-width)</div>
+      <div><b>Radius</b> &nbsp;18px round · pill extended</div>
+      <div><b>Icon</b> &nbsp;26px / 2.1 stroke</div>
+      <div><b>Fill</b> &nbsp;mint CTA + green glow</div>
+      <div><b>Press</b> &nbsp;scale 0.95</div>
+      <div><b>Rule</b> &nbsp;one FAB per screen</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Reserve the centre <b>+</b> for the one create action (Absence / Expense).</li>
+          <li>Flip it from mint (<code>--status-badge</code>) to <code>--green</code> + &times; while the hub is open.</li>
+          <li>Keep it 56px and lifted above the tab bar.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Give the + a destination/selected state &mdash; it is not a tab.</li>
+          <li>Add a label under the +.</li>
+          <li>Use it for more than the single create action.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

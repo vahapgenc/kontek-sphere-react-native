@@ -1,0 +1,86 @@
+<!-- @dsCard group="Atoms" name="Sizing" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Sizing — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .scale { display:grid; grid-template-columns:repeat(auto-fit, minmax(62px, 1fr)); align-items:end; gap:22px 14px; width:100%; }
+  .su { text-align:center; }
+  .sq { background:var(--green-soft); border:1.5px solid var(--green-line); border-radius:4px; margin:0 auto; }
+  .su .n { font-size:11px; font-weight:600; color:var(--ink); margin-top:9px; }
+  .su .px { font-size:10.5px; color:var(--ink-3); margin-top:1px; }
+  .map { display:flex; flex-direction:column; gap:0; width:100%; }
+  .mrow { display:flex; align-items:center; gap:18px; padding:13px 4px; border-bottom:1px solid var(--line-2); }
+  .mrow:last-child { border-bottom:0; }
+  .mrow .demo { width:120px; display:flex; align-items:center; justify-content:flex-start; flex-shrink:0; }
+  .mrow .tok { width:90px; font-size:13px; font-weight:600; color:var(--ink); font-variant-numeric:tabular-nums; flex-shrink:0; }
+  .mrow .use { font-size:13px; color:var(--ink-3); }
+  .chip { height:32px; padding:0 14px; border-radius:8px; background:var(--surface-2); border:1px solid var(--line); display:inline-flex; align-items:center; font-size:13px; color:var(--ink-2); }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Sizing</h1>
+  <div class="dg-intro"><p>Token-talet är pixelvärdet. Skalan styr bredd och höjd på element; <b>allt interaktivt är minst 48px</b>.</p></div>
+
+  <div class="sec">
+    <h2>Size scale</h2>
+    <p>Token-talet motsvarar pixelvärdet. Skalan styr bredd och höjd på element — ikoner, kontroller, avatarer — så att allt landar på samma rytm som spacing-skalan (4px-bas).</p>
+    <div class="frame">
+      <div class="scale">
+        <div class="su"><div class="sq" style="width:16px;height:16px;"></div><div class="n">16</div><div class="px">size-16</div></div>
+        <div class="su"><div class="sq" style="width:20px;height:20px;"></div><div class="n">20</div><div class="px">size-20</div></div>
+        <div class="su"><div class="sq" style="width:24px;height:24px;"></div><div class="n">24</div><div class="px">size-24</div></div>
+        <div class="su"><div class="sq" style="width:32px;height:32px;"></div><div class="n">32</div><div class="px">size-32</div></div>
+        <div class="su"><div class="sq" style="width:40px;height:40px;"></div><div class="n">40</div><div class="px">size-40</div></div>
+        <div class="su"><div class="sq" style="width:48px;height:48px;"></div><div class="n">48</div><div class="px">size-48</div></div>
+        <div class="su"><div class="sq" style="width:64px;height:64px;"></div><div class="n">64</div><div class="px">size-64</div></div>
+        <div class="su"><div class="sq" style="width:80px;height:80px;"></div><div class="n">80</div><div class="px">size-80</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Semantic sizes</h2>
+    <p>Var skalsteget används i gränssnittet. Kontroller och inmatningar är 48px; minsta klickyta för pekdon är 48px (samma säkra minimum på iOS och Android); ikoner sitter på 20–24px.</p>
+    <div class="frame">
+      <div class="map">
+        <div class="mrow"><span class="demo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--signature)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="tok">20px</span><span class="use">Ikon i text och knappar</span></div>
+        <div class="mrow"><span class="demo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--signature)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="tok">24px</span><span class="use">Ikon i app-bar / tab-bar / fristående</span></div>
+        <div class="mrow"><span class="demo"><span style="width:40px;height:40px;border-radius:999px;background:var(--guide);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;">AL</span></span><span class="tok">40px</span><span class="use">Avatar / ledande ikonruta i listrader</span></div>
+        <div class="mrow"><span class="demo"><span style="height:48px;padding:0 24px;border-radius:12px;background:var(--signature);color:#fff;font-size:16px;font-weight:600;display:inline-flex;align-items:center;">Knapp</span></span><span class="tok">48px</span><span class="use">Knapp · textfält · select · minsta klickyta</span></div>
+        <div class="mrow"><span class="demo"><span style="width:56px;height:56px;border-radius:999px;background:var(--shell-cta);color:var(--shell-cta-ink);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span></span><span class="tok">56px</span><span class="use">FAB · stor primär CTA (--lg)</span></div>
+        <div class="mrow"><span class="demo"><span style="width:64px;height:64px;border-radius:999px;background:var(--guide);color:#fff;font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center;">AL</span></span><span class="tok">64px</span><span class="use">Avatar i profilvy</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Size controls from the height tokens &mdash; 48 default, 56 prominent, 40 dense.</li>
+          <li>Keep every interactive element at least 48px (<code>--tap-min</code>).</li>
+          <li>Pick widths and heights from the sizing scale.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Ship a borderline tap target under 48px.</li>
+          <li>Choose off-scale dimensions.</li>
+          <li>Shrink a dense row below the 40px floor.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

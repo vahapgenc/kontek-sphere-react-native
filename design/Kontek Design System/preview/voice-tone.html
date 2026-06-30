@@ -1,0 +1,78 @@
+<!-- @dsCard group="Atoms" viewport="940x720" name="Voice & tone" subtitle="Calm, warm, Swedish, second person" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice &amp; tone — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  .princip { display:flex; flex-direction:column; gap:0; width:100%; }
+  .prow { display:flex; gap:14px; padding:14px 4px; border-bottom:1px solid var(--line-2); align-items:flex-start; }
+  .prow:last-child { border-bottom:0; }
+  .prow .ic { width:34px; height:34px; border-radius:9px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .prow .ic svg { width:18px; height:18px; stroke:var(--green-deep); }
+  .prow .tx { min-width:0; }
+  .prow .t { font-size:var(--t-title); font-weight:var(--w-semibold); color:var(--ink); }
+  .prow .d { font-size:var(--t-body-sm); color:var(--ink-3); margin-top:2px; line-height:1.5; }
+  .prow .d em { font-style:normal; color:var(--ink-2); font-weight:var(--w-medium); }
+  .btnrow { display:flex; gap:10px; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">Voice &amp; tone</h1>
+  <div class="dg-intro"><p>Svenska först, varmt men professionellt, tilltalar dig direkt. <b>Inled med lugn</b>, ge sedan konkreta tal. Verb på knappar, aldrig substantiv.</p></div>
+
+  <div class="sec">
+    <h2>How the product speaks</h2>
+    <p>Swedish-first, warm but professional, addressing the user directly (<b>du / dig</b>). Lead with reassurance, then the specifics. The implicit promise on every screen: <em>your payroll is handled — here is the one thing that needs you.</em></p>
+    <div class="frame" style="display:block;">
+      <div class="princip">
+        <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span><div class="tx"><div class="t">Reassure, then specify</div><div class="d">”Lönekörningen är klar för granskning · 32 anställda · inga avvikelser.”</div></div></div>
+        <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg></span><div class="tx"><div class="t">Personal, never corporate</div><div class="d">”God morgon, Anna.” — a greeting, not a system message.</div></div></div>
+        <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7 18 2.5-7.5L20 11 3 3Z"/></svg></span><div class="tx"><div class="t">Verbs on buttons</div><div class="d">An action you take, not a feature name: <em>Granska &amp; godkänn</em>, <em>Ny körning</em>.</div></div></div>
+        <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg></span><div class="tx"><div class="t">Concrete numbers</div><div class="d">No hype, no exclamation. Amounts are exact and tabular.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Verbs over nouns</h2>
+    <p>Buttons name the action the user takes.</p>
+    <div class="frame">
+      <div class="btnrow">
+        <button class="ds-btn ds-btn--primary">Granska &amp; godkänn</button>
+        <button class="ds-btn ds-btn--secondary">Visa detaljer</button>
+        <button class="ds-btn ds-btn--secondary-cta">Ny körning</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Write Swedish, second person (du / dig), sentence case &mdash; never all-caps (a person's initials excepted).</li>
+          <li>Lead with reassurance, then give concrete, tabular specifics.</li>
+          <li>Put a <b>verb</b> on every button — the action, not the feature name.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Use emoji, exclamation hype, all-caps or Title Case.</li>
+          <li>Label buttons with nouns or feature names.</li>
+          <li>Sound corporate or system-generated — speak to the person.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

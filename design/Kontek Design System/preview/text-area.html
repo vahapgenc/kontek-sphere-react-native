@@ -1,0 +1,78 @@
+<!-- @dsCard group="Molecules" name="Text area" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Text area — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+</head>
+<body>
+
+  <h1 class="dg-h1">Text area</h1>
+  <div class="dg-intro"><p>Flerradig fritext som växer vertikalt. Samma 12px radie och 16px text som övriga fält.</p></div>
+
+  <div class="sec">
+    <h2>Anatomy &amp; usage</h2>
+    <p>För flerradig fritext — meddelanden, noteringar, kommentarer. Minsta höjd 92px, vertikalt omskalningsbar. Samma kantlinje, radie och fokusring som textfältet. Visa teckenräknare när det finns en gräns.</p>
+    <div class="frame col">
+      <label class="ds-field" style="max-width:420px;">
+        <span class="ds-label">Notering till lönekörning<span class="opt">valfritt</span></span>
+        <textarea class="ds-textarea" placeholder="Skriv en kort notering som syns för den som godkänner…"></textarea>
+        <span class="ds-hint" style="display:flex;justify-content:space-between;"><span>Syns för granskaren.</span><span>0 / 280</span></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States</h2>
+    <p>Default · hover · fokus · ifylld · inaktiverad.</p>
+    <div class="frame">
+      <div class="state"><span class="lbl">Default</span><textarea class="ds-textarea" style="width:230px;" placeholder="Lägg till en notering…"></textarea></div>
+      <div class="state"><span class="lbl">Hover</span><textarea class="ds-textarea is-hover" style="width:230px;" placeholder="Lägg till en notering…"></textarea></div>
+      <div class="state"><span class="lbl">Fokus</span><textarea class="ds-textarea is-focus" style="width:230px;">Utbetalning tidigarelagd till den 23 maj.</textarea></div>
+      <div class="state"><span class="lbl">Inaktiverad</span><textarea class="ds-textarea is-disabled" style="width:230px;" disabled>Körningen är låst för redigering.</textarea></div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Error &amp; validation</h2>
+    <p>Rött tillstånd med konkret felmeddelande. Behåll teckenräknaren synlig så att gränsen är tydlig.</p>
+    <div class="frame">
+      <label class="ds-field" style="max-width:420px;">
+        <span class="ds-label">Motivering<span class="req">*</span></span>
+        <textarea class="ds-textarea is-error" style="width:380px;">Avbryter körningen.</textarea>
+        <span class="ds-hint ds-hint--error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          Ange minst 30 tecken så att beslutet kan följas upp.
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Let the textarea grow vertically; start at a comfortable min-height.</li>
+          <li>Keep the 12px radius and 16px body text to match inputs.</li>
+          <li>Pair with helper text for length or format guidance.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Lock it to one line &mdash; use an input for short single-line text.</li>
+          <li>Allow horizontal resize.</li>
+          <li>Drop the label on a multi-line field.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

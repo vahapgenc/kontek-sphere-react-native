@@ -1,0 +1,89 @@
+<!-- @dsCard group="Atoms" viewport="900x680" name="App background" subtitle="The one sanctioned gradient — pale forest" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App background — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<link rel="stylesheet" href="_guidance.css">
+<style>
+  .stage { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start; }
+  .phone { width:248px; border-radius:34px; padding:10px; background:#0F1112; box-shadow:var(--shadow-lg); flex:none; }
+  .phone__screen { border-radius:26px; overflow:hidden; height:420px; position:relative; background:var(--app-bg); }
+  .phone__top { height:46px; }
+  .float { margin:0 16px 14px; background:var(--surface); border:1px solid transparent; border-radius:var(--r-panel); box-shadow:var(--sh-1); padding:16px 18px; }
+  .float .eb { font-size:var(--t-eyebrow); font-weight:var(--w-semibold); letter-spacing:.08em;  color:var(--green-deep); }
+  .float .fig { font-size:30px; font-weight:var(--w-bold); color:var(--signature); letter-spacing:-.02em; margin-top:6px; font-variant-numeric:tabular-nums; }
+  .float .sub { font-size:var(--t-caption); color:var(--ink-3); margin-top:4px; }
+  .float--row { display:flex; align-items:center; gap:13px; padding:14px 16px; }
+  .ftile { width:38px;height:38px;border-radius:11px;background:var(--tile-fill);color:#fff;display:flex;align-items:center;justify-content:center;flex:none; }
+  .ftile svg{width:20px;height:20px;}
+  .float--row .t { flex:1;min-width:0; }
+  .float--row .t b { font-size:var(--t-title); font-weight:var(--w-semibold); color:var(--ink); display:block; }
+  .float--row .t span { font-size:var(--t-body-sm); color:var(--ink-3); }
+  .swatch { width:100%; height:160px; border-radius:var(--r-card); background:var(--app-bg); border:1px solid var(--line); }
+  .note { font-size:var(--t-caption); color:var(--ink-3); line-height:1.55; }
+  .ex-canvas { width:100%; height:100%; min-height:64px; border-radius:10px; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">App background</h1>
+  <div class="dg-intro"><p>Hela appen, inloggningen och alla flöden vilar på en delad gradient, <b>--app-bg</b>. Kort flyter på den tonade ytan — inga andra dekorativa gradienter.</p></div>
+
+  <div class="sec">
+    <h2>Pale-forest gradient</h2>
+    <p>The whole authenticated app, the sign-in screen and every registration flow sit on <b>one shared background gradient</b> — never a flat fill. Cards float on this tinted canvas; flow screens reuse it so transitions never reveal a seam. Published as the <code>--app-bg</code> token.</p>
+    <div class="frame center">
+      <div class="phone">
+        <div class="phone__screen">
+          <div class="phone__top"></div>
+          <div class="float"><div class="eb">Nästa lön</div><div class="fig">28 450 kr</div><div class="sub">Utbetalas 25 jun · Swedbank ·••• 8842</div></div>
+          <div class="float float--row"><span class="ftile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg></span><span class="t"><b>Ansök om ledighet</b><span>Semester, vab, föräldraledigt</span></span></div>
+          <div class="float float--row"><span class="ftile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></span><span class="t"><b>Lägg till utlägg</b><span>Kvitto, milersättning</span></span></div>
+        </div>
+      </div>
+      <div style="flex:1; min-width:220px; display:flex; flex-direction:column; gap:12px;">
+        <div class="swatch"></div>
+        <div class="note">Radiella mintsken uppe till höger och vänster över en lodrät toning till vitt. Korten lyfter från ytan med <code style="font-family:var(--font-mono);font-size:.92em;">--sh-1</code> — ingen ram behövs.</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__examples">
+      <figure class="kdd__ex kdd__ex--do">
+        <div class="kdd__ex__stage"><div class="ex-canvas" style="background:var(--app-bg); display:flex; align-items:center; justify-content:center;"><div style="background:#fff; border-radius:14px; box-shadow:var(--sh-1); padding:12px 16px; font-size:13px; font-weight:600; color:var(--signature);">Floating card</div></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>White cards float on the tinted canvas — the gradient reads edge to edge.</figcaption>
+      </figure>
+      <figure class="kdd__ex kdd__ex--dont">
+        <div class="kdd__ex__stage"><div class="ex-canvas" style="background:linear-gradient(135deg,#7C3AED,#EC4899,#F59E0B); display:flex; align-items:center; justify-content:center;"><div style="background:#fff; border-radius:14px; padding:12px 16px; font-size:13px; font-weight:600; color:#333;">Card</div></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Decorative rainbow gradients break the calm, software-grade feel.</figcaption>
+      </figure>
+    </div>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use <code>--app-bg</code> on the app shell, sign-in and every flow screen so transitions never reveal a seam.</li>
+          <li>Keep CTA bars inside flows <b>transparent</b> so the gradient runs to the edge.</li>
+          <li>Let cards lift off the canvas with <code>--sh-1</code> — the lift, not a border, does the separating.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Add other decorative gradients anywhere — this is the <b>one</b> sanctioned gradient.</li>
+          <li>Drop a flat fill behind a flow screen — it creates a visible seam on the slide-in.</li>
+          <li>Re-tint or re-angle the recipe per screen; the canvas stays constant app-wide.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

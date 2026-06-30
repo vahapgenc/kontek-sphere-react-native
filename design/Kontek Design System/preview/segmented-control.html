@@ -1,0 +1,87 @@
+<!-- @dsCard group="Molecules" name="Segmented control" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Segmented control — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+</head>
+<body>
+
+  <h1 class="dg-h1">Segmented control</h1>
+  <div class="dg-intro"><p>Växlar mellan <b>2–3 likvärdiga vyer</b>; aktivt segment får den vita upphöjda chippen. Växlar en vy, utlöser inte en åtgärd.</p></div>
+
+  <div class="sec">
+    <h2>Usage</h2>
+    <p>Växlar mellan 2–4 likvärdiga vyer eller lägen inom samma yta — ett alternativ är alltid valt. Det aktiva segmentet får vit yta och mjuk skugga. Vid fler eller längre alternativ, använd flikar eller en dropdown.</p>
+    <div class="frame col">
+      <div class="ds-segmented">
+        <button class="seg is-active">Månad</button>
+        <button class="seg">Kvartal</button>
+        <button class="seg">År</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>States</h2>
+    <p>Aktivt · inaktivt (vilande) · hover · inaktiverat segment.</p>
+    <div class="frame col">
+      <div class="ds-segmented">
+        <button class="seg is-active">Aktiv</button>
+        <button class="seg">Vilande</button>
+        <button class="seg" style="color:var(--ink);background:var(--surface);box-shadow:none;">Hover</button>
+        <button class="seg is-disabled" disabled>Inaktiv</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>With icons</h2>
+    <p>Ikon + etikett när lägena är visuella (lista vs. rutnät). Håll etiketterna korta så att bredden blir jämn.</p>
+    <div class="frame center">
+      <div class="ds-segmented">
+        <button class="seg is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>Lista</button>
+        <button class="seg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>Rutnät</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy">
+      <div><b>Höjd</b> &nbsp;40px segment · 48px hölje</div>
+      <div><b>Radie</b> &nbsp;12px hölje · 9px segment</div>
+      <div><b>Hölje</b> &nbsp;Inset-yta + 1px kant</div>
+      <div><b>Aktiv</b> &nbsp;Vit yta + shadow-xs</div>
+      <div><b>Etikett</b> &nbsp;13px / 600 aktiv</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use it for 2&ndash;3 short, equal views; the active segment gets the white raised chip.</li>
+          <li>Keep labels one or two words.</li>
+          <li>Switch instantly &mdash; no Apply step.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Pack in 4+ segments or long labels &mdash; use a select.</li>
+          <li>Use it for actions; it switches a view, it doesn't trigger one.</li>
+          <li>Leave no segment selected.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

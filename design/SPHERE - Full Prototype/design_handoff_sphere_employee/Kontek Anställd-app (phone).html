@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>Kontek – Employee</title>
+<meta name="theme-color" content="#ECEFF3" />
+<meta name="ext-resource-dependency" content="kontek-logo-white.png" data-resource-id="kontekLogoWhite" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Kontek" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icons/icon-180.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..700&family=Jost:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="ds-combined.css" />
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: var(--bg); }
+  .ds-tab__badge { background: #61BC8F !important; color: #ffffff !important; display: flex !important; align-items: center !important; justify-content: center !important; width: 18px !important; height: 18px !important; min-width: 18px !important; padding: 0 !important; }
+  body { font-family: "Open Sans", system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
+  #root { height: 100%; }
+  /* Full-viewport app shell — replaces the device bezel for real on-device use */
+  .phone-viewport {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    background: var(--bg);
+    /* honor the notch / home indicator */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .phone-viewport > .k-app { flex: 1; min-height: 0; }
+  /* the in-app AppBar already reserves status-bar space; trim it on real devices
+     since the OS status bar sits in the safe-area inset instead */
+  .phone-viewport .ds-appbar { padding-top: 0 !important; }
+  .phone-viewport > .k-app { margin-top: -6px; }
+</style>
+</head>
+<body>
+  <template id="__bundler_thumbnail">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="22" fill="#203B3C"/>
+      <rect x="34" y="22" width="32" height="56" rx="6" fill="#fff"/>
+      <rect x="40" y="30" width="20" height="3" rx="1.5" fill="#203B3C"/>
+      <rect x="40" y="38" width="20" height="3" rx="1.5" fill="#9fc7c4"/>
+      <rect x="40" y="46" width="14" height="3" rx="1.5" fill="#9fc7c4"/>
+      <circle cx="50" cy="64" r="7" fill="#9DDFB5"/>
+    </svg>
+  </template>
+
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script src="_ds/kontek-design-system-mobile-e2959130-faf3-44af-a1e9-2563ce3b2991/_ds_bundle.js"></script>
+
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="k-ui.jsx"></script>
+  <script type="text/babel" src="k-data.jsx"></script>
+  <script type="text/babel" src="k-login.jsx"></script>
+  <script type="text/babel" src="k-flow.jsx"></script>
+  <script type="text/babel" src="k-absence.jsx"></script>
+  <script type="text/babel" src="k-expense.jsx"></script>
+  <script type="text/babel" src="k-misc.jsx"></script>
+  <script type="text/babel" src="k-app.jsx"></script>
+  <script type="text/babel">
+    const { createRoot } = ReactDOM;
+    createRoot(document.getElementById("root")).render(
+      <div className="phone-viewport"><App /></div>
+    );
+  </script>
+</body>
+</html>

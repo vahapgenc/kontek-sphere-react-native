@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kontek Mobile — Bottom Tab Bar Navigation Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..600&display=swap" />
+<style>
+  :root {
+    --signature: #203B3C;
+    --ground: #122121;
+    --green: #61BC8F;
+    --mint: #9DDFB5;
+    --ink: #0F1112;
+    --ink-2: #475669;
+    --ink-3: #6B7280;
+    --line: #E5E7EB;
+    --line-2: #DDE5E6;
+    --warn: #D97757;
+    --danger: #C0392B;
+    --paper: #FFFFFF;
+    --desk: #ECEFF3;
+    --font: "Open Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--desk);
+    font-family: var(--font);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding: 40px 16px;
+  }
+  .page {
+    max-width: 816px;
+    margin: 0 auto 28px;
+    background: var(--paper);
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 72px 76px;
+  }
+
+  /* ---------- Cover band ---------- */
+  .cover {
+    background: radial-gradient(80% 120% at 92% 10%, rgba(157,223,181,0.18) 0%, rgba(157,223,181,0.04) 42%, rgba(157,223,181,0) 66%), var(--signature);
+    color: #fff;
+    border-radius: 4px;
+    max-width: 816px;
+    margin: 0 auto 28px;
+    padding: 56px 76px 52px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .cover .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--mint); margin: 0 0 14px;
+  }
+  .cover h1 {
+    font-size: 34px; font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.12; margin: 0 0 16px;
+  }
+  .cover p {
+    font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.86);
+    margin: 0; max-width: 540px;
+  }
+  .cover .meta {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px;
+  }
+  .cover .chip {
+    font-size: 12px; font-weight: 600; padding: 6px 13px;
+    border-radius: 999px; background: rgba(255,255,255,0.12);
+    color: #fff; border: 1px solid rgba(255,255,255,0.16);
+  }
+
+  /* ---------- Typography ---------- */
+  h2 {
+    font-size: 21px; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--signature); margin: 0 0 6px;
+    padding-top: 8px;
+  }
+  h2 .num {
+    display: inline-block; min-width: 1.5em; color: var(--green);
+  }
+  h3 {
+    font-size: 15px; font-weight: 700; color: var(--ink);
+    margin: 22px 0 8px;
+  }
+  .section { margin-bottom: 38px; break-inside: avoid; }
+  .section + .section { border-top: 1px solid var(--line-2); padding-top: 30px; }
+  p { margin: 0 0 12px; font-size: 14.5px; }
+  .lead { font-size: 15px; color: var(--ink-2); }
+  strong { font-weight: 700; }
+  ul { margin: 0 0 12px; padding-left: 20px; }
+  li { font-size: 14.5px; margin-bottom: 6px; }
+  code {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px; background: #F2F5F4; color: var(--signature);
+    padding: 1px 6px; border-radius: 5px;
+  }
+
+  /* ---------- Tables ---------- */
+  table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 16px;
+    font-size: 13.5px;
+  }
+  th {
+    text-align: left; font-weight: 700; color: var(--ink-2);
+    font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 8px 12px; border-bottom: 2px solid var(--line-2);
+  }
+  td {
+    padding: 9px 12px; border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  tr { break-inside: avoid; }
+  td code { white-space: nowrap; }
+
+  /* ---------- Swatch dot ---------- */
+  .sw {
+    display: inline-block; width: 11px; height: 11px; border-radius: 3px;
+    vertical-align: -1px; margin-right: 6px; border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  /* ---------- Callout ---------- */
+  .callout {
+    display: flex; gap: 13px; padding: 14px 16px; border-radius: 12px;
+    background: #F2F5F4; margin: 16px 0;
+  }
+  .callout .bar { flex: 0 0 4px; border-radius: 4px; background: var(--green); }
+  .callout p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+
+  /* ---------- Do / Don't ---------- */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .pill-head {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 10px;
+  }
+  .do .pill-head { color: #1F8A5B; }
+  .dont .pill-head { color: var(--danger); }
+  .grid2 ul { padding-left: 18px; }
+
+  /* ---------- Live diagram of the nav bar ---------- */
+  .demo-wrap { margin: 14px 0 4px; }
+  .demo-caption { font-size: 12px; color: var(--ink-3); margin-top: 8px; text-align: center; }
+  .navbar {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    background: #fff; border: 1px solid var(--line-2); border-radius: 16px;
+    box-shadow: 0 6px 22px rgba(18,33,33,0.10);
+    padding: 10px 8px 12px; max-width: 380px; margin: 0 auto;
+    overflow: visible;
+  }
+  .nav-tab {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 4px; position: relative;
+  }
+  .nav-tab .ico {
+    width: 24px; height: 24px; display: grid; place-items: center;
+    position: relative;
+  }
+  .nav-tab .ico svg { width: 24px; height: 24px; }
+  .nav-tab .lbl { font-size: 11px; font-weight: 600; }
+  .nav-tab.active .lbl, .nav-tab.active .ico { color: var(--signature); }
+  .nav-tab:not(.active):not(.center) .lbl, .nav-tab:not(.active):not(.center) .ico { color: var(--ink-2); }
+  .nav-tab .badge {
+    position: absolute; top: -5px; right: -7px; width: 18px; height: 18px;
+    border-radius: 999px; background: var(--green); color: #fff;
+    font-size: 10px; font-weight: 700; display: grid; place-items: center;
+  }
+  .nav-tab.center .fab {
+    margin-top: -24px; width: 56px; height: 56px; border-radius: 999px;
+    background: var(--mint); color: var(--ground);
+    display: grid; place-items: center;
+    box-shadow: 0 8px 18px rgba(18,33,33,0.18), 0 2px 6px rgba(18,33,33,0.12);
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page, .cover {
+      box-shadow: none; border-radius: 0; margin: 0; max-width: none;
+      padding: 0;
+    }
+    .cover { padding: 0 0 28px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cover, .callout, .nav-tab.center .fab, .navbar, .sw, .badge,
+    .demo-wrap, th {
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    @page { margin: 0.7in; }
+    .section { break-inside: avoid; }
+    h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ COVER ============ -->
+  <header class="cover">
+    <p class="eyebrow">Kontek Design System · Mobile</p>
+    <h1>Bottom Tab Bar Navigation</h1>
+    <p>The primary mobile navigation pattern. Four core areas plus a raised center action, permanently in thumb reach — the replacement for side navigation (sidonavigering) on phones.</p>
+    <div class="meta">
+      <span class="chip">Component spec</span>
+      <span class="chip">iPhone + Android</span>
+      <span class="chip">v1.0</span>
+    </div>
+  </header>
+
+  <!-- ============ PAGE ============ -->
+  <main class="page">
+
+    <!-- Live diagram -->
+    <div class="section">
+      <div class="demo-wrap">
+        <div class="navbar">
+          <div class="nav-tab active">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M9.5 20v-6h5v6"/></svg><span class="badge">2</span></span>
+            <span class="lbl">Home</span>
+          </div>
+          <div class="nav-tab">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg></span>
+            <span class="lbl">Pay</span>
+          </div>
+          <div class="nav-tab center">
+            <span class="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+          <div class="nav-tab">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="badge">3</span></span>
+            <span class="lbl">Notifications</span>
+          </div>
+          <div class="nav-tab">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></span>
+            <span class="lbl">Profile</span>
+          </div>
+        </div>
+        <p class="demo-caption">Resting state — Home active, count badges on Home and Notifications, raised "+" center action.</p>
+      </div>
+    </div>
+
+    <!-- 1 -->
+    <section class="section">
+      <h2><span class="num">1</span>Why this replaces side navigation</h2>
+      <p class="lead">Side navigation hides the app's main areas behind a menu the user has to open. On a phone that costs a tap for every move and pushes the most-used destinations out of sight.</p>
+      <p>This pattern puts the <strong>four core areas plus the primary "register" action permanently in reach of the thumb</strong>, so the whole app is one tap away and the thing people open the app to do — register absence or an expense — is always the visible center action.</p>
+      <p>Use a bottom tab bar for the <strong>top-level areas of the app</strong>. Keep side navigation only for rare, secondary destinations, if at all.</p>
+    </section>
+
+    <!-- 2 -->
+    <section class="section">
+      <h2><span class="num">2</span>Anatomy</h2>
+      <p>A fixed bar pinned to the bottom of the screen, above the safe-area inset. Five equal slots:</p>
+      <table>
+        <thead><tr><th>Slot</th><th>Type</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Tab</td><td><strong>Home</strong> — overview / dashboard</td></tr>
+          <tr><td>2</td><td>Tab</td><td><strong>Pay</strong> — pay slips</td></tr>
+          <tr><td>3</td><td>Center action</td><td><strong>Register</strong> — raised "+" that opens the action sheet</td></tr>
+          <tr><td>4</td><td>Tab</td><td><strong>Notifications</strong></td></tr>
+          <tr><td>5</td><td>Tab</td><td><strong>Profile</strong></td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><strong>Max 5 slots.</strong> Four tabs + one center action is the ceiling. Never add a sixth.</li>
+        <li>The center action is <strong>not a tab</strong> — it does not represent a destination, it triggers an action sheet. It never shows a selected state.</li>
+      </ul>
+    </section>
+
+    <!-- 3 -->
+    <section class="section">
+      <h2><span class="num">3</span>Layout &amp; dimensions</h2>
+      <table>
+        <tbody>
+          <tr><td>Bar height</td><td><strong>59px</strong> (56px content + 1px top border + rounding) — excludes the safe-area inset, added below</td></tr>
+          <tr><td>Bar background</td><td><span class="sw" style="background:#fff"></span><code>#FFFFFF</code> (<code>--surface</code>)</td></tr>
+          <tr><td>Top border</td><td><code>1px solid #DDE5E6</code> (<code>--line-2</code>)</td></tr>
+          <tr><td>Bar shadow</td><td><code>0 -1px 3px rgba(18,33,33,0.04)</code></td></tr>
+          <tr><td>Slot layout</td><td>5 equal-width flex items, each ~20%</td></tr>
+          <tr><td>Tab internal</td><td>flex column, <code>gap: 4px</code>, <code>padding: 8px 4px</code>, centered</td></tr>
+          <tr><td>Safe area</td><td>add <code>env(safe-area-inset-bottom)</code> as padding <strong>below</strong> the 59px bar</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 4 -->
+    <section class="section">
+      <h2><span class="num">4</span>Tab item</h2>
+      <p>Vertical stack: icon over label.</p>
+      <table>
+        <tbody>
+          <tr><td>Icon</td><td><strong>24×24px</strong>, stroke style, stroke-width 1.9</td></tr>
+          <tr><td>Label</td><td><strong>11px / 600</strong>, single word, never wraps</td></tr>
+          <tr><td>Icon → label gap</td><td>4px</td></tr>
+          <tr><td>Min tap target</td><td>full slot, ≥48px tall</td></tr>
+        </tbody>
+      </table>
+      <h3>States</h3>
+      <table>
+        <thead><tr><th>State</th><th>Icon + label color</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Active</strong></td><td><span class="sw" style="background:#203B3C"></span><code>#203B3C</code></td><td>One tab active at a time</td></tr>
+          <tr><td><strong>Inactive</strong></td><td><span class="sw" style="background:#475669"></span><code>#475669</code></td><td>Calm, recessive</td></tr>
+          <tr><td><strong>Pressed</strong></td><td><code>#203B3C</code> @ 70%</td><td>Brief, on touch-down</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><div class="bar"></div><p>There is <strong>no pill, underline, or background fill</strong> on the active tab — color alone carries selection. Keep it quiet.</p></div>
+    </section>
+
+    <!-- 5 -->
+    <section class="section">
+      <h2><span class="num">5</span>Center action ("+")</h2>
+      <p>A raised circular button that breaks above the bar's top edge.</p>
+      <table>
+        <tbody>
+          <tr><td>Size</td><td><strong>56×56px</strong></td></tr>
+          <tr><td>Shape</td><td>full circle (<code>border-radius: 999px</code>)</td></tr>
+          <tr><td>Vertical offset</td><td><code>margin-top: -24px</code></td></tr>
+          <tr><td>Icon</td><td>"plus", <strong>26px</strong>, stroke-width 2.2, color <code>--shell-cta-ink</code></td></tr>
+          <tr><td>Resting background</td><td><span class="sw" style="background:#9DDFB5"></span><code>#9DDFB5</code> (<code>--status-badge</code>)</td></tr>
+          <tr><td>Open / active background</td><td><span class="sw" style="background:#61BC8F"></span><code>#61BC8F</code> (<code>--green</code>)</td></tr>
+          <tr><td>Shadow</td><td><code>0 8px 18px rgba(18,33,33,0.18), 0 2px 6px rgba(18,33,33,0.12)</code></td></tr>
+          <tr><td>Transition</td><td>background + shadow ≈180ms</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Behavior:</strong> tapping toggles the Register action sheet (absence / expense). While open the button stays in its <code>#61BC8F</code> state with <code>aria-expanded="true"</code>. It carries no label.</p>
+    </section>
+
+    <!-- 6 -->
+    <section class="section">
+      <h2><span class="num">6</span>Count badge</h2>
+      <p>For tabs that signal pending items — Home (number of "to do" items), Notifications (unread count).</p>
+      <table>
+        <tbody>
+          <tr><td>Shape</td><td>perfect circle, <strong>18×18px</strong></td></tr>
+          <tr><td>Background</td><td><span class="sw" style="background:#61BC8F"></span><code>#61BC8F</code> (<code>--green</code>)</td></tr>
+          <tr><td>Number color</td><td><span class="sw" style="background:#fff"></span><code>#FFFFFF</code></td></tr>
+          <tr><td>Font</td><td><strong>10px / 700</strong>, centered</td></tr>
+          <tr><td>Position</td><td>top-right of the <strong>icon</strong>, not the label</td></tr>
+          <tr><td>Visibility</td><td>shown only when count &gt; 0</td></tr>
+          <tr><td>Overflow</td><td>cap display at <code>9+</code></td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><div class="bar"></div><p>The badge is a <strong>count</strong>, not a dot. Use a numbered badge wherever a quantity is meaningful; reserve a plain dot only for "something changed, no count."</p></div>
+    </section>
+
+    <!-- 7 -->
+    <section class="section">
+      <h2><span class="num">7</span>Behavior rules</h2>
+      <ul>
+        <li><strong>Persistent.</strong> Visible on all top-level screens. Hidden inside full-screen flows (registration steps, sheets) and deep detail screens with their own back-nav app bar.</li>
+        <li><strong>One active tab.</strong> Switching tabs resets that area to its root (clears its navigation stack).</li>
+        <li><strong>Center action never selects.</strong> No active/destination state — only resting vs. open.</li>
+        <li><strong>No horizontal scrolling.</strong> If you need more than 4 destinations, the IA is wrong — consolidate, don't scroll the bar.</li>
+        <li><strong>Labels always shown.</strong> Never icon-only; the 11px label is part of the pattern.</li>
+      </ul>
+    </section>
+
+    <!-- 8 -->
+    <section class="section">
+      <h2><span class="num">8</span>Accessibility</h2>
+      <ul>
+        <li>Every tab: <code>aria-label</code> = its name, <code>aria-current="page"</code> when active.</li>
+        <li>Center action: <code>aria-label="Register"</code>, <code>aria-expanded</code> reflects sheet state.</li>
+        <li>Tap targets fill the full slot height; minimum 48×48px effective.</li>
+        <li>Color is never the only signal of the current area — icon + label pairing and screen content reinforce it. Active label <code>#203B3C</code> on white is AAA for text.</li>
+      </ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="section">
+      <h2><span class="num">9</span>Tokens used</h2>
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><code>--surface</code></td><td><span class="sw" style="background:#fff"></span>#FFFFFF</td><td>Bar background</td></tr>
+          <tr><td><code>--line-2</code></td><td><span class="sw" style="background:#DDE5E6"></span>#DDE5E6</td><td>Top hairline border</td></tr>
+          <tr><td><code>--signature</code></td><td><span class="sw" style="background:#203B3C"></span>#203B3C</td><td>Active tab</td></tr>
+          <tr><td><code>--ink-2</code></td><td><span class="sw" style="background:#475669"></span>#475669</td><td>Inactive tab</td></tr>
+          <tr><td><code>--status-badge</code></td><td><span class="sw" style="background:#9DDFB5"></span>#9DDFB5</td><td>Center action (resting)</td></tr>
+          <tr><td><code>--green</code></td><td><span class="sw" style="background:#61BC8F"></span>#61BC8F</td><td>Center action (open) + badge</td></tr>
+          <tr><td><code>--r-pill</code></td><td>999px</td><td>Center action + badge radius</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 10 -->
+    <section class="section">
+      <h2><span class="num">10</span>Do / Don't</h2>
+      <div class="grid2">
+        <div class="do">
+          <div class="pill-head">Do</div>
+          <ul>
+            <li>Keep it to 4 tabs + 1 center action.</li>
+            <li>Use color-only selection for tabs.</li>
+            <li>Put the primary create action in the raised center slot.</li>
+            <li>Show numbered badges for pending counts.</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <div class="pill-head">Don't</div>
+          <ul>
+            <li>Don't reintroduce a hamburger / side drawer for top-level areas.</li>
+            <li>Don't give the "+" a selected/destination state.</li>
+            <li>Don't add pills, fills, or underlines to the active tab.</li>
+            <li>Don't hide labels, let them wrap, or exceed 5 slots.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <script>
+    (function () {
+      function go() { setTimeout(function () { window.print(); }, 500); }
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () {
+          if (document.readyState === "complete") go();
+          else window.addEventListener("load", go);
+        });
+      } else {
+        window.addEventListener("load", go);
+      }
+    })();
+  </script>
+</body>
+</html>

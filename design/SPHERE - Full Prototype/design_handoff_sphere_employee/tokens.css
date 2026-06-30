@@ -1,0 +1,151 @@
+/* ============================================================
+   Bridge: maps the prototype's local variable names onto the REAL
+   Kontek Next design-system tokens (ds/colors_and_type.css).
+   Load ds/colors_and_type.css BEFORE this file.
+   ============================================================ */
+:root {
+  /* Brand ramp → Kontek forest/teal-green */
+  --brand-900: var(--ground);     /* #122121 deepest ground */
+  --brand-700: var(--signature);  /* #203B3C brand signature */
+  --brand-600: var(--signature);  /* primary action */
+  --brand-500: var(--guide);      /* #395F61 the guide */
+  --brand-100: #DCEEE3;           /* soft green tint — icon chips, soft buttons */
+  --brand-50:  #EAF3EE;           /* lightest green tint */
+
+  /* Accent (positive / approve) */
+  --accent:    var(--green);      /* #61BC8F interaction green */
+
+  /* Neutrals */
+  --ink:       #0F1112;           /* Obsidian */
+  --ink-2:     #445C5E;
+  --ink-3:     #475669;
+  --surface:   #FFFFFF;
+  --surface-2: #E6EAEE;
+  --bg:        #ECEFF3;           /* Cloud canvas */
+  --line:      #DDE5E6;
+  --line-2:    #E8EDEE;
+
+  /* Status — DS semantic colors */
+  --ok:        var(--ok-text);    /* #0C4D33 */
+  --ok-bg:     var(--ok-soft);    /* #E6F7ED */
+  --warn:      var(--warn-text);  /* #7A4A0E */
+  --warn-bg:   var(--warn-soft);  /* #FEF4E7 */
+  --info:      var(--info-text);  /* #1A5298 */
+  --info-bg:   var(--info-soft);  /* #EBF2FB */
+  --danger:    var(--danger-text);/* #9C3232 */
+  --danger-bg: var(--danger-soft);/* #FDEEED */
+
+  /* Radii — DS mobile scale */
+  --r-sm: 8px;
+  --r-md: var(--r-input);         /* 12px */
+  --r-lg: var(--r-card);          /* 16px */
+  --r-xl: var(--r-panel);         /* 20px */
+  --r-pill: 999px;
+
+  /* Shadow */
+  --sh-1: var(--shadow-sm);
+  --sh-2: var(--shadow-md);
+  --sh-3: var(--shadow-lg);
+
+  /* Type — Open Sans */
+  --font: var(--font-ui);
+  --font-num: var(--font-ui);
+
+  /* Layout */
+  --pad: var(--screen-gutter);
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+.k-app {
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  letter-spacing: 0;
+}
+
+/* numeric tabular for money */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* screen transitions — transform-only so content is NEVER hidden if the
+   animation clock is paused (iframe backgrounded). Resting state = visible. */
+@keyframes slideInR { from { transform: translateX(16px); } to { transform: translateX(0); } }
+@keyframes slideInL { from { transform: translateX(-16px); } to { transform: translateX(0); } }
+@keyframes fadeUp  { from { transform: translateY(9px); } to { transform: translateY(0); } }
+@keyframes pop     { from { transform: scale(.94); } to { transform: scale(1); } }
+.anim-r { animation: slideInR .32s cubic-bezier(.32,.72,0,1) both; }
+.anim-l { animation: slideInL .32s cubic-bezier(.32,.72,0,1) both; }
+.fade-up { animation: fadeUp .4s ease both; }
+.pop-in { animation: pop .4s cubic-bezier(.34,1.56,.64,1) both; }
+
+/* hide scrollbars inside the phone */
+.k-scroll::-webkit-scrollbar { width: 0; height: 0; }
+.k-scroll { scrollbar-width: none; }
+
+/* Calmer list density app-wide — match the Home "Att göra" / "Den här perioden" rows */
+.ds-row { min-height: 52px; }
+.ds-row__lead { width: 34px; height: 34px; }
+.ds-row__lead svg { width: 18px; height: 18px; }
+.ds-row__title { font-size: var(--t-title); }
+.ds-row__sub { font-size: var(--t-body); }
+.ds-row__value { white-space: nowrap; font-size: var(--t-title); }
+
+/* Modal headings (flow steps + bottom-sheet titles) are semibold, not bold */
+.ds-h1 { font-weight: var(--w-semibold); }
+
+/* Primary CTA border */
+.ds-btn--primary { border-color: #A3B4B6; }
+
+/* Destructive button border matches its text color */
+.ds-btn--danger { border-color: var(--danger); }
+.ds-sheet__title { font-weight: var(--w-semibold); }
+.ds-row + .ds-row::before,
+.ds-row--divider::after { left: calc(var(--screen-gutter) + 34px + var(--space-04)); }
+.ds-row--full + .ds-row--full::before { left: var(--screen-gutter); }
+
+/* ============================================================
+   No hover state anywhere — hover looks identical to resting.
+   Feedback comes only from a slight press (scale) on tap.
+   ============================================================ */
+.ds-btn--primary:hover       { background: var(--action); }
+.ds-btn--secondary:hover     { background: var(--surface); border-color: var(--line); color: var(--ink); }
+.ds-btn--ghost:hover         { background: transparent; }
+.ds-btn--transparent:hover   { background: transparent; color: var(--action); }
+.ds-btn--approve:hover       { background: var(--green); }
+.ds-btn--secondary-cta:hover { background: var(--action-2); }
+.ds-btn--danger:hover        { background: transparent; }
+.ds-appbar__action:hover            { background: transparent; color: inherit; }
+.ds-appbar--dark .ds-appbar__action:hover { background: transparent; color: var(--on-dark-2); }
+.ds-fab:hover                { background: var(--shell-cta); }
+.ds-fab--signature:hover     { background: var(--action); }
+.ds-segmented .seg:hover     { color: var(--ink-3); }
+.ds-thumb:hover              { border-color: var(--line); background: var(--surface); }
+.ds-checkbox:hover .ds-cbx,
+.ds-radio:hover .ds-rdo      { border-color: var(--line); }
+.ds-input:hover, .ds-textarea:hover, .ds-select:hover { border-color: var(--line); }
+.ds-actionsheet__item:hover  { background: var(--surface-1); }
+
+/* No grey tap indicator; a very slight press that springs back on release */
+.ds-btn, .ds-row--tap, button.ds-row, a.ds-row, .ds-actionsheet__item {
+  transition: transform 160ms cubic-bezier(.32,.72,0,1), background var(--gaia-transition-hover);
+}
+.ds-btn:active,
+.ds-row--tap:active, button.ds-row:active, a.ds-row:active,
+.ds-actionsheet__item:active { transform: scale(0.98); }
+button.ds-row:active, a.ds-row:active, .ds-row--tap:active { background: var(--surface); }
+.ds-actionsheet__item:active { background: var(--surface-1); }
+
+/* Disabled buttons: no hover/press color or motion change */
+.ds-btn:disabled, .ds-btn[disabled], .ds-btn[aria-disabled="true"] { cursor: default; }
+.ds-btn:disabled:hover, .ds-btn:disabled:active,
+.ds-btn[disabled]:hover, .ds-btn[disabled]:active { transform: none; filter: none; }
+.ds-btn--primary:disabled:hover, .ds-btn--primary:disabled:active,
+.ds-btn--primary[disabled]:hover, .ds-btn--primary[disabled]:active { background: var(--action-disabled); color: var(--action-disabled-ink); }
+.ds-btn--secondary-cta:disabled:hover, .ds-btn--secondary-cta:disabled:active { background: var(--action-disabled); color: var(--action-disabled-ink); }
+
+/* Icon tiles — signature fill, white icon, no border */
+.ds-row__lead { background: #203B3C; color: #fff; border: none; box-sizing: border-box; }
+.ds-row__lead svg { color: #fff; }
+/* Action-required tiles use the DS warning palette */
+.ds-row__lead.lead-warn { background: var(--warn-bg); color: var(--warn); }
+.ds-row__lead.lead-warn svg { color: var(--warn); }

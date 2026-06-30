@@ -1,0 +1,136 @@
+<!-- @dsCard group="Organisms" viewport="980x620" name="App bar" subtitle="Top chrome — large-title, compact & dark" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>App bar — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .stage { display:flex; gap:30px; flex-wrap:wrap; }
+  .phone { width:300px; border-radius:30px; overflow:hidden; border:1px solid var(--line); background:var(--canvas); box-shadow:var(--shadow-md); }
+  .scr { height:340px; overflow:hidden; display:flex; flex-direction:column; }
+  .scr.dark { background:var(--shell-bg); }
+  .pad { padding:14px var(--screen-gutter); }
+  .ph-row { display:flex; align-items:center; gap:12px; padding:12px var(--screen-gutter); }
+  .ph-row + .ph-row { border-top:1px solid var(--line-2); }
+  .ph-ico { width:38px; height:38px; border-radius:11px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .ph-ico svg { width:20px; height:20px; stroke:var(--green-deep); }
+  .ph-t { display:block; font-size:16px; font-weight:600; color:var(--ink); }
+  .ph-s { display:block; font-size:13px; color:var(--ink-3); margin-top:1px; }
+  svg.i { fill:none; stroke:currentColor; stroke-width:1.85; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">App bar</h1>
+  <div class="dg-intro"><p>Toppchrome i två former: stor rubrik på rotflikar, kompakt med bakåtpil på inskjutna skärmar. <b>Transparent i vila</b>, frostar in vid skroll.</p></div>
+
+  <div class="sec">
+    <h2>App bar</h2>
+    <p>The sticky top chrome of every screen. Three forms share one component: <b>large-title</b> (the standard Översikt / Lön / Time header — eyebrow + 28px title), <b>compact</b> (centred title with leading + trailing actions, for deeper screens) and a <b>dark</b> variant for forest-toned surfaces. Translucent with a blur so content scrolls under it. Action targets are a full 48px.</p>
+    <div class="frame" style="gap:30px;">
+      <div class="stage">
+
+        <!-- large-title -->
+        <div>
+          <div class="phone">
+            <div class="scr">
+              <div class="ds-appbar">
+                <div class="ds-appbar__bar">
+                  <button class="ds-appbar__action" aria-label="Tillbaka"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+                  <span class="ds-appbar__title">&nbsp;</span>
+                  <button class="ds-appbar__action" aria-label="Aviseringar"><svg class="i" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ds-dot"></span></button>
+                </div>
+                <div class="ds-appbar__large">
+                  <div class="ds-appbar__eyebrow">Måndag 25 maj</div>
+                  <h1 class="ds-appbar__h1">God morgon, Anna</h1>
+                </div>
+              </div>
+              <div class="ph-row"><span class="ph-ico"><svg class="i" viewBox="0 0 24 24"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/></svg></span><span><span class="ph-t">Lön</span><span class="ph-s">1 körning väntar</span></span></div>
+              <div class="ph-row"><span class="ph-ico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span><span class="ph-t">Time</span><span class="ph-s">7 att attestera</span></span></div>
+            </div>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Large-title — standard screen header</div>
+        </div>
+
+        <!-- compact -->
+        <div>
+          <div class="phone">
+            <div class="scr" style="background:var(--surface);">
+              <div class="ds-appbar" style="background:color-mix(in srgb, var(--surface) 82%, transparent);">
+                <div class="ds-appbar__bar">
+                  <button class="ds-appbar__action" aria-label="Tillbaka"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+                  <span class="ds-appbar__title">Lönekörning · Maj</span>
+                  <button class="ds-appbar__action" aria-label="Mer"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                </div>
+              </div>
+              <div class="pad" style="font-size:14px;color:var(--ink-3);line-height:1.6;">Centred title with a leading back action and a trailing overflow. Used on detail screens pushed onto the stack.</div>
+            </div>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Compact — detail screen</div>
+        </div>
+
+        <!-- dark -->
+        <div>
+          <div class="phone" style="background:var(--shell-bg);border-color:transparent;">
+            <div class="scr dark">
+              <div class="ds-appbar ds-appbar--dark">
+                <div class="ds-appbar__bar">
+                  <button class="ds-appbar__action" aria-label="Meny"><svg class="i" viewBox="0 0 24 24"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button>
+                  <span class="ds-appbar__title">&nbsp;</span>
+                  <button class="ds-appbar__action" aria-label="Profil"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></button>
+                </div>
+                <div class="ds-appbar__large">
+                  <div class="ds-appbar__eyebrow">Norrström Industrier</div>
+                  <h1 class="ds-appbar__h1">Lön</h1>
+                </div>
+              </div>
+              <div class="pad" style="font-size:14px;color:var(--on-dark-2);line-height:1.6;">Dark variant for branded screens — same structure, on-dark inks and a Status-Badge eyebrow.</div>
+            </div>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Dark — Brand Signature surface</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy">
+      <div><b>Bar height</b> &nbsp;56px</div>
+      <div><b>Title</b> &nbsp;28px / 700 (large) · 17px / 600 (compact)</div>
+      <div><b>Eyebrow</b> &nbsp;12px / 600 uppercase</div>
+      <div><b>Action</b> &nbsp;48px tap · 24px icon</div>
+      <div><b>Surface</b> &nbsp;82% canvas + blur(12px)</div>
+      <div><b>Safe area</b> &nbsp;respects --safe-top</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Use the large-title bar on root tabs, the compact back-chevron bar on pushed screens.</li>
+          <li>Put the notifications bell in the right slot with a count badge.</li>
+          <li>Keep it transparent at rest and frost it in on scroll.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Give the resting bar a solid fill or a divider.</li>
+          <li>Crowd more than two actions into the bar.</li>
+          <li>Title Case the screen title.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

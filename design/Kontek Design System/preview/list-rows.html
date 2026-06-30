@@ -1,0 +1,147 @@
+<!-- @dsCard group="Molecules" viewport="980x720" name="List rows" subtitle="Inset groups & full-bleed lists" -->
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>List rows — Kontek Next</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_guidance.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .stage { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start; }
+  .phone { width:320px; border-radius:30px; overflow:hidden; border:1px solid var(--line); background:var(--canvas); box-shadow:var(--shadow-md); padding:18px 0 22px; }
+  .phone.surface { background:var(--surface); }
+  svg.i { fill:none; stroke:currentColor; stroke-width:1.85; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+</head>
+<body>
+
+  <h1 class="dg-h1">List rows</h1>
+  <div class="dg-intro"><p>Mobilappens arbetshäst. Gruppera rader i ett flytande kort och separera med en <b>--line-2-hårlinje</b>.</p></div>
+
+  <div class="sec">
+    <h2>List rows</h2>
+    <p>The workhorse of the app. A row carries a leading media slot (icon tile or avatar), a title with optional subtitle, and a trailing slot — a value, a chevron for drill-in, a switch, or a status badge. Use <b>inset groups</b> (rounded cards within the gutter) for settings and grouped data; use a <b>full-bleed list</b> with left-inset dividers for long scrolling collections. Whole rows are tappable at ≥ 60px tall.</p>
+    <div class="frame">
+      <div class="stage">
+
+        <!-- inset group -->
+        <div>
+          <div class="phone">
+            <div class="ds-list__header">Dina produkter</div>
+            <ul class="ds-list ds-list--inset">
+              <li><button class="ds-row">
+                <span class="ds-row__lead"><svg class="i" width="21" height="21" viewBox="0 0 24 24"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span>
+                <span class="ds-row__body"><span class="ds-row__title">Lön</span><span class="ds-row__sub">Kör lön, skatt och utbetalningar</span></span>
+                <span class="ds-row__trail"><span class="ds-badge ds-badge--warn" style="font-size:11.5px;font-weight:700;color:var(--warn-text);background:var(--warn-soft);border-radius:999px;padding:3px 9px;white-space:nowrap;">1 väntar</span><span class="ds-row__chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></span>
+              </button></li>
+              <li><button class="ds-row">
+                <span class="ds-row__lead"><svg class="i" width="21" height="21" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                <span class="ds-row__body"><span class="ds-row__title">Time</span><span class="ds-row__sub">Tid, frånvaro och scheman</span></span>
+                <span class="ds-row__trail"><span class="ds-row__chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></span>
+              </button></li>
+              <li><button class="ds-row">
+                <span class="ds-row__lead"><svg class="i" width="21" height="21" viewBox="0 0 24 24"><path d="M20.341 6.484A10 10 0 0 1 10.266 21.85"/><path d="M3.659 17.516A10 10 0 0 1 13.74 2.152"/><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/></svg></span>
+                <span class="ds-row__body"><span class="ds-row__title">Sphere</span><span class="ds-row__sub">Medarbetardata och dokument</span></span>
+                <span class="ds-row__trail"><span class="ds-row__chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></span>
+              </button></li>
+            </ul>
+
+            <div class="ds-list__header" style="margin-top:6px;">Inställningar</div>
+            <ul class="ds-list ds-list--inset">
+              <li><div class="ds-row">
+                <span class="ds-row__lead ds-row__lead--muted"><svg class="i" width="21" height="21" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+                <span class="ds-row__body"><span class="ds-row__title">Påminnelser</span></span>
+                <span class="ds-row__trail"><span class="ds-swt is-on"></span></span>
+              </div></li>
+              <li><div class="ds-row">
+                <span class="ds-row__lead ds-row__lead--muted"><svg class="i" width="21" height="21" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6"/></svg></span>
+                <span class="ds-row__body"><span class="ds-row__title">Språk</span></span>
+                <span class="ds-row__trail">Svenska<span class="ds-row__chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></span>
+              </div></li>
+            </ul>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Inset groups — settings &amp; grouped data</div>
+        </div>
+
+        <!-- full-bleed -->
+        <div>
+          <div class="phone surface" style="padding-top:0;">
+            <div class="ds-list__header" style="padding-top:18px;">Att attestera</div>
+            <ul class="ds-list">
+              <li><div class="ds-row">
+                <span class="ds-row__lead" style="border-radius:999px;background:var(--guide);color:#fff;font-size:13px;font-weight:600;">EH</span>
+                <span class="ds-row__body"><span class="ds-row__title">Erik Holm</span><span class="ds-row__sub">Vecka 20 · 38,5 h</span></span>
+                <span class="ds-row__trail"><button class="ds-btn ds-btn--primary ds-btn--sm">Godkänn</button></span>
+              </div></li>
+              <li><div class="ds-row">
+                <span class="ds-row__lead" style="border-radius:999px;background:var(--guide);color:#fff;font-size:13px;font-weight:600;">SN</span>
+                <span class="ds-row__body"><span class="ds-row__title">Sara Nilsson</span><span class="ds-row__sub">Vecka 20 · 40 h</span></span>
+                <span class="ds-row__trail"><button class="ds-btn ds-btn--primary ds-btn--sm">Godkänn</button></span>
+              </div></li>
+              <li><div class="ds-row">
+                <span class="ds-row__lead" style="border-radius:999px;background:var(--green-soft);color:var(--green-deep);"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <span class="ds-row__body"><span class="ds-row__title" style="color:var(--ink-3);text-decoration:line-through;">Johan Lund</span><span class="ds-row__sub">Vecka 20 · 36 h</span></span>
+                <span class="ds-row__trail"><button class="ds-btn ds-btn--secondary ds-btn--sm">Ångra</button></span>
+              </div></li>
+              <li><div class="ds-row">
+                <span class="ds-row__lead" style="border-radius:999px;background:var(--guide);color:#fff;font-size:13px;font-weight:600;">MA</span>
+                <span class="ds-row__body"><span class="ds-row__title">Maja Andersson</span><span class="ds-row__sub">Vecka 20 · 40 h</span></span>
+                <span class="ds-row__trail"><button class="ds-btn ds-btn--primary ds-btn--sm">Godkänn</button></span>
+              </div></li>
+            </ul>
+          </div>
+          <div class="lbl" style="margin-top:10px;">Full-bleed — long scrolling lists</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0;">
+    <h2>Anatomy</h2>
+    <div class="frame anatomy">
+      <div><b>Min height</b> &nbsp;60px (tap-safe)</div>
+      <div><b>Lead media</b> &nbsp;40px tile / avatar</div>
+      <div><b>Title</b> &nbsp;17px / 600</div>
+      <div><b>Subtitle</b> &nbsp;15px / ink-3</div>
+      <div><b>Divider</b> &nbsp;inset past the media</div>
+      <div><b>Trailing</b> &nbsp;value · chevron · switch · badge</div>
+    </div>
+  </div>
+
+  <section class="kdd">
+    <div class="kdd__eyebrow">Riktlinjer</div>
+    <h2 class="kdd__title">Dos &amp; don'ts</h2>
+    <div class="kdd__examples">
+      <figure class="kdd__ex kdd__ex--do">
+        <div class="kdd__ex__stage"><div style="width:200px;background:#fff;border:1px solid transparent;border-radius:16px;box-shadow:var(--sh-1);overflow:hidden;"><div style="padding:11px 14px;font-size:13px;font-weight:600;color:var(--ink);">Ledighet</div><div style="padding:11px 14px;font-size:13px;font-weight:600;color:var(--ink);border-top:1px solid var(--line-2);">Utlägg</div></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Rows split by a <code>--line-2</code> hairline inside one floating card.</figcaption>
+      </figure>
+      <figure class="kdd__ex kdd__ex--dont">
+        <div class="kdd__ex__stage"><div style="display:flex;flex-direction:column;gap:8px;width:200px;"><div style="padding:11px 14px;font-size:13px;font-weight:600;color:var(--ink);background:#fff;border:1px solid #C9D2D3;border-radius:10px;">Ledighet</div><div style="padding:11px 14px;font-size:13px;font-weight:600;color:var(--ink);background:#fff;border:1px solid #C9D2D3;border-radius:10px;">Utlägg</div></div></div>
+        <figcaption class="kdd__ex__cap"><span class="kdd__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't box each row with a visible border.</figcaption>
+      </figure>
+    </div>
+    <div class="kdd__lists">
+      <div class="kdd__list kdd__list--do">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Do</div>
+        <ul>
+          <li>Group rows in an inset floating card; separate them with a <code>--line-2</code> hairline.</li>
+          <li>Reach for the Row anatomy (lead tile / title+sub / trailing) over bespoke flex rows.</li>
+          <li>Make pressable rows real buttons with a chevron and ≥ 48px height.</li>
+        </ul>
+      </div>
+      <div class="kdd__list kdd__list--dont">
+        <div class="kdd__head"><span class="kdd__hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Don't</div>
+        <ul>
+          <li>Box each row with its own border.</li>
+          <li>Use a real border for the in-card divider &mdash; it's a hairline pseudo-line.</li>
+          <li>Hand-roll a flex row when the Row component fits.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
