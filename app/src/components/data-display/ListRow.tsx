@@ -11,7 +11,14 @@ import { KText } from '../Text';
 export interface KListRowProps {
   title: string;
   subtitle?: string;
+  /** Optional third, smaller muted line (e.g. "Registered June 5"). */
+  meta?: string;
   leading?: ReactNode;
+  /**
+   * Render the leading node bare — no green-soft tile chrome behind it. Use for
+   * media that supplies its own background (e.g. a circular KAvatar).
+   */
+  leadingBare?: boolean;
   trailing?: ReactNode;
   onPress?: () => void;
   dense?: boolean;
@@ -22,7 +29,9 @@ export interface KListRowProps {
 export function KListRow({
   title,
   subtitle,
+  meta,
   leading,
+  leadingBare,
   trailing,
   onPress,
   dense,
@@ -36,19 +45,23 @@ export function KListRow({
   const content = (
     <>
       {leading ? (
-        <View
-          style={[
-            styles.lead,
-            {
-              width: leadSize,
-              height: leadSize,
-              borderRadius: theme.radii.sm + 3,
-              backgroundColor: theme.colors.greenSoft,
-            },
-          ]}
-        >
-          {leading}
-        </View>
+        leadingBare ? (
+          <View style={styles.leadBare}>{leading}</View>
+        ) : (
+          <View
+            style={[
+              styles.lead,
+              {
+                width: leadSize,
+                height: leadSize,
+                borderRadius: theme.radii.sm + 3,
+                backgroundColor: theme.colors.greenSoft,
+              },
+            ]}
+          >
+            {leading}
+          </View>
+        )
       ) : null}
       <View style={styles.body}>
         <KText variant="title" weight="600" numberOfLines={1}>
@@ -57,6 +70,11 @@ export function KListRow({
         {subtitle ? (
           <KText variant="bodySm" color={theme.colors.ink3} numberOfLines={1}>
             {subtitle}
+          </KText>
+        ) : null}
+        {meta ? (
+          <KText variant="caption" color={theme.colors.ink4} numberOfLines={1}>
+            {meta}
           </KText>
         ) : null}
       </View>
@@ -122,6 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  leadBare: { flexShrink: 0 },
   body: { flex: 1, minWidth: 0, gap: 2 },
   trail: {
     flexShrink: 0,

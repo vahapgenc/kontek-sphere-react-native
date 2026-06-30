@@ -10,11 +10,13 @@ export type BadgeTone = 'ok' | 'warn' | 'info' | 'danger' | 'neutral' | 'brand';
 export interface KBadgeProps {
   label: string;
   tone?: BadgeTone;
+  /** Show a leading status dot before the label (mirrors the prototype pills). */
+  dot?: boolean;
   testID?: string;
   style?: ViewStyle;
 }
 
-export function KBadge({ label, tone = 'info', testID, style }: KBadgeProps) {
+export function KBadge({ label, tone = 'info', dot, testID, style }: KBadgeProps) {
   const theme = useTheme();
   const { bg, ink } = toneColors(tone, theme);
   return (
@@ -24,6 +26,7 @@ export function KBadge({ label, tone = 'info', testID, style }: KBadgeProps) {
       accessibilityLabel={`Status: ${label}`}
       style={[styles.pill, { backgroundColor: bg, borderRadius: theme.radii.pill }, style]}
     >
+      {dot ? <View style={[styles.dot, { backgroundColor: ink }]} /> : null}
       <KText variant="micro" weight="600" color={ink}>
         {label}
       </KText>
@@ -52,8 +55,13 @@ function toneColors(tone: BadgeTone, theme: ReturnType<typeof useTheme>) {
 
 const styles = StyleSheet.create({
   pill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     alignSelf: 'flex-start',
     paddingHorizontal: 10,
     paddingVertical: 4,
   },
+  dot: { width: 6, height: 6, borderRadius: 3 },
 });
+

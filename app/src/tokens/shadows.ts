@@ -49,13 +49,14 @@ export const shadows = {
     shadowRadius: 22,
     elevation: 6,
   },
-  // Mint hero card (§3.4).
+  // Mint hero card (§3.4) — soft downward lift so it blends with the app-bg
+  // rather than reading as a hard-edged box on top of it.
   mint: {
     shadowColor: '#203B3C',
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.26,
-    shadowRadius: 28,
-    elevation: 10,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 4,
   },
 } satisfies Record<string, ViewStyle>;
 

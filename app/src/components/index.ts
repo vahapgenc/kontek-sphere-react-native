@@ -23,6 +23,7 @@ export * from './inputs/SegmentedControl';
 export * from './surfaces/Card';
 export * from './surfaces/PayHero';
 export * from './surfaces/ProductCard';
+export * from './surfaces/CollapsibleSection';
 export * from './surfaces/BottomSheet';
 export * from './surfaces/Dialog';
 

@@ -73,6 +73,9 @@ export const colors = {
 
   // Sphere prototype decisions
   frostBg: 'rgba(242, 248, 245, 0.92)',
+  // Opaque frost for native (no backdrop-blur): a solid light mint so docked
+  // bars don't let scrolling content bleed through.
+  frostSolid: '#EEF5F1',
   frostLine: 'rgba(18, 33, 33, 0.07)',
   mintLine: 'rgba(32, 59, 60, 0.06)',
   tileFill: '#053F22',
@@ -99,8 +102,9 @@ export const colors = {
 // Mint hero-card gradient stops (use with expo-linear-gradient).
 export const gradients = {
   mint: ['#F0FAF4', '#DBEFE3'] as const, // 145deg
-  // App background base linear stops (the radial glows are approximated separately).
-  appBg: ['#CFEAE2', '#E1F3EE', '#F1F8F6', '#FFFFFF'] as const,
+  // App background — pale mint fading to white. Top stop softened so the app-bar
+  // region reads the same as the soft-mint pay hero (no visible color step).
+  appBg: ['#E4F2EC', '#ECF6F1', '#F5FAF8', '#FFFFFF'] as const,
 } as const;
 
 export type ColorToken = keyof typeof colors;
