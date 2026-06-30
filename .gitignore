@@ -1,0 +1,48 @@
+# ─── Dependencies ───────────────────────────────────────────
+**/node_modules/
+.npm/
+.yarn/
+
+# ─── Expo ───────────────────────────────────────────────────
+**/.expo/
+**/.expo-shared/
+dist/
+web-build/
+expo-env.d.ts
+
+# ─── Native builds ──────────────────────────────────────────
+**/ios/
+**/android/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# ─── Metro ──────────────────────────────────────────────────
+.metro-health-check*
+
+# ─── TypeScript / build artifacts ───────────────────────────
+*.tsbuildinfo
+
+# ─── Logs ───────────────────────────────────────────────────
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.log
+
+# ─── Environment ────────────────────────────────────────────
+.env
+.env.*.local
+.env.local
+
+# ─── Editor / OS ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# ─── App: served copy of the design system (generated, not source) ──
+app/public/
