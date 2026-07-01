@@ -7,6 +7,10 @@ import { detailEn, detailSv } from '../screens/home/detail.i18n';
 import { profileEn, profileSv } from '../screens/profile/i18n';
 import { payEn, paySv } from '../screens/pay/pay.i18n';
 import { payDetailEn, payDetailSv } from '../screens/pay/paydetail.i18n';
+import { registerEn, registerSv } from '../screens/register/register.i18n';
+import { absenceEn, absenceSv } from '../screens/register/absence.i18n';
+import { expenseEn, expenseSv } from '../screens/register/expense.i18n';
+import { attachmentEn, attachmentSv } from '../components/flow/attachment.i18n';
 
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
@@ -29,6 +33,14 @@ if (!i18n.isInitialized) {
   i18n.addResourceBundle('sv', 'pay', paySv);
   i18n.addResourceBundle('en', 'paydetail', payDetailEn);
   i18n.addResourceBundle('sv', 'paydetail', payDetailSv);
+  i18n.addResourceBundle('en', 'register', registerEn);
+  i18n.addResourceBundle('sv', 'register', registerSv);
+  i18n.addResourceBundle('en', 'absence', absenceEn);
+  i18n.addResourceBundle('sv', 'absence', absenceSv);
+  i18n.addResourceBundle('en', 'expense', expenseEn);
+  i18n.addResourceBundle('sv', 'expense', expenseSv);
+  i18n.addResourceBundle('en', 'attachment', attachmentEn);
+  i18n.addResourceBundle('sv', 'attachment', attachmentSv);
 }
 
 export default i18n;

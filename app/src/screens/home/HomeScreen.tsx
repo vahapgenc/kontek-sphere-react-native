@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../theme';
 import {
   KAppBar,
+  KNotificationBell,
   KPayHero,
   KCollapsibleSection,
   KListCard,
@@ -36,6 +37,7 @@ import {
 } from '../../components';
 import { ME, PERIOD, SCENARIOS, APPROVALS } from '../../mocks';
 import { useSession } from '../../store/session';
+import { useUnreadNotifCount } from '../../store/notifications';
 import { useLocalize } from '../../i18n/localize';
 import { kr } from '../../utils/money';
 import type { ActivityItem, Status, AbsenceApproval, ExpenseApproval } from '../../api/types';
@@ -108,6 +110,7 @@ export function HomeScreen() {
     (a, b) => registeredOrder(b.registered) - registeredOrder(a.registered),
   );
   const todoCount = actionItems.length + approvalItems.length;
+  const unreadNotifCount = useUnreadNotifCount();
 
   const noop = () => {};
 
@@ -119,23 +122,11 @@ export function HomeScreen() {
         subtitle={subtitle}
         testID="home_appBar"
         right={
-          <Pressable
+          <KNotificationBell
             testID="home_appBar_notifications"
+            count={unreadNotifCount}
             onPress={noop}
-            accessibilityRole="button"
-            accessibilityLabel="Notifications"
-            hitSlop={8}
-            style={styles.bell}
-          >
-            <KIcon name="bell" color={c.ink2} />
-            {todoCount > 0 ? (
-              <View style={[styles.bellBadge, { backgroundColor: c.ink3, borderColor: c.canvas }]}>
-                <KText variant="micro" weight="700" color={c.onDark} style={styles.bellBadgeText}>
-                  {todoCount}
-                </KText>
-              </View>
-            ) : null}
-          </Pressable>
+          />
         }
       />
 
@@ -376,25 +367,6 @@ const styles = StyleSheet.create({
     paddingBottom: 28,
     gap: 22,
   },
-  bell: {
-    width: 48,
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bellBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    minWidth: 18,
-    height: 18,
-    paddingHorizontal: 4,
-    borderRadius: 9,
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bellBadgeText: { lineHeight: 14 },
   detailsPill: {
     flexDirection: 'row',
     alignItems: 'center',

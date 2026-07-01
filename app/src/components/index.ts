@@ -8,6 +8,7 @@ export * from './Text';
 // Buttons
 export * from './buttons/Button';
 export * from './buttons/Fab';
+export * from './buttons/TextLink';
 
 // Inputs
 export * from './inputs/TextField';
@@ -36,6 +37,7 @@ export * from './data-display/ListRow';
 export * from './data-display/ListCard';
 export * from './data-display/FieldRow';
 export * from './data-display/StatusRow';
+export * from './data-display/SummaryRow';
 export * from './data-display/StatusTimeline';
 export * from './data-display/Steps';
 export * from './data-display/SectionLabel';
@@ -52,6 +54,8 @@ export * from './feedback/Spinner';
 export * from './navigation/AppBar';
 export * from './navigation/TabBar';
 export * from './navigation/TopMenu';
+export * from './navigation/NotificationBell';
+export * from './navigation/OverlayFab';
 
 // Flow primitives
 export * from './flow/FlowShell';

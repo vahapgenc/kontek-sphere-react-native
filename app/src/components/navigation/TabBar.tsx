@@ -19,6 +19,8 @@ export interface KTabBarItem {
 export interface KTabBarCenterAction {
   icon: React.ReactNode;
   onPress: () => void;
+  /** Raised FAB turns from --status-badge to --green when active (hub open). */
+  active?: boolean;
   testID?: string;
   accessibilityLabel?: string;
 }
@@ -87,7 +89,7 @@ export function KTabBar({ items, activeKey, onSelect, centerAction, testID }: KT
             accessibilityLabel={centerAction.accessibilityLabel ?? 'Registrera'}
             style={({ pressed }) => [
               styles.fab,
-              { backgroundColor: c.shellCta },
+              { backgroundColor: centerAction.active ? c.green : c.statusBadge },
               theme.shadows.cta,
               pressed ? styles.fabPressed : null,
             ]}
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    marginTop: -18,
+    marginTop: -24,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -18,6 +18,15 @@ export const colors = {
   guideHi: '#5C8082',
   greenDeep: '#053F22',
   greenSoft: '#E6F7ED',
+
+  // Brand tint scale (mirrors --brand-* in colors_and_type.css) — used by the
+  // calendar range band, attachment chip, and success medallion.
+  brand50: '#EAF3EE', // --brand-50  lightest green tint
+  brand100: '#DCEEE3', // --brand-100 soft green tint (range band, icon chips)
+  brand500: '#395F61', // --brand-500 = guide (today ring)
+  brand600: '#203B3C', // --brand-600 = signature (primary action / endpoints)
+  brand700: '#203B3C', // --brand-700 = signature
+  brand900: '#122121', // --brand-900 = ground
   greenLine: '#BFE3CF',
   successText: '#053F22',
   celebration: '#E6F7ED',

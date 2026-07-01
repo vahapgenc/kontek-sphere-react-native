@@ -13,6 +13,13 @@ interface SessionState {
   scenario: Scenario;
   lang: Lang;
   notifRead: Set<string>;
+  /** The register hub (quick-action sheet opened by the center FAB). */
+  registerOpen: boolean;
+  /**
+   * The register flow currently open, rendered as an in-shell overlay so the
+   * bottom tab bar stays visible (mirrors the prototype). `null` = no flow.
+   */
+  activeFlow: RegisterFlow | null;
 
   login: () => void;
   logout: () => void;
@@ -21,7 +28,13 @@ interface SessionState {
   setLang: (l: Lang) => void;
   markNotifRead: (id: string) => void;
   markAllNotifRead: (ids: string[]) => void;
+  openRegister: () => void;
+  closeRegister: () => void;
+  openFlow: (flow: RegisterFlow) => void;
+  closeFlow: () => void;
 }
+
+export type RegisterFlow = 'absence' | 'expense';
 
 export const useSession = create<SessionState>((set) => ({
   authed: false,
@@ -30,6 +43,8 @@ export const useSession = create<SessionState>((set) => ({
   scenario: 'Standard',
   lang: 'sv',
   notifRead: new Set<string>(),
+  registerOpen: false,
+  activeFlow: null,
 
   login: () => set({ authed: true }),
   logout: () => set({ authed: false }),
@@ -44,4 +59,8 @@ export const useSession = create<SessionState>((set) => ({
       ids.forEach((i) => n.add(i));
       return { notifRead: n };
     }),
+  openRegister: () => set({ registerOpen: true }),
+  closeRegister: () => set({ registerOpen: false }),
+  openFlow: (flow) => set({ activeFlow: flow, registerOpen: false }),
+  closeFlow: () => set({ activeFlow: null }),
 }));

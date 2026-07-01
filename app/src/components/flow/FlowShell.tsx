@@ -9,9 +9,12 @@ import {
   StyleSheet,
   type ViewStyle,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../../theme';
 import { KText } from '../Text';
+import { KIcon } from '../../icons/Icon';
+import { KSteps } from '../data-display/Steps';
 
 export interface KFlowShellProps {
   /** Close action — used for the header action when no `onBack` is given. */
@@ -48,6 +51,7 @@ export function KFlowShell({
 }: KFlowShellProps) {
   const theme = useTheme();
   const c = theme.colors;
+  const insets = useSafeAreaInsets();
   const stepped = typeof step === 'number';
   const handleAction = onBack ?? onClose;
 
@@ -59,8 +63,8 @@ export function KFlowShell({
       end={{ x: 0, y: 1 }}
       style={styles.root}
     >
-      {/* App bar */}
-      <View style={[styles.appbar, { height: theme.layout.appbarH }]}>
+      {/* App bar — safe-area top, then the 56px bar (prototype paddingTop:50). */}
+      <View style={[styles.appbar, { height: theme.layout.appbarH, marginTop: insets.top + 8 }]}>
         <Pressable
           testID="flow_shell_actionButton"
           accessibilityRole="button"
@@ -73,18 +77,12 @@ export function KFlowShell({
             pressed ? styles.pressed : null,
           ]}
         >
-          {headerIcon ?? (
-            <KText variant="title" color={c.ink}>
-              {onBack ? '‹' : '✕'}
-            </KText>
-          )}
+          {headerIcon ?? <KIcon name={onBack ? 'chevL' : 'close'} size={24} color={c.ink} />}
         </Pressable>
 
         <View style={styles.appbarCenter}>
           {stepped ? (
-            <KText variant="caption" weight="600" color={c.ink3}>
-              {step}/{total}
-            </KText>
+            <KSteps total={total ?? 1} current={(step ?? 1) - 1} />
           ) : (
             <KText variant="title" weight="600" color={c.ink} numberOfLines={1}>
               {title}
@@ -153,5 +151,6 @@ const styles = StyleSheet.create({
   body: { paddingTop: 20, paddingBottom: 16, gap: 14 },
   kicker: { marginBottom: 8 },
   title: { marginBottom: 18 },
-  footer: { paddingTop: 12, paddingBottom: 24, gap: 10 },
+  // paddingBottom clears the raised register FAB that overlays the tab bar edge.
+  footer: { paddingTop: 12, paddingBottom: 34, gap: 10 },
 });

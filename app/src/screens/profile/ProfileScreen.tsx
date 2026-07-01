@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../theme';
 import {
   KAppBar,
+  KNotificationBell,
   KListCard,
   KListRow,
   KAvatar,
@@ -22,9 +23,10 @@ import {
   KText,
   KIcon,
 } from '../../components';
-import { ME, COMPANIES, BANK_ACCOUNTS, SCENARIOS } from '../../mocks';
+import { ME, COMPANIES, BANK_ACCOUNTS } from '../../mocks';
 import { useLocalize } from '../../i18n/localize';
 import { useSession, type Lang } from '../../store/session';
+import { useUnreadNotifCount } from '../../store/notifications';
 
 export interface ProfileScreenProps {
   onOpenCompanies?: () => void;
@@ -43,14 +45,10 @@ export function ProfileScreen({
   const tx = useLocalize();
 
   const companyId = useSession((s) => s.companyId);
-  const scenario = useSession((s) => s.scenario);
   const lang = useSession((s) => s.lang);
   const setLang = useSession((s) => s.setLang);
   const logout = useSession((s) => s.logout);
-
-  const todoCount = (SCENARIOS[scenario] ?? SCENARIOS['Standard']).todos.filter(
-    (todo) => todo.status === 'action',
-  ).length;
+  const unreadNotifCount = useUnreadNotifCount();
 
   const [langOpen, setLangOpen] = useState(false);
   const [snack, setSnack] = useState<string | null>(null);
@@ -86,23 +84,11 @@ export function ProfileScreen({
         large
         testID="profile_appbar"
         right={
-          <Pressable
+          <KNotificationBell
             testID="profile_notifications_button"
+            count={unreadNotifCount}
             onPress={() => {}}
-            accessibilityRole="button"
-            accessibilityLabel={t('title')}
-            hitSlop={8}
-            style={styles.bell}
-          >
-            <KIcon name="bell" color={c.ink2} />
-            {todoCount > 0 ? (
-              <View style={[styles.bellBadge, { backgroundColor: c.ink3, borderColor: c.canvas }]}>
-                <KText variant="micro" weight="700" color={c.onDark} style={styles.bellBadgeText}>
-                  {todoCount}
-                </KText>
-              </View>
-            ) : null}
-          </Pressable>
+          />
         }
       />
       <ScrollView contentContainerStyle={styles.wrap}>
@@ -243,20 +229,6 @@ const styles = StyleSheet.create({
   wrap: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 40, gap: 18 },
   identity: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingHorizontal: 4 },
   identityText: { flex: 1, minWidth: 0, gap: 2 },
-  bell: { width: 48, height: 48, alignItems: 'center', justifyContent: 'center' },
-  bellBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    minWidth: 18,
-    height: 18,
-    paddingHorizontal: 4,
-    borderRadius: 9,
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bellBadgeText: { lineHeight: 14 },
   langValue: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   footer: { textAlign: 'center', marginTop: 4 },
   langList: { gap: 8, paddingVertical: 4 },

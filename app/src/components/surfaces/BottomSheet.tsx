@@ -1,11 +1,16 @@
 // KBottomSheet — modal bottom sheet. Mirrors .ds-scrim + .ds-sheet:
 // a dimmed scrim over a rounded-top surface (radius sheet = 24) with a grip
 // handle, optional title/subtitle, then children. Built on RN Modal.
+//
+// The scrim + sheet stop ABOVE the bottom tab bar (like the prototype's
+// `bottom: calc(tabbar-h + safe-bottom)`), so the menu stays visible while a
+// sheet is open. The tab-bar strip below is left transparent (box-none).
 import React, { type ReactNode } from 'react';
 import { Modal, View, Pressable, StyleSheet, ScrollView, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme';
 import { KText } from '../Text';
+import { KOverlayFab } from '../navigation/OverlayFab';
 
 export interface KBottomSheetProps {
   visible: boolean;
@@ -21,6 +26,8 @@ export function KBottomSheet({ visible, onClose, title, subtitle, children, test
   const insets = useSafeAreaInsets();
   const c = theme.colors;
 
+  const tabBarHeight = theme.layout.tabbarH + insets.bottom;
+
   return (
     <Modal
       visible={visible}
@@ -29,7 +36,8 @@ export function KBottomSheet({ visible, onClose, title, subtitle, children, test
       statusBarTranslucent
       onRequestClose={onClose}
     >
-      <View style={styles.fill} testID={testID}>
+      {/* box-none so the tab-bar strip below the region stays interactive/visible. */}
+      <View style={[styles.fill, { bottom: tabBarHeight }]} testID={testID} pointerEvents="box-none">
         <Pressable
           testID={testID ? `${testID}-scrim` : undefined}
           accessibilityRole="button"
@@ -45,7 +53,7 @@ export function KBottomSheet({ visible, onClose, title, subtitle, children, test
               borderTopLeftRadius: theme.radii.sheet,
               borderTopRightRadius: theme.radii.sheet,
               paddingHorizontal: theme.layout.screenGutter,
-              paddingBottom: theme.space.s06 + insets.bottom,
+              paddingBottom: theme.space.s06,
             },
           ]}
         >
@@ -64,6 +72,9 @@ export function KBottomSheet({ visible, onClose, title, subtitle, children, test
             {children}
           </ScrollView>
         </View>
+        {/* The register FAB stays on top of the sheet at the tab bar edge, so the
+            raised center button isn't clipped (mirrors the prototype's z-order). */}
+        <KOverlayFab icon="plus" onPress={onClose} accessibilityLabel="Stäng" />
       </View>
     </Modal>
   );
@@ -71,7 +82,10 @@ export function KBottomSheet({ visible, onClose, title, subtitle, children, test
 
 const styles = StyleSheet.create({
   fill: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     justifyContent: 'flex-end',
   } as ViewStyle,
   scrim: {

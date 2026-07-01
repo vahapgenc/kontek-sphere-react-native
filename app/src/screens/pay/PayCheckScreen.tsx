@@ -54,9 +54,9 @@ export function PayCheckScreen({ onBack }: PayCheckScreenProps) {
         title={t('sentToPayroll')}
         status="pending"
         lines={[
-          t('sentLineReceived', { name: hrName, role: hrRole, month }),
-          t('sentLineReply'),
-          t('sentLineCorrected'),
+          { icon: 'bell', text: t('sentLineReceived', { name: hrName, role: hrRole, month }) },
+          { icon: 'clock', text: t('sentLineReply') },
+          { icon: 'wallet', text: t('sentLineCorrected') },
         ]}
         primaryLabel={t('goToHome')}
         onPrimary={onBack}

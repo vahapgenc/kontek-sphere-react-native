@@ -4,13 +4,22 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../../theme';
 import { KText } from '../Text';
 import { KButton } from '../buttons/Button';
+import { KIcon, type IconName } from '../../icons/Icon';
+
+/** A success body line — an icon glyph + text; `warn` tone tints the icon amber. */
+export interface KSuccessLine {
+  icon: IconName;
+  text: string;
+  tone?: 'warn';
+}
 
 export interface KSuccessProps {
   title: string;
-  lines?: string[];
+  lines?: KSuccessLine[];
   /** "approved" gets the ok medallion; anything else gets the brand medallion. */
   status?: string;
   primaryLabel?: string;
@@ -33,15 +42,21 @@ export function KSuccess({
   const theme = useTheme();
   const c = theme.colors;
   const isApproved = status === 'approved';
-  const medallionBg = isApproved ? c.okSoft : c.greenSoft;
-  const markColor = isApproved ? c.ok : c.signature;
+  const medallionBg = isApproved ? c.okSoft : c.brand100;
+  const markColor = isApproved ? c.ok : c.brand600;
 
   return (
-    <View testID={testID} style={[styles.root, { backgroundColor: c.surface }]}>
+    <LinearGradient
+      testID={testID}
+      colors={theme.gradients.appBg}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={styles.root}
+    >
       <ScrollView
         contentContainerStyle={[
           styles.center,
-          { paddingHorizontal: theme.layout.screenGutterLg },
+          { paddingHorizontal: theme.space.s06 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -68,10 +83,14 @@ export function KSuccess({
         {lines.length > 0 ? (
           <View style={styles.lines}>
             {lines.map((line, i) => (
-              <View key={`${line}_${i}`} style={styles.lineRow}>
-                <View style={[styles.bullet, { backgroundColor: markColor }]} />
+              <View key={`${line.text}_${i}`} style={styles.lineRow}>
+                <KIcon
+                  name={line.icon}
+                  size={20}
+                  color={line.tone === 'warn' ? c.warnText : c.brand600}
+                />
                 <KText variant="bodySm" color={c.ink2} style={styles.lineText}>
-                  {line}
+                  {line.text}
                 </KText>
               </View>
             ))}
@@ -97,7 +116,7 @@ export function KSuccess({
           />
         ) : null}
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -120,11 +139,11 @@ const styles = StyleSheet.create({
   title: { marginBottom: 4 },
   lines: { marginTop: 22, gap: 14, width: '100%' },
   lineRow: { flexDirection: 'row', gap: 11, alignItems: 'flex-start' },
-  bullet: { width: 8, height: 8, borderRadius: 999, marginTop: 7 },
   lineText: { flex: 1, minWidth: 0 },
   footer: {
     paddingTop: 12,
-    paddingBottom: 24,
+    // Clears the raised register FAB that overlays the tab bar edge in-flow.
+    paddingBottom: 34,
     gap: 10,
   },
 });

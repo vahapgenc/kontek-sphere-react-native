@@ -519,7 +519,7 @@ function buildGroups(ctx: DemoCtx): DemoGroup[] {
           <KAttachment label="Läkarintyg" hint="PDF eller bild" value={ctx.picked ? { name: 'intyg.pdf' } : undefined} onPick={ctx.pick} />
         ) },
         { name: 'Success', subtitle: 'Confirmation view', render: () => (
-          <KSuccess title="Skickat för attest" lines={['Din chef får en notis.']} status="approved" />
+          <KSuccess title="Skickat för attest" lines={[{ icon: 'bell', text: 'Din chef får en notis.' }]} status="approved" />
         ) },
       ],
     },

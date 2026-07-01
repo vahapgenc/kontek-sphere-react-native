@@ -81,6 +81,19 @@ reachable via a profile/dev entry). Verify each screen against the running proto
 - ✅ **Mode-based tabs** — employee (Home/Pay/Calendar/Profile) vs manager (Home/Me/Employees/Profile).
 - ✅ **Parity fixes** — body text → ink; KCard = .ds-mcard; real chevron icons; KAttachment
   camera+plus+clear; outlined danger button; sentence-case section labels; app-bg + bell badges.
+- ✅ **Group 2 — pay** — PayslipsScreen (Pay tab), PayslipDetail (+ "Stämmer din lön?" → PayCheck),
+  UpcomingScreen, BalanceDetailScreen; KBalanceTiles; Pay tab + Home pay-hero → Upcoming wired.
+- ✅ **Group 3 — register flows** — center-FAB register hub + AbsenceFlow (type → dates → cert>7d →
+  confirm → success) + ExpenseFlow (receipt → category/amount/desc → confirm → success, "inget kvitto"
+  path), both via KFlowShell. Flows render as an **in-shell overlay** so the tab bar stays visible
+  (mirrors the prototype); tapping a tab or "Go to home" closes the flow.
+- ✅ **Notification bell** — shared `KNotificationBell` on every root tab (Home/Pay/Profile), single
+  `useUnreadNotifCount()` source; not shown on flow/detail screens (per the prototype's app-bar rule).
+- ✅ **Register-flow fidelity pass** — segmented `KSteps` paginator (not "N/M"); `KIcon` header
+  actions; calendar taken from the prototype CSS (wide inset-3 pills, brand-100 continuous band,
+  brand-500 today ring, month arrows); underlined `KTextLink` opt-outs; `KAttachment` built-in picker
+  sheet (Take photo / Choose a file); `KSuccess` per-line icons on the gradient; `KBottomSheet` and the
+  register/flow FABs (`KOverlayFab`) stop above / paint over the tab bar so the menu + FAB stay visible.
 
 **Fidelity discipline (mandatory going forward):** for every new screen, read its prototype
 function in k-misc.jsx / k-flow.jsx / k-app.jsx and reproduce it EXACTLY — layout, copy, colors
@@ -89,12 +102,9 @@ the source. Reuse K* first; new components go in the library + Overview. Self-au
 source before declaring done — do not rely on the user to find diffs.
 
 ### Remaining (in order)
-- **Group 2 — pay** (NEXT): PayslipsScreen (Pay tab), PayslipDetail (+ "Stämmer din lön?" check →
-  PayCheck), UpcomingScreen, BalanceDetailScreen. New: KBalanceTiles. Wire Pay tab + Home pay-hero
-  → Upcoming.
-- **Group 3 — register flows:** the FAB register hub (quick-action sheet) + AbsenceFlow +
-  ExpenseFlow (both multi-step via KFlowShell) → success; wire the center FAB + Home "to-do" fixes.
-- **Group 4 — calendar & notifications:** CalendarScreen (month grid + events), NotificationsScreen.
+- **Group 4 — calendar & notifications** (NEXT): CalendarScreen (month grid + events; new
+  `KCalendarMonth`), NotificationsScreen (list + mark-all-read; wire the bell's onPress + real
+  notification fixtures, replacing the `useUnreadNotifCount()` seed).
 - **Group 5 — manager:** MeScreen, EmployeesScreen/Team, ApprovalsScreen (+ inline approve/reject +
   optimistic undo), ApproveDetailScreen (+ reject sheet), EmployeeDetailScreen.
 

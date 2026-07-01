@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../theme';
 import {
   KAppBar,
+  KNotificationBell,
   KCollapsibleSection,
   KListCard,
   KListRow,
@@ -27,6 +28,7 @@ import {
 } from '../../components';
 import { PAYSLIPS, UPCOMING, COMPANIES, BALANCES } from '../../mocks';
 import { useSession } from '../../store/session';
+import { useUnreadNotifCount } from '../../store/notifications';
 import { useLocalize } from '../../i18n/localize';
 import { kr } from '../../utils/money';
 
@@ -49,6 +51,7 @@ export function PayslipsScreen({
   const companyId = useSession((s) => s.companyId);
   const mode = useSession((s) => s.mode);
   const isManager = mode === 'manager';
+  const unreadNotifCount = useUnreadNotifCount();
 
   const activeCompany = COMPANIES.find((co) => co.id === companyId) ?? COMPANIES[0];
   const balances = activeCompany.balances ?? BALANCES;
@@ -67,7 +70,18 @@ export function PayslipsScreen({
 
   return (
     <LinearGradient colors={theme.gradients.appBg} style={styles.root}>
-      <KAppBar title={t('title')} large testID="pay_appBar" />
+      <KAppBar
+        title={t('title')}
+        large
+        testID="pay_appBar"
+        right={
+          <KNotificationBell
+            testID="pay_appBar_notifications"
+            count={unreadNotifCount}
+            onPress={() => {}}
+          />
+        }
+      />
 
       <ScrollView
         style={styles.scroll}
