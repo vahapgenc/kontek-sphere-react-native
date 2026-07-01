@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../theme';
 import { KAppBar, KBadge, KSnackbar, KText, KIcon } from '../../components';
 import { COMPANIES } from '../../mocks';
+import { useLocalize } from '../../i18n/localize';
 import { useSession, type CompanyMode } from '../../store/session';
 import type { Company } from '../../api/types';
 
@@ -44,7 +45,7 @@ export function CompaniesScreen({ onBack }: CompaniesScreenProps) {
 
   return (
     <View style={styles.root}>
-      <KAppBar title={t('companiesTitle')} onBack={onBack} large testID="companies_appbar" />
+      <KAppBar title={t('companiesTitle')} onBack={onBack} testID="companies_appbar" />
       <ScrollView contentContainerStyle={styles.wrap}>
         {COMPANIES.map((co) => (
           <CompanyCard
@@ -75,6 +76,7 @@ function CompanyCard({
 }) {
   const theme = useTheme();
   const c = theme.colors;
+  const tx = useLocalize();
   const selectable = company.active && !current;
 
   const border = current
@@ -98,7 +100,7 @@ function CompanyCard({
             {company.name}
           </KText>
           <KText variant="bodySm" color={c.ink3} style={styles.role}>
-            {company.role}
+            {tx(company.role)}
           </KText>
         </View>
         <KBadge
@@ -121,7 +123,7 @@ function CompanyCard({
             return (
               <View key={p} style={styles.permRow}>
                 <KIcon name="check" size={18} color={isApprove ? c.signature : c.ok} />
-                <KText variant="body">{p}</KText>
+                <KText variant="body">{tx(p)}</KText>
               </View>
             );
           })}

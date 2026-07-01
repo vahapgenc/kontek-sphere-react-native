@@ -71,17 +71,19 @@ export const textStyles = {
     lineHeight: Math.round(fontSize.title * 1.3),
     color: colors.ink,
   },
+  // Default to ink (black): the prototype app's text inherits --ink; secondary/
+  // muted text passes an explicit ink-2/ink-3 color at the call site.
   body: {
     fontFamily: fontFamily.regular,
     fontSize: fontSize.body,
     lineHeight: Math.round(fontSize.body * 1.55),
-    color: colors.ink2,
+    color: colors.ink,
   },
   bodySm: {
     fontFamily: fontFamily.regular,
     fontSize: fontSize.bodySm,
     lineHeight: Math.round(fontSize.bodySm * 1.5),
-    color: colors.ink2,
+    color: colors.ink,
   },
   caption: {
     fontFamily: fontFamily.regular,

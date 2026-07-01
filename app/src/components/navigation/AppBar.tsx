@@ -6,6 +6,7 @@ import { View, Pressable, StyleSheet, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme';
 import { KText } from '../Text';
+import { KIcon } from '../../icons/Icon';
 
 export interface KAppBarProps {
   title: string;
@@ -55,8 +56,7 @@ export function KAppBar({ title, onBack, right, large, eyebrow, subtitle, testID
     );
   }
 
-  // ── Compact variant ──
-  const leading = !!onBack;
+  // ── Compact variant: centered title, back + right actions balance the sides ──
   return (
     <View
       testID={testID}
@@ -76,13 +76,13 @@ export function KAppBar({ title, onBack, right, large, eyebrow, subtitle, testID
               pressed ? { backgroundColor: c.surface2 } : null,
             ]}
           >
-            <KText variant="h3" color={c.ink2}>{'‹'}</KText>
+            <KIcon name="chevL" size={24} color={c.ink2} />
           </Pressable>
         ) : (
           <View style={{ width: theme.space.s03 }} />
         )}
 
-        <KText variant="title" weight="600" numberOfLines={1} align={leading ? 'left' : 'center'} style={styles.title}>
+        <KText variant="title" weight="600" numberOfLines={1} align="center" style={styles.title}>
           {title}
         </KText>
 

@@ -1,5 +1,5 @@
-// KCard — the floating card (§3.1): no visible border, the lift does the separation.
-// Pairs --r-panel radius with the floating-card shadow.
+// KCard — the standard content card (.ds-mcard): surface fill, a 1px hairline
+// border, r-card (16px) radius, subtle shadow-sm, and space-05 (16px) padding.
 import React, { type ReactNode } from 'react';
 import { View, Pressable, StyleSheet, type ViewStyle } from 'react-native';
 import { useTheme } from '../../theme';
@@ -16,9 +16,11 @@ export function KCard({ children, padding, onPress, testID, style }: KCardProps)
   const theme = useTheme();
   const cardStyle: ViewStyle = {
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.radii.panel,
+    borderWidth: 1,
+    borderColor: theme.colors.line,
+    borderRadius: theme.radii.card,
     padding: padding ?? theme.spacing.sp4,
-    ...theme.shadows.floatingCard,
+    ...theme.shadows.sm,
   };
 
   if (onPress) {

@@ -7,6 +7,7 @@ import React, { type ReactNode } from 'react';
 import { Pressable, View, StyleSheet, type ViewStyle } from 'react-native';
 import { useTheme } from '../../theme';
 import { KText } from '../Text';
+import { KIcon } from '../../icons/Icon';
 
 export interface KListRowProps {
   title: string;
@@ -81,9 +82,7 @@ export function KListRow({
       {trailing !== undefined ? (
         <View style={styles.trail}>{trailing}</View>
       ) : onPress ? (
-        <KText variant="title" color={theme.colors.ink4}>
-          {'›'}
-        </KText>
+        <KIcon name="chevR" size={20} color={theme.colors.ink4} />
       ) : null}
     </>
   );

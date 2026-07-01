@@ -27,7 +27,7 @@ export function KListCard({ header, children, testID, style }: KListCardProps) {
           color={theme.colors.ink3}
           style={styles.header}
         >
-          {header.toUpperCase()}
+          {header}
         </KText>
       ) : null}
       <View
@@ -64,7 +64,7 @@ export function KListCard({ header, children, testID, style }: KListCardProps) {
 
 const styles = StyleSheet.create({
   header: {
-    letterSpacing: 0.5,
+    letterSpacing: 0.065,
     paddingHorizontal: 4,
     paddingBottom: 10,
   },

@@ -115,7 +115,7 @@ function resolveColors(
     case 'secondaryCta':
       return { bg: c.action2, pressedBg: c.action2Hi, border: 'transparent', ink: c.kontekGreen };
     case 'danger':
-      return { bg: 'transparent', pressedBg: c.dangerSoft, border: 'transparent', ink: c.danger };
+      return { bg: 'transparent', pressedBg: c.dangerSoft, border: c.danger, ink: c.danger };
   }
 }
 

@@ -6,6 +6,7 @@ import React, { type ReactNode } from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 import { useTheme } from '../../theme';
 import { KText } from '../Text';
+import { KIcon } from '../../icons/Icon';
 
 export interface KAttachmentValue {
   name: string;
@@ -16,10 +17,12 @@ export interface KAttachmentProps {
   hint?: string;
   value?: KAttachmentValue;
   onPick: () => void;
+  /** Clears the attached file (renders the close button in the filled state). */
+  onClear?: () => void;
   optional?: boolean;
-  /** Optional icon node for the empty-state chip (e.g. a camera glyph). */
+  /** Optional icon node for the empty-state chip (defaults to a camera glyph). */
   icon?: ReactNode;
-  /** Optional icon node for the filled-state chip (e.g. a document glyph). */
+  /** Optional icon node for the filled-state chip (defaults to a doc glyph). */
   fileIcon?: ReactNode;
   testID?: string;
 }
@@ -29,6 +32,7 @@ export function KAttachment({
   hint,
   value,
   onPick,
+  onClear,
   optional,
   icon,
   fileIcon,
@@ -43,28 +47,34 @@ export function KAttachment({
         testID={testID}
         style={[
           styles.filled,
-          {
-            backgroundColor: c.surface,
-            borderColor: c.ok,
-            borderRadius: theme.radii.input,
-          },
+          { backgroundColor: c.surface, borderColor: c.ok, borderRadius: theme.radii.input },
         ]}
       >
         <View style={[styles.fileChip, { backgroundColor: c.okSoft }]}>
-          {fileIcon ?? (
-            <KText variant="caption" weight="700" color={c.ok}>
-              PDF
-            </KText>
-          )}
+          {fileIcon ?? <KIcon name="doc" size={22} color={c.ok} />}
         </View>
         <View style={styles.body}>
           <KText variant="bodySm" weight="700" color={c.ink} numberOfLines={1}>
             {value.name}
           </KText>
-          <KText variant="caption" color={c.ok} style={styles.uploaded}>
-            ✓ Uploaded
-          </KText>
+          <View style={styles.uploadedRow}>
+            <KIcon name="check" size={13} color={c.ok} strokeWidth={2.5} />
+            <KText variant="caption" color={c.ok}>
+              Uploaded
+            </KText>
+          </View>
         </View>
+        {onClear ? (
+          <Pressable
+            testID={testID ? `${testID}-clear` : undefined}
+            onPress={onClear}
+            accessibilityRole="button"
+            hitSlop={8}
+            style={[styles.clear, { backgroundColor: c.line2 }]}
+          >
+            <KIcon name="close" size={16} color={c.ink2} />
+          </Pressable>
+        ) : null}
       </View>
     );
   }
@@ -77,20 +87,12 @@ export function KAttachment({
       onPress={onPick}
       style={({ pressed }) => [
         styles.empty,
-        {
-          backgroundColor: c.surface,
-          borderColor: c.line,
-          borderRadius: theme.radii.input,
-        },
+        { backgroundColor: c.surface, borderColor: c.line, borderRadius: theme.radii.input },
         pressed ? styles.pressed : null,
       ]}
     >
       <View style={[styles.iconChip, { backgroundColor: c.greenSoft }]}>
-        {icon ?? (
-          <KText variant="title" weight="700" color={c.greenDeep}>
-            +
-          </KText>
-        )}
+        {icon ?? <KIcon name="camera" size={22} color={c.greenDeep} />}
       </View>
       <View style={styles.body}>
         <KText variant="bodySm" weight="700" color={c.ink}>
@@ -107,6 +109,7 @@ export function KAttachment({
           </KText>
         ) : null}
       </View>
+      <KIcon name="plus" size={20} color={c.greenDeep} />
     </Pressable>
   );
 }
@@ -143,5 +146,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   body: { flex: 1, minWidth: 0 },
-  uploaded: { marginTop: 1 },
+  uploadedRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 1 },
+  clear: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
 });

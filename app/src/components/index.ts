@@ -33,7 +33,9 @@ export * from './data-display/Avatar';
 export * from './data-display/IconTile';
 export * from './data-display/ListRow';
 export * from './data-display/ListCard';
+export * from './data-display/FieldRow';
 export * from './data-display/StatusRow';
+export * from './data-display/StatusTimeline';
 export * from './data-display/Steps';
 export * from './data-display/SectionLabel';
 

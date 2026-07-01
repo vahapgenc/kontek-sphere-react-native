@@ -17,6 +17,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../theme';
 import {
@@ -68,11 +69,15 @@ function registeredOrder(registered: string): number {
   return (MONTHS[month] ?? 0) * 100 + parseInt(day, 10);
 }
 
+// Minimal navigation surface this screen needs (untyped stack: params are open).
+type HomeNav = { navigate: (screen: string, params?: { id: string }) => void };
+
 export function HomeScreen() {
   const theme = useTheme();
   const c = theme.colors;
   const { t } = useTranslation('home');
   const tx = useLocalize();
+  const navigation = useNavigation() as unknown as HomeNav;
 
   const scenario = useSession((s) => s.scenario);
   const mode = useSession((s) => s.mode);
@@ -225,7 +230,7 @@ export function HomeScreen() {
                     />
                   }
                   trailing={<KBadge label={t('fix')} tone="warn" dot />}
-                  onPress={noop}
+                  onPress={() => navigation.navigate('Complete', { id: todo.id })}
                 />
               ))}
               {approvalItems.map((approval) => (
@@ -280,7 +285,11 @@ export function HomeScreen() {
           ) : (
             <KListCard>
               {sortedActivity.map((item) => (
-                <ActivityRow key={item.id} item={item} onPress={noop} />
+                <ActivityRow
+                  key={item.id}
+                  item={item}
+                  onPress={() => navigation.navigate('Status', { id: item.id })}
+                />
               ))}
             </KListCard>
           )}
@@ -300,6 +309,7 @@ export function HomeScreen() {
               subtitle={t('prevAnnualLeaveSub')}
               leading={<KIcon name="calendar" size={18} color={c.greenDeep} />}
               trailing={<KBadge label={t('approved')} tone="ok" dot />}
+              onPress={() => navigation.navigate('Status', { id: 'prev-annualLeave' })}
             />
             <KListRow
               testID="home_previous_expenseTravel"
@@ -308,6 +318,7 @@ export function HomeScreen() {
               subtitle={t('prevExpenseTravelSub')}
               leading={<KIcon name="receipt" size={18} color={c.greenDeep} />}
               trailing={<KBadge label={t('paid')} tone="ok" dot />}
+              onPress={() => navigation.navigate('Status', { id: 'prev-expenseTravel' })}
             />
             <KListRow
               testID="home_previous_childSick"
@@ -316,6 +327,7 @@ export function HomeScreen() {
               subtitle={t('prevChildSickSub')}
               leading={<KIcon name="calendar" size={18} color={c.greenDeep} />}
               trailing={<KBadge label={t('approved')} tone="ok" dot />}
+              onPress={() => navigation.navigate('Status', { id: 'prev-childSick' })}
             />
             <KListRow
               testID="home_previous_payslip"
@@ -324,6 +336,7 @@ export function HomeScreen() {
               subtitle={t('prevPayslipSub')}
               leading={<KIcon name="payslip" size={18} color={c.greenDeep} />}
               trailing={<KBadge label={t('paid')} tone="ok" dot />}
+              onPress={() => navigation.navigate('Status', { id: 'prev-payslip' })}
             />
           </KListCard>
         </KCollapsibleSection>

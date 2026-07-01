@@ -3,6 +3,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { resources } from './resources';
 import { homeEn, homeSv } from '../screens/home/i18n';
+import { detailEn, detailSv } from '../screens/home/detail.i18n';
 import { profileEn, profileSv } from '../screens/profile/i18n';
 
 if (!i18n.isInitialized) {
@@ -18,6 +19,8 @@ if (!i18n.isInitialized) {
   // Per-screen namespaces (kept co-located with their screens).
   i18n.addResourceBundle('en', 'home', homeEn);
   i18n.addResourceBundle('sv', 'home', homeSv);
+  i18n.addResourceBundle('en', 'detail', detailEn);
+  i18n.addResourceBundle('sv', 'detail', detailSv);
   i18n.addResourceBundle('en', 'profile', profileEn);
   i18n.addResourceBundle('sv', 'profile', profileSv);
 }

@@ -26,7 +26,7 @@ export function KSectionLabel({
   return (
     <View style={[styles.row, style]}>
       <KText variant="caption" weight="600" color={theme.colors.ink3} style={styles.label}>
-        {children.toUpperCase()}
+        {children}
       </KText>
       {action ? (
         <Pressable testID={testID} onPress={onAction} accessibilityRole="button">
@@ -47,5 +47,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     marginBottom: 10,
   } as ViewStyle,
-  label: { letterSpacing: 0.5 },
+  label: { letterSpacing: 0.065 },
 });
