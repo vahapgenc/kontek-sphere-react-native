@@ -125,7 +125,7 @@ export function HomeScreen() {
           <KNotificationBell
             testID="home_appBar_notifications"
             count={unreadNotifCount}
-            onPress={noop}
+            onPress={() => navigation.navigate('Notifications')}
           />
         }
       />

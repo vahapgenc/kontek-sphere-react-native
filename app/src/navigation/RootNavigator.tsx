@@ -28,6 +28,9 @@ import { BalanceDetailScreen } from '../screens/pay/BalanceDetailScreen';
 import { AbsenceFlowScreen } from '../screens/register/AbsenceFlowScreen';
 import { ExpenseFlowScreen } from '../screens/register/ExpenseFlowScreen';
 import { RegisterHub } from '../screens/register/RegisterHub';
+import { CalendarScreen } from '../screens/calendar/CalendarScreen';
+import { RegDetailScreen } from '../screens/calendar/RegDetailScreen';
+import { NotificationsScreen } from '../screens/notifications/NotificationsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -55,6 +58,9 @@ function HomeStack() {
           />
         )}
       </Stack.Screen>
+      <Stack.Screen name="Notifications">
+        {({ navigation }) => <NotificationsScreen onBack={() => navigation.goBack()} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
@@ -68,6 +74,7 @@ function PayslipsStack() {
             onOpenPayslip={(id) => navigation.navigate('PayslipDetail', { id })}
             onOpenUpcoming={() => navigation.navigate('Upcoming')}
             onOpenBalance={(id) => navigation.navigate('BalanceDetail', { id })}
+            onOpenNotifications={() => navigation.navigate('Notifications')}
           />
         )}
       </Stack.Screen>
@@ -91,6 +98,9 @@ function PayslipsStack() {
           <BalanceDetailScreen id={(route.params as { id: string }).id} onBack={() => navigation.goBack()} />
         )}
       </Stack.Screen>
+      <Stack.Screen name="Notifications">
+        {({ navigation }) => <NotificationsScreen onBack={() => navigation.goBack()} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
@@ -98,7 +108,22 @@ function PayslipsStack() {
 function CalendarStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Calendar">{() => <PlaceholderScreen title="Kalender" />}</Stack.Screen>
+      <Stack.Screen name="Calendar">
+        {({ navigation }) => (
+          <CalendarScreen
+            onOpenEvent={(id) => navigation.navigate('RegDetail', { id })}
+            onOpenNotifications={() => navigation.navigate('Notifications')}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="RegDetail">
+        {({ navigation, route }) => (
+          <RegDetailScreen id={(route.params as { id: string }).id} onBack={() => navigation.goBack()} />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="Notifications">
+        {({ navigation }) => <NotificationsScreen onBack={() => navigation.goBack()} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
@@ -129,6 +154,7 @@ function ProfileStack() {
             onOpenCompanies={() => navigation.navigate('Companies')}
             onOpenBankAccounts={() => navigation.navigate('BankAccounts')}
             onOpenEmployment={() => navigation.navigate('Employment')}
+            onOpenNotifications={() => navigation.navigate('Notifications')}
           />
         )}
       </Stack.Screen>
@@ -140,6 +166,9 @@ function ProfileStack() {
       </Stack.Screen>
       <Stack.Screen name="Employment">
         {({ navigation }) => <EmploymentScreen onBack={() => navigation.goBack()} />}
+      </Stack.Screen>
+      <Stack.Screen name="Notifications">
+        {({ navigation }) => <NotificationsScreen onBack={() => navigation.goBack()} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

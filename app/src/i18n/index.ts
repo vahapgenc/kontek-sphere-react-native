@@ -11,6 +11,8 @@ import { registerEn, registerSv } from '../screens/register/register.i18n';
 import { absenceEn, absenceSv } from '../screens/register/absence.i18n';
 import { expenseEn, expenseSv } from '../screens/register/expense.i18n';
 import { attachmentEn, attachmentSv } from '../components/flow/attachment.i18n';
+import { calendarEn, calendarSv } from '../screens/calendar/calendar.i18n';
+import { notificationsEn, notificationsSv } from '../screens/notifications/notifications.i18n';
 
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
@@ -41,6 +43,10 @@ if (!i18n.isInitialized) {
   i18n.addResourceBundle('sv', 'expense', expenseSv);
   i18n.addResourceBundle('en', 'attachment', attachmentEn);
   i18n.addResourceBundle('sv', 'attachment', attachmentSv);
+  i18n.addResourceBundle('en', 'calendar', calendarEn);
+  i18n.addResourceBundle('sv', 'calendar', calendarSv);
+  i18n.addResourceBundle('en', 'notifications', notificationsEn);
+  i18n.addResourceBundle('sv', 'notifications', notificationsSv);
 }
 
 export default i18n;

@@ -36,12 +36,14 @@ export interface PayslipsScreenProps {
   onOpenPayslip: (id: string) => void;
   onOpenUpcoming: () => void;
   onOpenBalance: (id: string) => void;
+  onOpenNotifications?: () => void;
 }
 
 export function PayslipsScreen({
   onOpenPayslip,
   onOpenUpcoming,
   onOpenBalance,
+  onOpenNotifications,
 }: PayslipsScreenProps) {
   const theme = useTheme();
   const c = theme.colors;
@@ -78,7 +80,7 @@ export function PayslipsScreen({
           <KNotificationBell
             testID="pay_appBar_notifications"
             count={unreadNotifCount}
-            onPress={() => {}}
+            onPress={onOpenNotifications}
           />
         }
       />

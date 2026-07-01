@@ -1,0 +1,41 @@
+// i18n for the Notifications screen. Item copy mirrors NotificationsScreen in
+// k-misc.jsx (subs keep names/amounts that don't translate).
+export const notificationsEn = {
+  title: 'Notifications',
+  markAll: 'Mark all as read',
+  timeToday: 'Today',
+  timeYesterday: 'Yesterday',
+  timePay: 'May 25',
+  apprAbsTitle: 'New absence to approve',
+  apprAbsSub: 'Erik Holm · Vacation · 12–16 June',
+  apprExpTitle: 'New expense to approve',
+  apprExpSub: 'Sara Nilsson · 540 kr',
+  sickTitle: 'Upload medical certificate',
+  sickSub: 'Your sick period is longer than 7 days',
+  expTitle: 'Expense missing receipt',
+  expSub: 'Parking · SEK 180',
+  vabTitle: 'Child sick care approved',
+  vabSub: '{{hrName}} approved your child sick care day',
+  payTitle: 'Pay slip for May is ready',
+  paySub: 'Paid May 25',
+};
+
+export const notificationsSv = {
+  title: 'Aviseringar',
+  markAll: 'Markera alla som lästa',
+  timeToday: 'Idag',
+  timeYesterday: 'Igår',
+  timePay: '25 maj',
+  apprAbsTitle: 'Ny frånvaro att godkänna',
+  apprAbsSub: 'Erik Holm · Semester · 12–16 juni',
+  apprExpTitle: 'Nytt utlägg att godkänna',
+  apprExpSub: 'Sara Nilsson · 540 kr',
+  sickTitle: 'Ladda upp läkarintyg',
+  sickSub: 'Din sjukperiod är längre än 7 dagar',
+  expTitle: 'Utlägg saknar kvitto',
+  expSub: 'Parkering · 180 kr',
+  vabTitle: 'VAB godkänd',
+  vabSub: '{{hrName}} godkände din vård av barn-dag',
+  payTitle: 'Lönebeskedet för maj är klart',
+  paySub: 'Betald 25 maj',
+};

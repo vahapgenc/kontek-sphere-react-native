@@ -41,6 +41,7 @@ export * from './data-display/SummaryRow';
 export * from './data-display/StatusTimeline';
 export * from './data-display/Steps';
 export * from './data-display/SectionLabel';
+export * from './data-display/CalendarMonth';
 
 // Feedback
 export * from './feedback/Banner';

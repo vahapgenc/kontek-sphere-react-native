@@ -94,6 +94,13 @@ reachable via a profile/dev entry). Verify each screen against the running proto
   brand-500 today ring, month arrows); underlined `KTextLink` opt-outs; `KAttachment` built-in picker
   sheet (Take photo / Choose a file); `KSuccess` per-line icons on the gradient; `KBottomSheet` and the
   register/flow FABs (`KOverlayFab`) stop above / paint over the tab bar so the menu + FAB stay visible.
+- ✅ **Group 4 — calendar & notifications** — CalendarScreen (new `KCalendarMonth`: month grid with
+  per-day event dots, prev/next, Today pill; Intl EN/SV month + weekday labels) + selected-day
+  registration list + empty state; RegDetailScreen ("Details": green tile + title + status badge,
+  label/value card, info note); NotificationsScreen (unread green-dot rows + "Mark all as read", manager
+  approval items). Bell wired on every root tab → Notifications; read-state in the store updates the
+  bell badge. Notification deep-links (todo/payslip/approvals) mark-as-read for now — approvals lands in
+  Group 5.
 
 **Fidelity discipline (mandatory going forward):** for every new screen, read its prototype
 function in k-misc.jsx / k-flow.jsx / k-app.jsx and reproduce it EXACTLY — layout, copy, colors

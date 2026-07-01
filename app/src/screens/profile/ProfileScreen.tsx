@@ -32,12 +32,14 @@ export interface ProfileScreenProps {
   onOpenCompanies?: () => void;
   onOpenBankAccounts?: () => void;
   onOpenEmployment?: () => void;
+  onOpenNotifications?: () => void;
 }
 
 export function ProfileScreen({
   onOpenCompanies,
   onOpenBankAccounts,
   onOpenEmployment,
+  onOpenNotifications,
 }: ProfileScreenProps) {
   const theme = useTheme();
   const c = theme.colors;
@@ -87,7 +89,7 @@ export function ProfileScreen({
           <KNotificationBell
             testID="profile_notifications_button"
             count={unreadNotifCount}
-            onPress={() => {}}
+            onPress={onOpenNotifications}
           />
         }
       />
