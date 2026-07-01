@@ -30,6 +30,7 @@ export * from './surfaces/Dialog';
 // Data display
 export * from './data-display/Badge';
 export * from './data-display/Avatar';
+export * from './data-display/BalanceTiles';
 export * from './data-display/IconTile';
 export * from './data-display/ListRow';
 export * from './data-display/ListCard';

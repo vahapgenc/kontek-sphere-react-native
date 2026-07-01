@@ -69,6 +69,35 @@ money/date utils, the contract-first API client + typed mocks. App boots to the 
 **Step D — Wire & verify.** Point `App.tsx` at the app navigator (keep the Design System Overview
 reachable via a profile/dev entry). Verify each screen against the running prototype.
 
+## Progress
+
+- ✅ **Foundation** — navigation (auth gate → tabs via KTabBar + center FAB), Zustand session,
+  react-i18next EN/SV + ported `localize()` for mock-data strings, money util, typed mocks.
+- ✅ **Group 1** — Login (2-step mock), Home (sticky/docking pay hero, collapsible sections,
+  manager to-dos), Profile + My companies + Bank accounts + Employment details + Language sheet.
+- ✅ **Home detail flows** — Complete (attach receipt/certificate) + Details status timeline
+  (KStatusTimeline), all statuses. New shared components: KFieldRow, KStatusTimeline,
+  KCollapsibleSection, KProductCard, KTopMenu, KOptimisticUndo.
+- ✅ **Mode-based tabs** — employee (Home/Pay/Calendar/Profile) vs manager (Home/Me/Employees/Profile).
+- ✅ **Parity fixes** — body text → ink; KCard = .ds-mcard; real chevron icons; KAttachment
+  camera+plus+clear; outlined danger button; sentence-case section labels; app-bg + bell badges.
+
+**Fidelity discipline (mandatory going forward):** for every new screen, read its prototype
+function in k-misc.jsx / k-flow.jsx / k-app.jsx and reproduce it EXACTLY — layout, copy, colors
+(default text = --ink; muted = ink-2/ink-3), card = .ds-mcard, icons via KIcon, sizes/paddings from
+the source. Reuse K* first; new components go in the library + Overview. Self-audit against the
+source before declaring done — do not rely on the user to find diffs.
+
+### Remaining (in order)
+- **Group 2 — pay** (NEXT): PayslipsScreen (Pay tab), PayslipDetail (+ "Stämmer din lön?" check →
+  PayCheck), UpcomingScreen, BalanceDetailScreen. New: KBalanceTiles. Wire Pay tab + Home pay-hero
+  → Upcoming.
+- **Group 3 — register flows:** the FAB register hub (quick-action sheet) + AbsenceFlow +
+  ExpenseFlow (both multi-step via KFlowShell) → success; wire the center FAB + Home "to-do" fixes.
+- **Group 4 — calendar & notifications:** CalendarScreen (month grid + events), NotificationsScreen.
+- **Group 5 — manager:** MeScreen, EmployeesScreen/Team, ApprovalsScreen (+ inline approve/reject +
+  optimistic undo), ApproveDetailScreen (+ reject sheet), EmployeeDetailScreen.
+
 ## Verification
 - `npx tsc --noEmit` clean after each step; run on web (`npm start` → `w`) — needs Node ≥ 20.19.4.
 - Compare each screen side-by-side with the prototype (`Kontek Anställd-app.html`): layout, copy,

@@ -18,6 +18,11 @@ import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { CompaniesScreen } from '../screens/profile/CompaniesScreen';
 import { BankAccountsScreen } from '../screens/profile/BankAccountsScreen';
 import { EmploymentScreen } from '../screens/profile/EmploymentScreen';
+import { PayslipsScreen } from '../screens/pay/PayslipsScreen';
+import { PayslipDetailScreen } from '../screens/pay/PayslipDetailScreen';
+import { PayCheckScreen } from '../screens/pay/PayCheckScreen';
+import { UpcomingScreen } from '../screens/pay/UpcomingScreen';
+import { BalanceDetailScreen } from '../screens/pay/BalanceDetailScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -49,7 +54,35 @@ function HomeStack() {
 function PayslipsStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Payslips">{() => <PlaceholderScreen title="Lön" />}</Stack.Screen>
+      <Stack.Screen name="Payslips">
+        {({ navigation }) => (
+          <PayslipsScreen
+            onOpenPayslip={(id) => navigation.navigate('PayslipDetail', { id })}
+            onOpenUpcoming={() => navigation.navigate('Upcoming')}
+            onOpenBalance={(id) => navigation.navigate('BalanceDetail', { id })}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="PayslipDetail">
+        {({ navigation, route }) => (
+          <PayslipDetailScreen
+            id={(route.params as { id: string }).id}
+            onBack={() => navigation.goBack()}
+            onCheck={() => navigation.navigate('PayCheck')}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="PayCheck">
+        {({ navigation }) => <PayCheckScreen onBack={() => navigation.goBack()} />}
+      </Stack.Screen>
+      <Stack.Screen name="Upcoming">
+        {({ navigation }) => <UpcomingScreen onBack={() => navigation.goBack()} />}
+      </Stack.Screen>
+      <Stack.Screen name="BalanceDetail">
+        {({ navigation, route }) => (
+          <BalanceDetailScreen id={(route.params as { id: string }).id} onBack={() => navigation.goBack()} />
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }

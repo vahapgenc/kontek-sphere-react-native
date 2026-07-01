@@ -5,6 +5,8 @@ import { resources } from './resources';
 import { homeEn, homeSv } from '../screens/home/i18n';
 import { detailEn, detailSv } from '../screens/home/detail.i18n';
 import { profileEn, profileSv } from '../screens/profile/i18n';
+import { payEn, paySv } from '../screens/pay/pay.i18n';
+import { payDetailEn, payDetailSv } from '../screens/pay/paydetail.i18n';
 
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
@@ -23,6 +25,10 @@ if (!i18n.isInitialized) {
   i18n.addResourceBundle('sv', 'detail', detailSv);
   i18n.addResourceBundle('en', 'profile', profileEn);
   i18n.addResourceBundle('sv', 'profile', profileSv);
+  i18n.addResourceBundle('en', 'pay', payEn);
+  i18n.addResourceBundle('sv', 'pay', paySv);
+  i18n.addResourceBundle('en', 'paydetail', payDetailEn);
+  i18n.addResourceBundle('sv', 'paydetail', payDetailSv);
 }
 
 export default i18n;
